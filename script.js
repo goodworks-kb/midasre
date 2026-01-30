@@ -54,85 +54,149 @@ const properties = [
     {
         id: 1,
         price: '$850,000',
-        address: '123 Oak Street, Downtown',
+        address: '123 Oak Street, Flushing',
         bedrooms: 4,
         bathrooms: 3,
         sqft: '2,500',
         type: 'For Sale',
+        category: 'residential',
         image: '🏡'
     },
     {
         id: 2,
         price: '$1,200,000',
-        address: '456 Maple Avenue, Uptown',
+        address: '456 Maple Avenue, Flushing',
         bedrooms: 5,
         bathrooms: 4,
         sqft: '3,200',
         type: 'For Sale',
+        category: 'residential',
         image: '🏰'
     },
     {
         id: 3,
         price: '$2,500/month',
-        address: '789 Pine Road, Midtown',
+        address: '789 Pine Road, Flushing',
         bedrooms: 3,
         bathrooms: 2,
         sqft: '1,800',
         type: 'For Rent',
+        category: 'residential',
         image: '🏠'
     },
     {
         id: 4,
         price: '$650,000',
-        address: '321 Elm Drive, Suburbs',
+        address: '321 Elm Drive, Flushing',
         bedrooms: 3,
         bathrooms: 2,
         sqft: '2,100',
         type: 'For Sale',
+        category: 'residential',
         image: '🏘️'
     },
     {
         id: 5,
         price: '$3,200/month',
-        address: '654 Cedar Lane, Waterfront',
+        address: '654 Cedar Lane, Flushing',
         bedrooms: 4,
         bathrooms: 3,
         sqft: '2,800',
         type: 'For Rent',
+        category: 'residential',
         image: '🌊'
     },
     {
         id: 6,
         price: '$1,500,000',
-        address: '987 Birch Boulevard, Luxury',
+        address: '987 Birch Boulevard, Flushing',
         bedrooms: 6,
         bathrooms: 5,
         sqft: '4,500',
         type: 'For Sale',
+        category: 'residential',
         image: '🏛️'
+    },
+    {
+        id: 7,
+        price: '$2,800,000',
+        address: '150 Main Street, Flushing',
+        bedrooms: null,
+        bathrooms: 4,
+        sqft: '5,200',
+        type: 'For Sale',
+        category: 'commercial',
+        image: '🏢',
+        propertyType: 'Office Building'
+    },
+    {
+        id: 8,
+        price: '$8,500/month',
+        address: '200 Northern Blvd, Flushing',
+        bedrooms: null,
+        bathrooms: 2,
+        sqft: '3,500',
+        type: 'For Rent',
+        category: 'commercial',
+        image: '🏪',
+        propertyType: 'Retail Space'
+    },
+    {
+        id: 9,
+        price: '$4,200,000',
+        address: '175-20 Depot Road, Flushing',
+        bedrooms: null,
+        bathrooms: 6,
+        sqft: '8,000',
+        type: 'For Sale',
+        category: 'commercial',
+        image: '🏭',
+        propertyType: 'Mixed-Use Building'
     }
 ];
 
 // Load Properties
-function loadProperties() {
+function loadProperties(filter = 'all') {
     const propertiesGrid = document.getElementById('propertiesGrid');
     
     if (!propertiesGrid) return;
     
-    propertiesGrid.innerHTML = properties.map(property => `
-        <div class="property-card" onclick="showPropertyDetails(${property.id})">
+    let filteredProperties = properties;
+    
+    if (filter !== 'all') {
+        if (filter === 'residential') {
+            filteredProperties = properties.filter(p => p.category === 'residential');
+        } else if (filter === 'commercial') {
+            filteredProperties = properties.filter(p => p.category === 'commercial');
+        } else if (filter === 'sale') {
+            filteredProperties = properties.filter(p => p.type === 'For Sale');
+        } else if (filter === 'rent') {
+            filteredProperties = properties.filter(p => p.type === 'For Rent');
+        }
+    }
+    
+    propertiesGrid.innerHTML = filteredProperties.map(property => {
+        const isCommercial = property.category === 'commercial';
+        const propertyType = isCommercial ? property.propertyType : 'Residential';
+        
+        return `
+        <div class="property-card" onclick="showPropertyDetails(${property.id})" data-category="${property.category}" data-type="${property.type.toLowerCase().replace(' ', '-')}">
             <div class="property-image">
                 <span style="font-size: 4rem; z-index: 1; position: relative;">${property.image}</span>
                 <span class="property-badge">${property.type}</span>
+                ${isCommercial ? `<span class="property-category-badge">Commercial</span>` : ''}
             </div>
             <div class="property-info">
                 <div class="property-price">${property.price}</div>
                 <div class="property-address">${property.address}</div>
+                ${isCommercial ? `<div class="property-type">${propertyType}</div>` : ''}
                 <div class="property-details">
+                    ${!isCommercial ? `
                     <div class="property-detail">
                         <span>🛏️</span>
                         <span>${property.bedrooms} Beds</span>
                     </div>
+                    ` : ''}
                     <div class="property-detail">
                         <span>🚿</span>
                         <span>${property.bathrooms} Baths</span>
@@ -144,14 +208,37 @@ function loadProperties() {
                 </div>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
+}
+
+// Property Filter Functionality
+function initPropertyFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
+            // Load properties with filter
+            const filter = button.getAttribute('data-filter');
+            loadProperties(filter);
+        });
+    });
 }
 
 // Show Property Details (placeholder function)
 function showPropertyDetails(id) {
     const property = properties.find(p => p.id === id);
     if (property) {
-        alert(`Property Details:\n\n${property.address}\n${property.price}\n${property.bedrooms} Bedrooms, ${property.bathrooms} Bathrooms\n${property.sqft} sqft\n\nContact us for more information!`);
+        const isCommercial = property.category === 'commercial';
+        const details = isCommercial 
+            ? `${property.propertyType}\n${property.bathrooms} Bathrooms`
+            : `${property.bedrooms} Bedrooms, ${property.bathrooms} Bathrooms`;
+        
+        alert(`Property Details:\n\n${property.address}\n${property.price}\n${details}\n${property.sqft} sqft\n\nContact us for more information!`);
     }
 }
 
@@ -197,6 +284,8 @@ const observer = new IntersectionObserver((entries) => {
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', () => {
     loadProperties();
+    loadSoldProperties();
+    initPropertyFilters();
     
     // Add fade-in animation to cards
     const cards = document.querySelectorAll('.property-card, .service-card, .stat-item');
@@ -226,5 +315,178 @@ window.addEventListener('scroll', () => {
                 }
             });
         }
+    });
+});
+
+// Recently Sold Properties Data
+const soldProperties = [
+    {
+        address: '145-20 Northern Blvd, Flushing',
+        price: '$1,250,000',
+        soldDate: 'Dec 2024',
+        type: 'Residential'
+    },
+    {
+        address: '168-05 Depot Road, Flushing',
+        price: '$850,000',
+        soldDate: 'Nov 2024',
+        type: 'Residential'
+    },
+    {
+        address: '180-25 Union Turnpike, Flushing',
+        price: '$2,100,000',
+        soldDate: 'Nov 2024',
+        type: 'Commercial'
+    },
+    {
+        address: '156-08 41st Avenue, Flushing',
+        price: '$675,000',
+        soldDate: 'Oct 2024',
+        type: 'Residential'
+    },
+    {
+        address: '135-30 37th Avenue, Flushing',
+        price: '$1,800,000',
+        soldDate: 'Oct 2024',
+        type: 'Commercial'
+    },
+    {
+        address: '142-15 Roosevelt Avenue, Flushing',
+        price: '$950,000',
+        soldDate: 'Sep 2024',
+        type: 'Residential'
+    }
+];
+
+// Load Sold Properties
+function loadSoldProperties() {
+    const soldGrid = document.getElementById('soldPropertiesGrid');
+    if (!soldGrid) return;
+    
+    const lang = window.currentLanguage || 'en';
+    const t = translations[lang] || translations.en;
+    const soldLabel = t.sold.sold || 'Sold';
+    const residentialLabel = t.properties.filters?.residential || 'Residential';
+    const commercialLabel = t.properties.filters?.commercial || 'Commercial';
+    
+    soldGrid.innerHTML = soldProperties.map(property => {
+        const typeLabel = property.type === 'Residential' ? residentialLabel : commercialLabel;
+        return `
+        <div class="sold-property-card">
+            <div class="sold-property-info">
+                <div class="sold-price">${property.price}</div>
+                <div class="sold-address">${property.address}</div>
+                <div class="sold-meta">
+                    <span class="sold-date">${soldLabel}: ${property.soldDate}</span>
+                    <span class="sold-type">${typeLabel}</span>
+                </div>
+            </div>
+        </div>
+    `;
+    }).join('');
+}
+
+// Mortgage Calculator Functions
+function openMortgageCalculator() {
+    document.getElementById('mortgageCalculatorModal').style.display = 'block';
+}
+
+function closeMortgageCalculator() {
+    document.getElementById('mortgageCalculatorModal').style.display = 'none';
+}
+
+function openNeighborhoodModal() {
+    document.getElementById('neighborhoodModal').style.display = 'block';
+}
+
+function closeNeighborhoodModal() {
+    document.getElementById('neighborhoodModal').style.display = 'none';
+}
+
+function openResourcesModal() {
+    document.getElementById('resourcesModal').style.display = 'block';
+}
+
+function closeResourcesModal() {
+    document.getElementById('resourcesModal').style.display = 'none';
+}
+
+// Close modals when clicking outside
+window.addEventListener('click', (e) => {
+    const mortgageModal = document.getElementById('mortgageCalculatorModal');
+    const neighborhoodModal = document.getElementById('neighborhoodModal');
+    const resourcesModal = document.getElementById('resourcesModal');
+    
+    if (e.target === mortgageModal) {
+        closeMortgageCalculator();
+    }
+    if (e.target === neighborhoodModal) {
+        closeNeighborhoodModal();
+    }
+    if (e.target === resourcesModal) {
+        closeResourcesModal();
+    }
+});
+
+function calculateMortgage() {
+    const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
+    const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+    const loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
+    
+    const loanAmount = homePrice - downPayment;
+    const monthlyRate = (interestRate / 100) / 12;
+    const numberOfPayments = loanTerm * 12;
+    
+    if (loanAmount <= 0 || monthlyRate <= 0) {
+        document.getElementById('mortgageResult').innerHTML = '<p style="color: red;">Please enter valid values.</p>';
+        return;
+    }
+    
+    const monthlyPayment = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / 
+                          (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    
+    const totalPayment = monthlyPayment * numberOfPayments;
+    const totalInterest = totalPayment - loanAmount;
+    
+    const lang = window.currentLanguage || 'en';
+    const t = translations[lang] || translations.en;
+    document.getElementById('mortgageResult').innerHTML = `
+        <div class="calc-result-box">
+            <h3>${t.tools.calcMonthlyPayment}</h3>
+            <p class="calc-amount">$${monthlyPayment.toFixed(2)}</p>
+        </div>
+        <div class="calc-result-box">
+            <h3>${t.tools.calcTotalInterest}</h3>
+            <p class="calc-amount">$${totalInterest.toLocaleString('en-US', {maximumFractionDigits: 2})}</p>
+        </div>
+        <div class="calc-result-box">
+            <h3>${t.tools.calcTotalPayment}</h3>
+            <p class="calc-amount">$${totalPayment.toLocaleString('en-US', {maximumFractionDigits: 2})}</p>
+        </div>
+    `;
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('mortgageCalculatorModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Update DOMContentLoaded to load sold properties
+document.addEventListener('DOMContentLoaded', () => {
+    loadProperties();
+    loadSoldProperties();
+    initPropertyFilters();
+    
+    // Add fade-in animation to cards
+    const cards = document.querySelectorAll('.property-card, .service-card, .stat-item');
+    cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
     });
 });
