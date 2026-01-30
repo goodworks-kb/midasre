@@ -25,13 +25,35 @@ MidasRE/
 ├── index.html      # Main HTML file
 ├── styles.css      # All styling
 ├── script.js       # JavaScript functionality
+├── package.json    # Node.js dependencies and scripts
+├── .gitignore      # Git ignore file
 └── README.md       # This file
 ```
 
 ## Getting Started
 
-1. Open `index.html` in a web browser
-2. No build process or dependencies required - it's ready to use!
+### Development Server (Recommended)
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start the development server with hot reload:
+   ```bash
+   npm run dev
+   ```
+   or
+   ```bash
+   npm start
+   ```
+
+3. The website will automatically open in your browser at `http://localhost:3000`
+   - Any changes to HTML, CSS, or JavaScript files will automatically reload the page
+
+### Static Usage
+
+Alternatively, you can simply open `index.html` in a web browser (no hot reload available).
 
 ## Sections
 

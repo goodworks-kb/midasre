@@ -1,0 +1,19 @@
+{
+  "name": "midas-realty-website",
+  "version": "1.0.0",
+  "description": "Midas Realty website with hot reload development server",
+  "scripts": {
+    "dev": "live-server --port=3000 --open=/index.html --watch=.",
+    "start": "npm run dev"
+  },
+  "keywords": [
+    "realty",
+    "real-estate",
+    "website"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
