@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Midas Realty - Your Trusted Real Estate Partner</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,18 +18,17 @@
                 <div class="logo">
                     <div class="logo-icon">🏠</div>
                     <div class="logo-text">
-                        <h1>Midas Realty</h1>
+                        <h1>MIDAS REALTY</h1>
                         <span class="logo-tagline">Helping the Community Grow Together</span>
                     </div>
                 </div>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="#home" data-translate="nav.home">Home</a></li>
-                    <li><a href="#properties" data-translate="nav.properties">Properties</a></li>
-                    <li><a href="#sold" data-translate="nav.sold">Sold Properties</a></li>
-                    <li><a href="#about" data-translate="nav.about">About</a></li>
-                    <li><a href="#services" data-translate="nav.services">Services</a></li>
-                    <li><a href="#tools" data-translate="nav.tools">Tools</a></li>
-                    <li><a href="#contact" data-translate="nav.contact">Contact</a></li>
+                    <li><a href="index.html#home" data-translate="nav.home">Home</a></li>
+                    <li><a href="index.html#properties" data-translate="nav.properties">Properties</a></li>
+                    <li><a href="about.html" data-translate="nav.about">About</a></li>
+                    <li><a href="services.html" data-translate="nav.services">Services</a></li>
+                    <li><a href="tools.html" data-translate="nav.tools">Tools</a></li>
+                    <li><a href="index.html#contact" data-translate="nav.contact">Contact</a></li>
                 </ul>
                 <div class="language-selector">
                     <button class="language-btn" id="languageBtn">
@@ -76,566 +75,126 @@
         </div>
     </section>
 
-    <!-- Featured Properties Section -->
+    <!-- Quick Links Section -->
+    <section class="quick-links">
+        <div class="container">
+            <div class="quick-links-grid">
+                <a href="services.html" class="quick-link-card">
+                    <div class="quick-link-header">
+                        <div class="quick-link-icon">💼</div>
+                        <h3 data-translate="quickLinks.services">Our Services</h3>
+                    </div>
+                    <p data-translate="quickLinks.servicesDesc">Explore our comprehensive real estate services for buyers, sellers, residential, and commercial properties</p>
+                    <div class="quick-link-footer">
+                        <span class="quick-link-arrow" data-translate="quickLinks.learnMore">Learn More</span>
+                    </div>
+                </a>
+                <a href="about.html" class="quick-link-card">
+                    <div class="quick-link-header">
+                        <div class="quick-link-icon">👥</div>
+                        <h3 data-translate="quickLinks.about">About Us</h3>
+                    </div>
+                    <p data-translate="quickLinks.aboutDesc">Learn about Midas Realty and Tina Kim's decades of experience in real estate</p>
+                    <div class="quick-link-footer">
+                        <span class="quick-link-arrow" data-translate="quickLinks.learnMore">Learn More</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="why-choose-us" class="why-choose-us">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-translate="whyChooseUs.title">Why Choose Midas Realty?</h2>
+                <p data-translate="whyChooseUs.subtitle">Experience the difference that decades of expertise, personalized service, and community commitment make</p>
+            </div>
+            <div class="why-choose-grid">
+                <div class="why-choose-card">
+                    <div class="why-choose-icon">⭐</div>
+                    <h3 data-translate="whyChooseUs.experienceTitle">38+ Years of Experience</h3>
+                    <p data-translate="whyChooseUs.experienceDesc">Tina Kim began her real estate career in 1986, bringing nearly four decades of market knowledge, negotiation expertise, and proven results to every transaction.</p>
+                </div>
+                <div class="why-choose-card">
+                    <div class="why-choose-icon">🌐</div>
+                    <h3 data-translate="whyChooseUs.bilingualTitle">Multilingual Support</h3>
+                    <p data-translate="whyChooseUs.bilingualDesc">Fluent in Korean and English, with translation tools used as needed to ensure clear communication for clients of all backgrounds and languages.</p>
+                </div>
+                <div class="why-choose-card">
+                    <div class="why-choose-icon">🏆</div>
+                    <h3 data-translate="whyChooseUs.leadershipTitle">Community Leadership</h3>
+                    <p data-translate="whyChooseUs.leadershipDesc">Former President of K.A.R.A. (2010-2011) with a deep commitment to community growth and real estate education.</p>
+                </div>
+                <div class="why-choose-card">
+                    <div class="why-choose-icon">💼</div>
+                    <h3 data-translate="whyChooseUs.fullServiceTitle">Full-Service Brokerage</h3>
+                    <p data-translate="whyChooseUs.fullServiceDesc">From initial consultation to post-closing support, we handle every aspect of your real estate transaction with exceptional care.</p>
+                </div>
+                <div class="why-choose-card">
+                    <div class="why-choose-icon">🎯</div>
+                    <h3 data-translate="whyChooseUs.personalizedTitle">Personalized Approach</h3>
+                    <p data-translate="whyChooseUs.personalizedDesc">Every client receives individualized attention and customized strategies tailored to their unique needs and goals.</p>
+                </div>
+                <div class="why-choose-card">
+                    <div class="why-choose-icon">📈</div>
+                    <h3 data-translate="whyChooseUs.trackRecordTitle">Proven Track Record</h3>
+                    <p data-translate="whyChooseUs.trackRecordDesc">500+ properties sold, $50M+ in sales volume, and 98% client satisfaction rate demonstrate our commitment to excellence.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Properties Section -->
     <section id="properties" class="properties">
         <div class="container">
             <div class="section-header">
-                <h2 id="properties-title">Featured Properties</h2>
+                <h2 id="properties-title">Properties</h2>
                 <p id="properties-subtitle">Explore our handpicked selection of premium residential and commercial properties</p>
             </div>
-            <div class="property-filters">
-                <button class="filter-btn active" data-filter="all">All Properties</button>
-                <button class="filter-btn" data-filter="residential">Residential</button>
-                <button class="filter-btn" data-filter="commercial">Commercial</button>
-                <button class="filter-btn" data-filter="sale">For Sale</button>
-                <button class="filter-btn" data-filter="rent">For Rent</button>
+            <div class="property-view-toggle">
+                <button class="view-toggle-btn active" data-view="active" data-translate="properties.viewActive">Active Listings</button>
+                <button class="view-toggle-btn" data-view="sold" data-translate="properties.viewSold">Sold Properties</button>
             </div>
-            <div class="properties-grid" id="propertiesGrid">
-                <!-- Properties will be dynamically loaded -->
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="section-header">
-                <h2 id="about-title">About Us</h2>
-                <p id="about-subtitle">Learn more about Midas Realty and our commitment to the community</p>
-            </div>
-            
-            <!-- Company About -->
-            <div class="about-content">
-                <div class="about-text">
-                    <h3 data-translate="about.companyTitle">About Midas Realty</h3>
-                    <p class="company-motto" data-translate="about.companyMotto">"Helping the Community Grow Together"</p>
-                    <p><span data-translate="about.companyDesc1">Midas Realty is a full service real estate brokerage company. We provide exceptional real estate services to meet the every need of buyers and sellers from the inception to post-closing. Established in </span><strong data-translate="about.companyDesc2">2001 by Tina Kim, the President of Midas Realty</strong><span data-translate="about.companyDesc3">, our passion towards helping people into a new way of life has led our business into the most successful and recognizable in our field.</span></p>
-                    <p data-translate="about.companyDesc4">We have always worked in the best interest of our clients and our work ethics and dedication to the community have always delivered exceptional real estate transaction experiences to both buyers and sellers.</p>
-                    <div class="stats">
-                        <div class="stat-item">
-                            <h3>500+</h3>
-                            <p data-translate="about.statsProperties">Properties Sold</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3>38+</h3>
-                            <p data-translate="about.statsExperience">Years Experience</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3>1000+</h3>
-                            <p data-translate="about.statsClients">Happy Clients</p>
-                        </div>
-                    </div>
+            <!-- Active Properties View -->
+            <div id="activePropertiesView">
+                <div class="property-filters" id="propertyFilters">
+                    <button class="filter-btn active" data-filter="all" data-translate="properties.filters.all">All Properties</button>
+                    <button class="filter-btn" data-filter="residential" data-translate="properties.filters.residential">Residential</button>
+                    <button class="filter-btn" data-filter="commercial" data-translate="properties.filters.commercial">Commercial</button>
+                    <button class="filter-btn" data-filter="sale" data-translate="properties.filters.sale">For Sale</button>
+                    <button class="filter-btn" data-filter="rent" data-translate="properties.filters.rent">For Rent</button>
                 </div>
-                <div class="about-image">
-                    <img src="images/Midasrealtystorefront.png" alt="Midas Realty Storefront - 163-07 Depot Rd, Flushing, NY" class="about-company-image">
+                <div class="properties-grid" id="propertiesGrid">
+                    <!-- Properties will be dynamically loaded -->
                 </div>
             </div>
-
-            <!-- About Me Section -->
-            <div class="about-me-section">
-                <div class="about-me-content">
-                    <div class="about-me-image">
-                        <img src="images/tina-kim.jpg" alt="Tina Kim - President of Midas Realty" class="profile-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="profile-placeholder" style="display:none;">
-                            <span class="profile-icon">👤</span>
-                        </div>
-                        <div class="profile-contact-info">
-                            <h4 class="profile-name">TINA KIM</h4>
-                            <p class="profile-title" data-translate="about.profileTitle">Lic. R.E. Broker/Owner</p>
-                            <p class="license-number" data-translate="about.licenseNumber">License #: Available upon request</p>
-                            <div class="profile-contact-details">
-                                <div class="contact-detail-item">
-                                    <span class="contact-label" data-translate="about.tel">Tel:</span>
-                                    <a href="tel:718-353-9300" class="contact-link">718-353-9300</a>
-                                </div>
-                                <div class="contact-detail-item">
-                                    <span class="contact-label" data-translate="about.cell">C:</span>
-                                    <a href="tel:718-344-0085" class="contact-link">718-344-0085</a>
-                                </div>
-                                <div class="contact-detail-item">
-                                    <span class="contact-label" data-translate="about.fax">Fax:</span>
-                                    <span class="contact-value">718-353-9309</span>
-                                </div>
-                                <div class="contact-detail-item email-item">
-                                    <a href="mailto:midasrealtyonline@gmail.com" class="contact-email">midasrealtyonline@gmail.com</a>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Sold Properties View -->
+            <div id="soldPropertiesView" style="display: none;">
+                <div class="section-header">
+                    <h2 id="sold-title">Recently Sold Properties</h2>
+                    <p id="sold-subtitle">See our track record of successful transactions in Flushing and surrounding areas</p>
+                </div>
+                <div class="sold-properties-grid" id="soldPropertiesGrid">
+                    <!-- Sold properties will be dynamically loaded -->
+                </div>
+                <div class="sold-stats">
+                    <div class="sold-stat-item">
+                        <h3>$50M+</h3>
+                        <p data-translate="sold.totalVolume">Total Sales Volume</p>
                     </div>
-                    <div class="about-me-text">
-                        <h3 data-translate="about.aboutMeTitle">About Tina Kim</h3>
-                        <p class="about-me-intro" data-translate="about.aboutMeIntro">Tina Kim began her real estate career in 1986 and has built a long-standing reputation for exceptional service and successful real estate transactions.</p>
-                        <p data-translate="about.aboutMeDesc1">With decades of experience, Tina is known for her dedication, strong work ethic, and ability to understand and meet the specific needs of her clients. Her commitment to excellence has earned Midas Realty a steady stream of referrals and returning clients.</p>
-                        <p><span data-translate="about.aboutMeDesc2">Dedicated to creating thriving neighborhoods, Tina has been actively involved in community leadership throughout her career. She served as </span><strong data-translate="about.aboutMeDesc3">President of the Korean American Realtor Association (K.A.R.A.) from 2010 to 2011</strong><span data-translate="about.aboutMeDesc4">, during which she helped organize real estate education programs, seminars, and community events. These efforts increased awareness and strengthened connections among realtors, buyers, and sellers, supporting smoother and more informed transactions.</span></p>
-                        <p><span data-translate="about.aboutMeDesc5">Tina works in the best interest of every client and is committed to integrity, professionalism, and personalized service. She communicates comfortably in both </span><strong data-translate="about.aboutMeDesc6">Korean and English</strong><span data-translate="about.aboutMeDesc7"> and works with clients of all backgrounds. When needed, language support tools are used to ensure clear communication and a positive experience. Her dedication to her clients and community continues to deliver exceptional results for both buyers and sellers.</span></p>
-                        <div class="about-me-highlights">
-                            <div class="highlight-item">
-                                <span class="highlight-icon">✓</span>
-                                <span data-translate="about.highlight1">Real Estate Career Since 1986</span>
-                            </div>
-                            <div class="highlight-item">
-                                <span class="highlight-icon">✓</span>
-                                <span data-translate="about.highlight2">Former K.A.R.A. President (2010-2011)</span>
-                            </div>
-                            <div class="highlight-item">
-                                <span class="highlight-icon">✓</span>
-                                <span data-translate="about.highlight3">Bilingual: Korean & English</span>
-                            </div>
-                            <div class="highlight-item">
-                                <span class="highlight-icon">✓</span>
-                                <span data-translate="about.highlight4">Community Leadership & Education</span>
-                            </div>
-                        </div>
+                    <div class="sold-stat-item">
+                        <h3>500+</h3>
+                        <p data-translate="sold.propertiesSold">Properties Sold</p>
+                    </div>
+                    <div class="sold-stat-item">
+                        <h3>98%</h3>
+                        <p data-translate="sold.satisfaction">Client Satisfaction</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <div class="section-header">
-                <h2 id="services-title">Our Services</h2>
-                <p id="services-subtitle">Comprehensive real estate solutions for buyers, sellers, residential, and commercial properties</p>
-            </div>
-            <div class="services-categories">
-                <div class="service-category">
-                    <h3 class="category-title">Residential Services</h3>
-                    <div class="services-grid">
-                        <div class="service-card">
-                            <div class="service-icon">🏠</div>
-                            <h3 data-translate="services.residentialSales">Residential Sales</h3>
-                            <p data-translate="services.residentialSalesDesc">Buy or sell homes with expert guidance. We help buyers find their dream home and sellers maximize their property value with proven marketing strategies.</p>
-                        </div>
-                        <div class="service-card">
-                            <div class="service-icon">🔑</div>
-                            <h3 data-translate="services.residentialRentals">Residential Rentals</h3>
-                            <p data-translate="services.residentialRentalsDesc">Find the perfect rental property or list your property for rent. Comprehensive tenant screening and rental management services available.</p>
-                        </div>
-                        <div class="service-card">
-                            <div class="service-icon">📊</div>
-                            <h3 data-translate="services.residentialInvestment">Residential Investment</h3>
-                            <p data-translate="services.residentialInvestmentDesc">Strategic investment advice for residential properties. Build wealth through smart real estate investments with our market expertise.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="service-category">
-                    <h3 class="category-title">Commercial Services</h3>
-                    <div class="services-grid">
-                        <div class="service-card">
-                            <div class="service-icon">🏢</div>
-                            <h3 data-translate="services.commercialSales">Commercial Sales</h3>
-                            <p data-translate="services.commercialSalesDesc">Buy or sell office buildings, retail spaces, and commercial properties. Expert negotiation and market analysis for optimal deals.</p>
-                        </div>
-                        <div class="service-card">
-                            <div class="service-icon">🏪</div>
-                            <h3 data-translate="services.commercialLeasing">Commercial Leasing</h3>
-                            <p data-translate="services.commercialLeasingDesc">Find prime commercial spaces or lease your property to qualified tenants. We handle all aspects of commercial leasing transactions.</p>
-                        </div>
-                        <div class="service-card">
-                            <div class="service-icon">📋</div>
-                            <h3 data-translate="services.commercialManagement">Commercial Property Management</h3>
-                            <p data-translate="services.commercialManagementDesc">Comprehensive management services for commercial properties to maximize returns and maintain property value.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="additional-services">
-                <div class="service-card">
-                    <div class="service-icon">💼</div>
-                    <h3 data-translate="services.consultation">Expert Consultation</h3>
-                    <p data-translate="services.consultationDesc">Professional real estate consultation for buyers, sellers, and investors. Get expert advice tailored to your specific needs and goals.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Buyer & Seller Benefits Section -->
-    <section id="benefits" class="benefits">
-        <div class="container">
-            <div class="section-header">
-                <h2 id="benefits-title">Why Choose Midas Realty?</h2>
-                <p id="benefits-subtitle">Whether you're buying or selling, residential or commercial, we deliver exceptional results</p>
-            </div>
-            <div class="benefits-grid">
-                <div class="benefit-category">
-                    <h3 class="benefit-title" data-translate="benefits.forBuyers">For Buyers</h3>
-                    <div class="benefit-list">
-                        <div class="benefit-item">
-                            <span class="benefit-icon">✓</span>
-                            <div>
-                                <h4 data-translate="benefits.buyerBenefit1Title">Expert Property Search</h4>
-                                <p data-translate="benefits.buyerBenefit1Desc">Access to exclusive listings and off-market properties in residential and commercial sectors</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-icon">✓</span>
-                            <div>
-                                <h4 data-translate="benefits.buyerBenefit2Title">Negotiation Expertise</h4>
-                                <p data-translate="benefits.buyerBenefit2Desc">Skilled negotiators who secure the best deals and terms for your purchase</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-icon">✓</span>
-                            <div>
-                                <h4 data-translate="benefits.buyerBenefit3Title">Market Analysis</h4>
-                                <p data-translate="benefits.buyerBenefit3Desc">Comprehensive market insights to help you make informed investment decisions</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-icon">✓</span>
-                            <div>
-                                <h4 data-translate="benefits.buyerBenefit4Title">Full-Service Support</h4>
-                                <p data-translate="benefits.buyerBenefit4Desc">Guidance from property search through closing and post-purchase support</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#properties" class="btn btn-primary" data-translate="benefits.startSearch">Start Your Search</a>
-                </div>
-                <div class="benefit-category">
-                    <h3 class="benefit-title" data-translate="benefits.forSellers">For Sellers</h3>
-                    <div class="benefit-list">
-                        <div class="benefit-item">
-                            <span class="benefit-icon">✓</span>
-                            <div>
-                                <h4 data-translate="benefits.sellerBenefit1Title">Maximum Value</h4>
-                                <p data-translate="benefits.sellerBenefit1Desc">Strategic pricing and marketing to get top dollar for your residential or commercial property</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-icon">✓</span>
-                            <div>
-                                <h4 data-translate="benefits.sellerBenefit2Title">Professional Marketing</h4>
-                                <p data-translate="benefits.sellerBenefit2Desc">Comprehensive marketing campaigns including professional photography, virtual tours, and multi-channel promotion</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-icon">✓</span>
-                            <div>
-                                <h4 data-translate="benefits.sellerBenefit3Title">Qualified Buyers</h4>
-                                <p data-translate="benefits.sellerBenefit3Desc">Pre-screened, qualified buyers and tenants to ensure smooth transactions</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <span class="benefit-icon">✓</span>
-                            <div>
-                                <h4 data-translate="benefits.sellerBenefit4Title">Streamlined Process</h4>
-                                <p data-translate="benefits.sellerBenefit4Desc">Expert handling of all paperwork, negotiations, and closing details from start to finish</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#contact" class="btn btn-secondary" data-translate="benefits.getValuation">Get Free Valuation</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Recently Sold Properties Section -->
-    <section id="sold" class="sold-properties">
-        <div class="container">
-            <div class="section-header">
-                <h2 id="sold-title">Recently Sold Properties</h2>
-                <p id="sold-subtitle">See our track record of successful transactions in Flushing and surrounding areas</p>
-            </div>
-            <div class="sold-properties-grid" id="soldPropertiesGrid">
-                <!-- Sold properties will be dynamically loaded -->
-            </div>
-            <div class="sold-stats">
-                <div class="sold-stat-item">
-                    <h3>$50M+</h3>
-                    <p data-translate="sold.totalVolume">Total Sales Volume</p>
-                </div>
-                <div class="sold-stat-item">
-                    <h3>500+</h3>
-                    <p data-translate="sold.propertiesSold">Properties Sold</p>
-                </div>
-                <div class="sold-stat-item">
-                    <h3>98%</h3>
-                    <p data-translate="sold.satisfaction">Client Satisfaction</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tools Section -->
-    <section id="tools" class="tools-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 id="tools-title">Real Estate Tools & Resources</h2>
-                <p id="tools-subtitle">Helpful tools and information to guide your real estate journey</p>
-            </div>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <div class="tool-icon">💰</div>
-                    <h3 data-translate="tools.homeWorth">What Is Your Home Worth?</h3>
-                    <p data-translate="tools.homeWorthDesc">Get a free, no-obligation home valuation. Find out what your property is worth in today's market.</p>
-                    <a href="#contact" class="btn btn-primary" data-translate="hero.getValuation">Get Free Valuation</a>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🧮</div>
-                    <h3 data-translate="tools.mortgageCalc">Mortgage Calculator</h3>
-                    <p data-translate="tools.mortgageCalcDesc">Calculate your monthly mortgage payments, estimate affordability, and plan your home purchase budget.</p>
-                    <button class="btn btn-secondary" onclick="openMortgageCalculator()" data-translate="tools.useCalculator">Use Calculator</button>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🏫</div>
-                    <h3 data-translate="tools.neighborhood">Neighborhood & Schools</h3>
-                    <p data-translate="tools.neighborhoodDesc">Explore Flushing neighborhoods, school ratings, and local amenities to find your perfect location.</p>
-                    <button class="btn btn-secondary" onclick="openNeighborhoodModal()" data-translate="tools.learnMore">Learn More</button>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">📚</div>
-                    <h3 data-translate="tools.resources">Real Estate Resources</h3>
-                    <p data-translate="tools.resourcesDesc">Access helpful guides, market reports, and educational resources for buyers and sellers.</p>
-                    <button class="btn btn-secondary" onclick="openResourcesModal()" data-translate="tools.viewResources">View Resources</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Mortgage Calculator Modal -->
-    <div id="mortgageCalculatorModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeMortgageCalculator()">&times;</span>
-            <h2 data-translate="tools.calcTitle">Mortgage Calculator</h2>
-            <div class="calculator-form">
-                <div class="calc-input-group">
-                    <label data-translate="tools.calcHomePrice">Home Price ($)</label>
-                    <input type="number" id="homePrice" placeholder="500,000" value="500000">
-                </div>
-                <div class="calc-input-group">
-                    <label data-translate="tools.calcDownPayment">Down Payment ($)</label>
-                    <input type="number" id="downPayment" placeholder="100,000" value="100000">
-                </div>
-                <div class="calc-input-group">
-                    <label data-translate="tools.calcInterestRate">Interest Rate (%)</label>
-                    <input type="number" id="interestRate" placeholder="6.5" step="0.1" value="6.5">
-                </div>
-                <div class="calc-input-group">
-                    <label data-translate="tools.calcLoanTerm">Loan Term (years)</label>
-                    <select id="loanTerm">
-                        <option value="15" data-translate="tools.calcYears15">15 years</option>
-                        <option value="30" selected data-translate="tools.calcYears30">30 years</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary" onclick="calculateMortgage()" data-translate="tools.calcButton">Calculate</button>
-                <div id="mortgageResult" class="calc-result"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Neighborhood & Schools Modal -->
-    <div id="neighborhoodModal" class="modal">
-        <div class="modal-content modal-large">
-            <span class="close-modal" onclick="closeNeighborhoodModal()">&times;</span>
-            <h2 data-translate="neighborhood.title">Neighborhood & Schools Information</h2>
-            <div class="neighborhood-content">
-                <div class="neighborhood-section">
-                    <h3 data-translate="neighborhood.flushingTitle">About Flushing, Queens</h3>
-                    <p data-translate="neighborhood.flushingDesc">Flushing is a vibrant, diverse neighborhood in Queens, New York, known for its rich cultural heritage, excellent schools, and convenient access to Manhattan. Located in Queens Community District 7, Flushing offers a mix of residential and commercial properties with strong community values.</p>
-                </div>
-                
-                <div class="neighborhood-section">
-                    <h3 data-translate="neighborhood.schoolsTitle">School Districts & Ratings</h3>
-                    <p data-translate="neighborhood.schoolsIntro">Flushing is served by New York City Department of Education (NYC DOE) School District 25. The area features excellent public and private schools.</p>
-                    
-                    <div class="school-links">
-                        <h4 data-translate="neighborhood.schoolResources">School Resources:</h4>
-                        <ul class="resource-list">
-                            <li><a href="https://www.schools.nyc.gov/" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.nycSchools">NYC Department of Education</a> - Official NYC schools website</li>
-                            <li><a href="https://www.greatschools.org/new-york/flushing/" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.greatSchools">GreatSchools.org</a> - School ratings and reviews</li>
-                            <li><a href="https://www.schools.nyc.gov/enrollment/enroll-grade-by-grade" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.enrollment">NYC School Enrollment</a> - Enrollment information</li>
-                            <li><a href="https://www.schools.nyc.gov/school-life/transportation" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.transportation">School Transportation</a> - Bus and transportation info</li>
-                        </ul>
-                    </div>
-
-                    <div class="school-district-info">
-                        <h4 data-translate="neighborhood.district25">School District 25 Highlights:</h4>
-                        <ul class="resource-list">
-                            <li data-translate="neighborhood.district25a">Serves Flushing, Whitestone, College Point, and parts of Bayside</li>
-                            <li data-translate="neighborhood.district25b">Multiple elementary, middle, and high schools</li>
-                            <li data-translate="neighborhood.district25c">Strong academic programs and extracurricular activities</li>
-                            <li data-translate="neighborhood.district25d">Diverse student population with multilingual support</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="neighborhood-section">
-                    <h3 data-translate="neighborhood.amenitiesTitle">Local Amenities</h3>
-                    <div class="amenities-grid">
-                        <div class="amenity-item">
-                            <strong data-translate="neighborhood.transit">Public Transportation:</strong>
-                            <ul class="resource-list">
-                                <li data-translate="neighborhood.transit1">7 Train (Flushing-Main St station)</li>
-                                <li data-translate="neighborhood.transit2">Multiple bus lines (Q12, Q13, Q15, Q16, Q17, Q20, Q25, Q26, Q27, Q28, Q44, Q48, Q58, Q65, Q66)</li>
-                                <li data-translate="neighborhood.transit3">Long Island Rail Road (LIRR) - Flushing station</li>
-                            </ul>
-                        </div>
-                        <div class="amenity-item">
-                            <strong data-translate="neighborhood.parks">Parks & Recreation:</strong>
-                            <ul class="resource-list">
-                                <li data-translate="neighborhood.parks1">Flushing Meadows Corona Park - 897 acres</li>
-                                <li data-translate="neighborhood.parks2">Kissena Park - 234 acres</li>
-                                <li data-translate="neighborhood.parks3">Queens Botanical Garden</li>
-                                <li data-translate="neighborhood.parks4">Multiple playgrounds and sports facilities</li>
-                            </ul>
-                        </div>
-                        <div class="amenity-item">
-                            <strong data-translate="neighborhood.shopping">Shopping & Dining:</strong>
-                            <ul class="resource-list">
-                                <li data-translate="neighborhood.shopping1">Flushing Mall and Main Street shopping district</li>
-                                <li data-translate="neighborhood.shopping2">Diverse restaurants (Chinese, Korean, Japanese, American)</li>
-                                <li data-translate="neighborhood.shopping3">Queens Crossing shopping center</li>
-                                <li data-translate="neighborhood.shopping4">Local markets and specialty stores</li>
-                            </ul>
-                        </div>
-                        <div class="amenity-item">
-                            <strong data-translate="neighborhood.healthcare">Healthcare:</strong>
-                            <ul class="resource-list">
-                                <li data-translate="neighborhood.healthcare1">NewYork-Presbyterian Queens Hospital</li>
-                                <li data-translate="neighborhood.healthcare2">Flushing Hospital Medical Center</li>
-                                <li data-translate="neighborhood.healthcare3">Multiple clinics and medical offices</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="neighborhood-section">
-                    <h3 data-translate="neighborhood.communityTitle">Community Resources</h3>
-                    <ul class="resource-list">
-                        <li><a href="https://www.queenslibrary.org/" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.library">Queens Public Library - Flushing Branch</a></li>
-                        <li><a href="https://www.nyc.gov/site/queenscb7/index.page" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.communityBoard">Queens Community Board 7</a></li>
-                        <li><a href="https://www1.nyc.gov/site/queenscb7/index.page" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.cityServices">NYC City Services</a></li>
-                    </ul>
-                </div>
-
-                <div class="neighborhood-section">
-                    <h3 data-translate="neighborhood.contactTitle">Need More Information?</h3>
-                    <p data-translate="neighborhood.contactDesc">Contact Midas Realty for detailed neighborhood information, school district maps, and property-specific school assignments.</p>
-                    <a href="#contact" class="btn btn-primary" onclick="closeNeighborhoodModal()" data-translate="neighborhood.contactUs">Contact Us</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Real Estate Resources Modal -->
-    <div id="resourcesModal" class="modal">
-        <div class="modal-content modal-large">
-            <span class="close-modal" onclick="closeResourcesModal()">&times;</span>
-            <h2 data-translate="resources.title">Real Estate Resources</h2>
-            <div class="resources-content">
-                <div class="resources-section">
-                    <h3 data-translate="resources.buyerTitle">For Buyers</h3>
-                    <div class="resource-category">
-                        <h4 data-translate="resources.buyerGuides">Buyer Guides:</h4>
-                        <ul class="resource-list">
-                            <li><a href="https://www.hud.gov/buying" target="_blank" rel="noopener noreferrer" data-translate="resources.hudBuying">HUD - Buying a Home Guide</a></li>
-                            <li><a href="https://www.consumerfinance.gov/owning-a-home/" target="_blank" rel="noopener noreferrer" data-translate="resources.cfpbOwning">CFPB - Owning a Home</a></li>
-                            <li><a href="https://www.nytimes.com/guides/realestate/home-buying-checklist" target="_blank" rel="noopener noreferrer" data-translate="resources.nytimesBuying">NY Times - Home Buying Checklist</a></li>
-                        </ul>
-                    </div>
-                    <div class="resource-category">
-                        <h4 data-translate="resources.financing">Financing Resources:</h4>
-                        <ul class="resource-list">
-                            <li><a href="https://www.hud.gov/buying/loans" target="_blank" rel="noopener noreferrer" data-translate="resources.hudLoans">HUD - Mortgage Information</a></li>
-                            <li><a href="https://www.consumerfinance.gov/owning-a-home/mortgage/" target="_blank" rel="noopener noreferrer" data-translate="resources.cfpbMortgage">CFPB - Mortgage Guide</a></li>
-                            <li><a href="https://www.fha.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.fhaLoans">FHA Loan Information</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="resources-section">
-                    <h3 data-translate="resources.sellerTitle">For Sellers</h3>
-                    <div class="resource-category">
-                        <h4 data-translate="resources.sellerGuides">Seller Guides:</h4>
-                        <ul class="resource-list">
-                            <li><a href="https://www.hud.gov/selling" target="_blank" rel="noopener noreferrer" data-translate="resources.hudSelling">HUD - Selling Your Home</a></li>
-                            <li><a href="https://www.consumerfinance.gov/owning-a-home/selling/" target="_blank" rel="noopener noreferrer" data-translate="resources.cfpbSelling">CFPB - Selling Your Home</a></li>
-                            <li><a href="https://www.irs.gov/taxtopics/tc701" target="_blank" rel="noopener noreferrer" data-translate="resources.irsSelling">IRS - Tax Information for Home Sellers</a></li>
-                        </ul>
-                    </div>
-                    <div class="resource-category">
-                        <h4 data-translate="resources.homeValue">Home Valuation:</h4>
-                        <ul class="resource-list">
-                            <li><a href="https://www.zillow.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.zillow">Zillow - Home Values</a></li>
-                            <li><a href="https://www.redfin.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.redfin">Redfin - Market Estimates</a></li>
-                            <li><a href="https://www.realtor.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.realtor">Realtor.com - Property Values</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="resources-section">
-                    <h3 data-translate="resources.marketTitle">Market Information</h3>
-                    <div class="resource-category">
-                        <h4 data-translate="resources.marketReports">Market Reports & Data:</h4>
-                        <ul class="resource-list">
-                            <li><a href="https://www.elliman.com/new-york/research" target="_blank" rel="noopener noreferrer" data-translate="resources.douglasElliman">Douglas Elliman Market Reports</a></li>
-                            <li><a href="https://www.corcoran.com/market-reports" target="_blank" rel="noopener noreferrer" data-translate="resources.corcoran">Corcoran Market Reports</a></li>
-                            <li><a href="https://www.nytimes.com/section/realestate" target="_blank" rel="noopener noreferrer" data-translate="resources.nytimesRealEstate">NY Times Real Estate</a></li>
-                            <li><a href="https://www.crainsnewyork.com/real-estate" target="_blank" rel="noopener noreferrer" data-translate="resources.crains">Crain's New York Real Estate</a></li>
-                        </ul>
-                    </div>
-                    <div class="resource-category">
-                        <h4 data-translate="resources.mls">Multiple Listing Services:</h4>
-                        <ul class="resource-list">
-                            <li><a href="https://www.onekeymls.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.onekey">OneKey MLS</a></li>
-                            <li><a href="https://www.realtor.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.realtorMls">Realtor.com MLS</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="resources-section">
-                    <h3 data-translate="resources.educationTitle">Educational Resources</h3>
-                    <div class="resource-category">
-                        <h4 data-translate="resources.realEstateEducation">Real Estate Education:</h4>
-                        <ul class="resource-list">
-                            <li><a href="https://www.nar.realtor/" target="_blank" rel="noopener noreferrer" data-translate="resources.nar">National Association of Realtors (NAR)</a></li>
-                            <li><a href="https://www.nysar.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.nysar">New York State Association of Realtors</a></li>
-                            <li><a href="https://www.realtor.com/advice/" target="_blank" rel="noopener noreferrer" data-translate="resources.realtorAdvice">Realtor.com Advice & Tips</a></li>
-                        </ul>
-                    </div>
-                    <div class="resource-category">
-                        <h4 data-translate="resources.legalResources">Legal & Regulatory:</h4>
-                        <ul class="resource-list">
-                            <li><a href="https://www.dos.ny.gov/licensing/" target="_blank" rel="noopener noreferrer" data-translate="resources.nysDos">NYS Department of State - Licensing</a></li>
-                            <li><a href="https://www.hud.gov/" target="_blank" rel="noopener noreferrer" data-translate="resources.hud">U.S. Department of Housing & Urban Development</a></li>
-                            <li><a href="https://www.dhr.ny.gov/" target="_blank" rel="noopener noreferrer" data-translate="resources.nysDhr">NYS Division of Human Rights</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="resources-section">
-                    <h3 data-translate="resources.toolsTitle">Helpful Tools</h3>
-                    <div class="resource-category">
-                        <h4 data-translate="resources.calculators">Calculators & Tools:</h4>
-                        <ul class="resource-list">
-                            <li><a href="https://www.bankrate.com/calculators/mortgages/mortgage-calculator.aspx" target="_blank" rel="noopener noreferrer" data-translate="resources.bankrateMortgage">Bankrate Mortgage Calculator</a></li>
-                            <li><a href="https://www.zillow.com/mortgage-calculator/" target="_blank" rel="noopener noreferrer" data-translate="resources.zillowMortgage">Zillow Mortgage Calculator</a></li>
-                            <li><a href="https://www.realtor.com/mortgage/tools/mortgage-calculator" target="_blank" rel="noopener noreferrer" data-translate="resources.realtorMortgage">Realtor.com Mortgage Calculator</a></li>
-                            <li><a href="https://www.nerdwallet.com/mortgages/mortgage-calculator" target="_blank" rel="noopener noreferrer" data-translate="resources.nerdwalletMortgage">NerdWallet Mortgage Calculator</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="resources-section">
-                    <h3 data-translate="resources.localTitle">Local Queens Resources</h3>
-                    <ul class="resource-list">
-                        <li><a href="https://www1.nyc.gov/site/queenscb7/index.page" target="_blank" rel="noopener noreferrer" data-translate="resources.queensCB7">Queens Community Board 7</a></li>
-                        <li><a href="https://www.queensbp.org/" target="_blank" rel="noopener noreferrer" data-translate="resources.queensBP">Queens Borough President</a></li>
-                        <li><a href="https://www1.nyc.gov/site/buildings/index.page" target="_blank" rel="noopener noreferrer" data-translate="resources.nycBuildings">NYC Department of Buildings</a></li>
-                        <li><a href="https://www1.nyc.gov/site/finance/index.page" target="_blank" rel="noopener noreferrer" data-translate="resources.nycFinance">NYC Department of Finance - Property Records</a></li>
-                    </ul>
-                </div>
-
-                <div class="resources-section">
-                    <h3 data-translate="resources.contactTitle">Need Personalized Assistance?</h3>
-                    <p data-translate="resources.contactDesc">Contact Midas Realty for personalized guidance, market insights, and expert advice tailored to your specific needs.</p>
-                    <a href="#contact" class="btn btn-primary" onclick="closeResourcesModal()" data-translate="resources.contactUs">Contact Us</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
@@ -706,20 +265,20 @@
                 <div class="footer-section">
                     <h4 data-translate="footer.quickLinks">Quick Links</h4>
                     <ul>
-                        <li><a href="#home" data-translate="nav.home">Home</a></li>
-                        <li><a href="#properties" data-translate="nav.properties">Properties</a></li>
-                        <li><a href="#about" data-translate="nav.about">About</a></li>
-                        <li><a href="#services" data-translate="nav.services">Services</a></li>
-                        <li><a href="#contact" data-translate="nav.contact">Contact</a></li>
+                        <li><a href="index.html#home" data-translate="nav.home">Home</a></li>
+                        <li><a href="index.html#properties" data-translate="nav.properties">Properties</a></li>
+                        <li><a href="about.html" data-translate="nav.about">About</a></li>
+                        <li><a href="services.html" data-translate="nav.services">Services</a></li>
+                        <li><a href="index.html#contact" data-translate="nav.contact">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4 data-translate="footer.services">Services</h4>
                     <ul>
-                        <li><a href="#services" data-translate="footer.propertySales">Property Sales</a></li>
-                        <li><a href="#services" data-translate="footer.rentals">Rentals</a></li>
-                        <li><a href="#services" data-translate="footer.investment">Investment</a></li>
-                        <li><a href="#services" data-translate="footer.propertyManagement">Property Management</a></li>
+                        <li><a href="services.html" data-translate="footer.propertySales">Property Sales</a></li>
+                        <li><a href="services.html" data-translate="footer.rentals">Rentals</a></li>
+                        <li><a href="services.html" data-translate="footer.investment">Investment</a></li>
+                        <li><a href="services.html" data-translate="footer.propertyManagement">Property Management</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">

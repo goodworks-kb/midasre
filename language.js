@@ -70,16 +70,14 @@ function changeLanguage(lang, save = true) {
                 const hasStrong = element.querySelector('strong');
                 if (hasStrong && (key.includes('Desc') || key.includes('companyDesc') || key.includes('aboutMeDesc'))) {
                     // For paragraphs with strong tags, we need special handling
-                    // This will be handled by specific translation functions
+                    // Skip this element - it will be handled by translateComplexContent function
+                    return; // Skip this element in the main loop
                 } else {
                     element.textContent = value;
                 }
             }
         }
     });
-    
-    // Handle complex translations with HTML content
-    translateComplexContent(t);
     
     // Translate specific sections that need HTML content
     translateSectionHeaders(t);
@@ -89,6 +87,8 @@ function changeLanguage(lang, save = true) {
     translateTools(t);
     translateContact(t);
     translateFooter(t);
+    
+    // Handle complex translations with HTML content (call once at the end)
     translateComplexContent(t);
     
     // Translate license number
@@ -141,6 +141,17 @@ function translateSectionHeaders(t) {
 
 // Translate properties section
 function translateProperties(t) {
+    // Update view toggle buttons
+    const toggleButtons = document.querySelectorAll('.view-toggle-btn');
+    toggleButtons.forEach(btn => {
+        const view = btn.getAttribute('data-view');
+        if (view === 'active' && t.properties.viewActive) {
+            btn.textContent = t.properties.viewActive;
+        } else if (view === 'sold' && t.properties.viewSold) {
+            btn.textContent = t.properties.viewSold;
+        }
+    });
+    
     // Update filter buttons
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(btn => {
@@ -294,8 +305,29 @@ function translateComplexContent(t) {
             aboutMeParas[2].innerHTML = `${t.about.aboutMeDesc2}<strong>${t.about.aboutMeDesc3}</strong>${t.about.aboutMeDesc4}`;
         }
         
-        if (aboutMeParas[3].querySelector('strong')) {
-            aboutMeParas[3].innerHTML = `${t.about.aboutMeDesc5}<strong>${t.about.aboutMeDesc6}</strong>${t.about.aboutMeDesc7}`;
+        if (aboutMeParas[3]) {
+            // aboutMeDesc5 now contains the full text with language mention
+            const desc5 = t.about.aboutMeDesc5;
+            // Check if we need to add strong tags around language mention
+            const langPatterns = {
+                en: /(both )([Kk]orean and [Ee]nglish)/,
+                ko: /(한국어와 영어)/,
+                es: /(coreano e inglés)/,
+                zh: /(韩语和英语)/
+            };
+            
+            const pattern = langPatterns[currentLanguage] || langPatterns.en;
+            const match = desc5.match(pattern);
+            
+            if (match) {
+                if (currentLanguage === 'en') {
+                    aboutMeParas[3].innerHTML = desc5.replace(pattern, '$1<strong>$2</strong>');
+                } else {
+                    aboutMeParas[3].innerHTML = desc5.replace(pattern, '<strong>$1</strong>');
+                }
+            } else {
+                aboutMeParas[3].textContent = desc5;
+            }
         }
     }
 }

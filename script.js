@@ -21,14 +21,28 @@ navLinks.forEach(link => {
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const offsetTop = target.offsetTop - 70; // Account for fixed navbar
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
+        const href = this.getAttribute('href');
+        // Only prevent default for same-page anchors
+        if (href.startsWith('#') && !href.includes('index.html')) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                const navbarHeight = 70;
+                const offsetTop = target.offsetTop - navbarHeight;
+                
+                // Close mobile menu if open
+                if (navMenu && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    if (mobileMenuToggle) {
+                        mobileMenuToggle.classList.remove('active');
+                    }
+                }
+                
+                window.scrollTo({
+                    top: Math.max(0, offsetTop),
+                    behavior: 'smooth'
+                });
+            }
         }
     });
 });
@@ -212,6 +226,35 @@ function loadProperties(filter = 'all') {
     }).join('');
 }
 
+// Property View Toggle (Active vs Sold)
+function initPropertyViewToggle() {
+    const toggleButtons = document.querySelectorAll('.view-toggle-btn');
+    const activeView = document.getElementById('activePropertiesView');
+    const soldView = document.getElementById('soldPropertiesView');
+    const propertyFilters = document.getElementById('propertyFilters');
+    
+    if (!toggleButtons.length || !activeView || !soldView) return;
+    
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            toggleButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            const view = button.getAttribute('data-view');
+            
+            if (view === 'active') {
+                activeView.style.display = 'block';
+                soldView.style.display = 'none';
+                if (propertyFilters) propertyFilters.style.display = 'flex';
+            } else {
+                activeView.style.display = 'none';
+                soldView.style.display = 'block';
+                if (propertyFilters) propertyFilters.style.display = 'none';
+                loadSoldProperties();
+            }
+        });
+    });
+}
+
 // Property Filter Functionality
 function initPropertyFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -285,6 +328,7 @@ const observer = new IntersectionObserver((entries) => {
 document.addEventListener('DOMContentLoaded', () => {
     loadProperties();
     loadSoldProperties();
+    initPropertyViewToggle();
     initPropertyFilters();
     
     // Add fade-in animation to cards
@@ -475,18 +519,3 @@ window.onclick = function(event) {
     }
 }
 
-// Update DOMContentLoaded to load sold properties
-document.addEventListener('DOMContentLoaded', () => {
-    loadProperties();
-    loadSoldProperties();
-    initPropertyFilters();
-    
-    // Add fade-in animation to cards
-    const cards = document.querySelectorAll('.property-card, .service-card, .stat-item');
-    cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(card);
-    });
-});

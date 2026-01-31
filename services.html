@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Our Services - Midas Realty</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="translations.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <div class="logo-icon">🏠</div>
+                    <div class="logo-text">
+                        <h1><a href="index.html" style="text-decoration: none; color: inherit; display: block;">MIDAS REALTY</a></h1>
+                        <span class="logo-tagline">Helping the Community Grow Together</span>
+                    </div>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html#home" data-translate="nav.home">Home</a></li>
+                    <li><a href="index.html#properties" data-translate="nav.properties">Properties</a></li>
+                    <li><a href="about.html" data-translate="nav.about">About</a></li>
+                    <li><a href="services.html" data-translate="nav.services">Services</a></li>
+                    <li><a href="tools.html" data-translate="nav.tools">Tools</a></li>
+                    <li><a href="index.html#contact" data-translate="nav.contact">Contact</a></li>
+                </ul>
+                <div class="language-selector">
+                    <button class="language-btn" id="languageBtn">
+                        <span>🌐</span>
+                        <span id="currentLang">EN</span>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdown">
+                        <a href="#" onclick="changeLanguage('en'); return false;">English</a>
+                        <a href="#" onclick="changeLanguage('ko'); return false;">한국어</a>
+                        <a href="#" onclick="changeLanguage('es'); return false;">Español</a>
+                        <a href="#" onclick="changeLanguage('zh'); return false;">中文</a>
+                    </div>
+                </div>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Services Section -->
+    <section id="services" class="services" style="margin-top: 70px; padding: 4rem 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="services-title">Our Services</h2>
+                <p id="services-subtitle">Comprehensive real estate solutions for buyers, sellers, residential, and commercial properties</p>
+            </div>
+            <div class="services-categories">
+                <div class="service-category">
+                    <h3 class="category-title">Residential Services</h3>
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <div class="service-icon">🏠</div>
+                            <h3 data-translate="services.residentialSales">Residential Sales</h3>
+                            <p data-translate="services.residentialSalesDesc">Buy or sell homes with expert guidance. We help buyers find their dream home and sellers maximize their property value with proven marketing strategies.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">🔑</div>
+                            <h3 data-translate="services.residentialRentals">Residential Rentals</h3>
+                            <p data-translate="services.residentialRentalsDesc">Find the perfect rental property or list your property for rent. Comprehensive tenant screening and rental management services available.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">📊</div>
+                            <h3 data-translate="services.residentialInvestment">Residential Investment</h3>
+                            <p data-translate="services.residentialInvestmentDesc">Strategic investment advice for residential properties. Build wealth through smart real estate investments with our market expertise.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-category">
+                    <h3 class="category-title">Commercial Services</h3>
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <div class="service-icon">🏢</div>
+                            <h3 data-translate="services.commercialSales">Commercial Sales</h3>
+                            <p data-translate="services.commercialSalesDesc">Buy or sell office buildings, retail spaces, and commercial properties. Expert negotiation and market analysis for optimal deals.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">🏪</div>
+                            <h3 data-translate="services.commercialLeasing">Commercial Leasing</h3>
+                            <p data-translate="services.commercialLeasingDesc">Find prime commercial spaces or lease your property to qualified tenants. We handle all aspects of commercial leasing transactions.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">📋</div>
+                            <h3 data-translate="services.commercialManagement">Commercial Property Management</h3>
+                            <p data-translate="services.commercialManagementDesc">Comprehensive management services for commercial properties to maximize returns and maintain property value.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="additional-services">
+                <div class="service-card">
+                    <div class="service-icon">💼</div>
+                    <h3 data-translate="services.consultation">Expert Consultation</h3>
+                    <p data-translate="services.consultationDesc">Professional real estate consultation for buyers, sellers, and investors. Get expert advice tailored to your specific needs and goals.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Buyer & Seller Benefits Section -->
+    <section id="benefits" class="benefits">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="benefits-title">Why Choose Midas Realty?</h2>
+                <p id="benefits-subtitle">Whether you're buying or selling, residential or commercial, we deliver exceptional results</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-category">
+                    <h3 class="benefit-title" data-translate="benefits.forBuyers">For Buyers</h3>
+                    <div class="benefit-list">
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <div>
+                                <h4 data-translate="benefits.buyerBenefit1Title">Expert Property Search</h4>
+                                <p data-translate="benefits.buyerBenefit1Desc">Access to exclusive listings and off-market properties in residential and commercial sectors</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <div>
+                                <h4 data-translate="benefits.buyerBenefit2Title">Negotiation Expertise</h4>
+                                <p data-translate="benefits.buyerBenefit2Desc">Skilled negotiators who secure the best deals and terms for your purchase</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <div>
+                                <h4 data-translate="benefits.buyerBenefit3Title">Market Analysis</h4>
+                                <p data-translate="benefits.buyerBenefit3Desc">Comprehensive market insights to help you make informed investment decisions</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <div>
+                                <h4 data-translate="benefits.buyerBenefit4Title">Full-Service Support</h4>
+                                <p data-translate="benefits.buyerBenefit4Desc">Guidance from property search through closing and post-purchase support</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="index.html#properties" class="btn btn-primary" data-translate="benefits.startSearch">Start Your Search</a>
+                </div>
+                <div class="benefit-category">
+                    <h3 class="benefit-title" data-translate="benefits.forSellers">For Sellers</h3>
+                    <div class="benefit-list">
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <div>
+                                <h4 data-translate="benefits.sellerBenefit1Title">Maximum Value</h4>
+                                <p data-translate="benefits.sellerBenefit1Desc">Strategic pricing and marketing to get top dollar for your residential or commercial property</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <div>
+                                <h4 data-translate="benefits.sellerBenefit2Title">Professional Marketing</h4>
+                                <p data-translate="benefits.sellerBenefit2Desc">Comprehensive marketing campaigns including professional photography, virtual tours, and multi-channel promotion</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <div>
+                                <h4 data-translate="benefits.sellerBenefit3Title">Qualified Buyers</h4>
+                                <p data-translate="benefits.sellerBenefit3Desc">Pre-screened, qualified buyers and tenants to ensure smooth transactions</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <div>
+                                <h4 data-translate="benefits.sellerBenefit4Title">Streamlined Process</h4>
+                                <p data-translate="benefits.sellerBenefit4Desc">Expert handling of all paperwork, negotiations, and closing details from start to finish</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="index.html#contact" class="btn btn-secondary" data-translate="benefits.getValuation">Get Free Valuation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Midas Realty</h3>
+                    <p class="footer-motto" data-translate="about.companyMotto">"Helping the Community Grow Together"</p>
+                    <p data-translate="footer.description">Your trusted partner in real estate excellence. We're committed to helping you find your perfect property.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="footer.quickLinks">Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#home" data-translate="nav.home">Home</a></li>
+                        <li><a href="index.html#properties" data-translate="nav.properties">Properties</a></li>
+                        <li><a href="about.html" data-translate="nav.about">About</a></li>
+                        <li><a href="services.html" data-translate="nav.services">Services</a></li>
+                        <li><a href="index.html#contact" data-translate="nav.contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="footer.services">Services</h4>
+                    <ul>
+                        <li><a href="services.html" data-translate="footer.propertySales">Property Sales</a></li>
+                        <li><a href="services.html" data-translate="footer.rentals">Rentals</a></li>
+                        <li><a href="services.html" data-translate="footer.investment">Investment</a></li>
+                        <li><a href="services.html" data-translate="footer.propertyManagement">Property Management</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter">Twitter</a>
+                        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                        <a href="#" aria-label="Instagram">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <div class="equal-housing">
+                    <img src="https://www.hud.gov/sites/documents/EHO-LOGO.PNG" alt="Equal Housing Opportunity" class="eho-logo" onerror="this.style.display='none'">
+                    <p data-translate="footer.equalHousing">Equal Housing Opportunity. All real estate advertised herein is subject to the Federal Fair Housing Act, which makes it illegal to advertise any preference, limitation, or discrimination because of race, color, religion, sex, handicap, familial status, or national origin, or intention to make any such preference, limitation, or discrimination.</p>
+                </div>
+                <div class="legal-links">
+                    <a href="privacy-policy.html" data-translate="footer.privacyPolicy">Privacy Policy</a>
+                    <span>|</span>
+                    <a href="terms-of-service.html" data-translate="footer.termsOfService">Terms of Service</a>
+                    <span>|</span>
+                    <a href="nys-legal-notices.html" data-translate="footer.nysNotices">NYS Legal Notices</a>
+                    <span>|</span>
+                    <a href="index.html#contact" data-translate="footer.disclaimer">Disclaimer</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Midas Realty. All rights reserved.</p>
+                <p class="license-info" data-translate="footer.licenseInfo">Licensed Real Estate Broker: Tina Kim | License #: Available upon request</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="language.js"></script>
+</body>
+</html>

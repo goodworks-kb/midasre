@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>About Us - Midas Realty</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="translations.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <div class="logo-icon">🏠</div>
+                    <div class="logo-text">
+                        <h1><a href="index.html" style="text-decoration: none; color: inherit; display: block;">MIDAS REALTY</a></h1>
+                        <span class="logo-tagline">Helping the Community Grow Together</span>
+                    </div>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html#home" data-translate="nav.home">Home</a></li>
+                    <li><a href="index.html#properties" data-translate="nav.properties">Properties</a></li>
+                    <li><a href="about.html" data-translate="nav.about">About</a></li>
+                    <li><a href="services.html" data-translate="nav.services">Services</a></li>
+                    <li><a href="tools.html" data-translate="nav.tools">Tools</a></li>
+                    <li><a href="index.html#contact" data-translate="nav.contact">Contact</a></li>
+                </ul>
+                <div class="language-selector">
+                    <button class="language-btn" id="languageBtn">
+                        <span>🌐</span>
+                        <span id="currentLang">EN</span>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdown">
+                        <a href="#" onclick="changeLanguage('en'); return false;">English</a>
+                        <a href="#" onclick="changeLanguage('ko'); return false;">한국어</a>
+                        <a href="#" onclick="changeLanguage('es'); return false;">Español</a>
+                        <a href="#" onclick="changeLanguage('zh'); return false;">中文</a>
+                    </div>
+                </div>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about" class="about" style="margin-top: 70px; padding: 4rem 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="about-title">About Us</h2>
+                <p id="about-subtitle">Learn more about Midas Realty and our commitment to the community</p>
+            </div>
+            
+            <!-- Company About -->
+            <div class="about-content">
+                <div class="about-text">
+                    <h3 data-translate="about.companyTitle">About Midas Realty</h3>
+                    <p class="company-motto" data-translate="about.companyMotto">"Helping the Community Grow Together"</p>
+                    <p><span data-translate="about.companyDesc1">Midas Realty is a full service real estate brokerage company. We provide exceptional real estate services to meet the every need of buyers and sellers from the inception to post-closing. Established in </span><strong data-translate="about.companyDesc2">2001 by Tina Kim, the President of Midas Realty</strong><span data-translate="about.companyDesc3">, our passion towards helping people into a new way of life has led our business into the most successful and recognizable in our field.</span></p>
+                    <p data-translate="about.companyDesc4">We have always worked in the best interest of our clients and our work ethics and dedication to the community have always delivered exceptional real estate transaction experiences to both buyers and sellers.</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <h3>500+</h3>
+                            <p data-translate="about.statsProperties">Properties Sold</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>38+</h3>
+                            <p data-translate="about.statsExperience">Years Experience</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>1000+</h3>
+                            <p data-translate="about.statsClients">Happy Clients</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="images/Midasrealtystorefront.png" alt="Midas Realty Storefront - 163-07 Depot Rd, Flushing, NY" class="about-company-image">
+                </div>
+            </div>
+
+            <!-- About Me Section -->
+            <div class="about-me-section">
+                <div class="about-me-content">
+                    <div class="about-me-image">
+                        <img src="images/tina-kim.jpg" alt="Tina Kim - President of Midas Realty" class="profile-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="profile-placeholder" style="display:none;">
+                            <span class="profile-icon">👤</span>
+                        </div>
+                        <div class="profile-contact-info">
+                            <h4 class="profile-name">TINA KIM</h4>
+                            <p class="profile-title" data-translate="about.profileTitle">Lic. R.E. Broker/Owner</p>
+                            <p class="license-number" data-translate="about.licenseNumber">License #: Available upon request</p>
+                            <div class="profile-contact-details">
+                                <div class="contact-detail-item">
+                                    <span class="contact-label" data-translate="about.tel">Tel:</span>
+                                    <a href="tel:718-353-9300" class="contact-link">718-353-9300</a>
+                                </div>
+                                <div class="contact-detail-item">
+                                    <span class="contact-label" data-translate="about.cell">C:</span>
+                                    <a href="tel:718-344-0085" class="contact-link">718-344-0085</a>
+                                </div>
+                                <div class="contact-detail-item">
+                                    <span class="contact-label" data-translate="about.fax">Fax:</span>
+                                    <span class="contact-value">718-353-9309</span>
+                                </div>
+                                <div class="contact-detail-item email-item">
+                                    <a href="mailto:midasrealtyonline@gmail.com" class="contact-email">midasrealtyonline@gmail.com</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-me-text">
+                        <h3 data-translate="about.aboutMeTitle">About Tina Kim</h3>
+                        <p class="about-me-intro" data-translate="about.aboutMeIntro">Tina Kim began her real estate career in 1986 and has built a long-standing reputation for exceptional service and successful real estate transactions.</p>
+                        <p data-translate="about.aboutMeDesc1">With over 38 years of experience, Tina is known for her dedication, strong work ethic, and ability to understand and meet the specific needs of her clients. Her commitment to excellence has earned Midas Realty a steady stream of referrals and returning clients.</p>
+                        <p><span data-translate="about.aboutMeDesc2">Dedicated to creating thriving neighborhoods, Tina has been actively involved in community leadership throughout her career. She served as </span><strong data-translate="about.aboutMeDesc3">President of the Korean American Realtor Association (K.A.R.A.) from 2010 to 2011</strong><span data-translate="about.aboutMeDesc4">, organizing real estate education programs, seminars, and community events that strengthened connections among realtors, buyers, and sellers.</span></p>
+                        <p data-translate="about.aboutMeDesc5">Tina is committed to integrity, professionalism, and personalized service. She is fluent in <strong>Korean and English</strong> and works with clients of all backgrounds. When needed, translation tools are used to ensure clear communication and a positive experience for everyone, regardless of language.</p>
+                        <div class="about-me-highlights">
+                            <div class="highlight-item">
+                                <span class="highlight-icon">✓</span>
+                                <span data-translate="about.highlight1">38+ Years of Real Estate Experience</span>
+                            </div>
+                            <div class="highlight-item">
+                                <span class="highlight-icon">✓</span>
+                                <span data-translate="about.highlight2">Former K.A.R.A. President (2010-2011)</span>
+                            </div>
+                            <div class="highlight-item">
+                                <span class="highlight-icon">✓</span>
+                                <span data-translate="about.highlight3">Multilingual Support Available</span>
+                            </div>
+                            <div class="highlight-item">
+                                <span class="highlight-icon">✓</span>
+                                <span data-translate="about.highlight4">Residential & Commercial Expertise</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Midas Realty</h3>
+                    <p class="footer-motto" data-translate="about.companyMotto">"Helping the Community Grow Together"</p>
+                    <p data-translate="footer.description">Your trusted partner in real estate excellence. We're committed to helping you find your perfect property.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="footer.quickLinks">Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#home" data-translate="nav.home">Home</a></li>
+                        <li><a href="index.html#properties" data-translate="nav.properties">Properties</a></li>
+                        <li><a href="about.html" data-translate="nav.about">About</a></li>
+                        <li><a href="services.html" data-translate="nav.services">Services</a></li>
+                        <li><a href="index.html#contact" data-translate="nav.contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="footer.services">Services</h4>
+                    <ul>
+                        <li><a href="services.html" data-translate="footer.propertySales">Property Sales</a></li>
+                        <li><a href="services.html" data-translate="footer.rentals">Rentals</a></li>
+                        <li><a href="services.html" data-translate="footer.investment">Investment</a></li>
+                        <li><a href="services.html" data-translate="footer.propertyManagement">Property Management</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter">Twitter</a>
+                        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                        <a href="#" aria-label="Instagram">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <div class="equal-housing">
+                    <img src="https://www.hud.gov/sites/documents/EHO-LOGO.PNG" alt="Equal Housing Opportunity" class="eho-logo" onerror="this.style.display='none'">
+                    <p data-translate="footer.equalHousing">Equal Housing Opportunity. All real estate advertised herein is subject to the Federal Fair Housing Act, which makes it illegal to advertise any preference, limitation, or discrimination because of race, color, religion, sex, handicap, familial status, or national origin, or intention to make any such preference, limitation, or discrimination.</p>
+                </div>
+                <div class="legal-links">
+                    <a href="privacy-policy.html" data-translate="footer.privacyPolicy">Privacy Policy</a>
+                    <span>|</span>
+                    <a href="terms-of-service.html" data-translate="footer.termsOfService">Terms of Service</a>
+                    <span>|</span>
+                    <a href="nys-legal-notices.html" data-translate="footer.nysNotices">NYS Legal Notices</a>
+                    <span>|</span>
+                    <a href="index.html#contact" data-translate="footer.disclaimer">Disclaimer</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Midas Realty. All rights reserved.</p>
+                <p class="license-info" data-translate="footer.licenseInfo">Licensed Real Estate Broker: Tina Kim | License #: Available upon request</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="language.js"></script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Real Estate Tools & Resources - Midas Realty</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="translations.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <div class="logo-icon">🏠</div>
+                    <div class="logo-text">
+                        <h1><a href="index.html" style="text-decoration: none; color: inherit; display: block;">MIDAS REALTY</a></h1>
+                        <span class="logo-tagline">Helping the Community Grow Together</span>
+                    </div>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html#home" data-translate="nav.home">Home</a></li>
+                    <li><a href="index.html#properties" data-translate="nav.properties">Properties</a></li>
+                    <li><a href="about.html" data-translate="nav.about">About</a></li>
+                    <li><a href="services.html" data-translate="nav.services">Services</a></li>
+                    <li><a href="tools.html" data-translate="nav.tools">Tools</a></li>
+                    <li><a href="index.html#contact" data-translate="nav.contact">Contact</a></li>
+                </ul>
+                <div class="language-selector">
+                    <button class="language-btn" id="languageBtn">
+                        <span>🌐</span>
+                        <span id="currentLang">EN</span>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdown">
+                        <a href="#" onclick="changeLanguage('en'); return false;">English</a>
+                        <a href="#" onclick="changeLanguage('ko'); return false;">한국어</a>
+                        <a href="#" onclick="changeLanguage('es'); return false;">Español</a>
+                        <a href="#" onclick="changeLanguage('zh'); return false;">中文</a>
+                    </div>
+                </div>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tools Section -->
+    <section id="tools" class="tools-section" style="margin-top: 70px; padding: 4rem 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="tools-title">Real Estate Tools & Resources</h2>
+                <p id="tools-subtitle">Helpful tools and information to guide your real estate journey</p>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">💰</div>
+                    <h3 data-translate="tools.homeWorth">What Is Your Home Worth?</h3>
+                    <p data-translate="tools.homeWorthDesc">Get a free, no-obligation home valuation. Find out what your property is worth in today's market.</p>
+                    <a href="index.html#contact" class="btn btn-primary" data-translate="hero.getValuation">Get Free Valuation</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🧮</div>
+                    <h3 data-translate="tools.mortgageCalc">Mortgage Calculator</h3>
+                    <p data-translate="tools.mortgageCalcDesc">Calculate your monthly mortgage payments, estimate affordability, and plan your home purchase budget.</p>
+                    <button class="btn btn-secondary" onclick="openMortgageCalculator()" data-translate="tools.useCalculator">Use Calculator</button>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🏫</div>
+                    <h3 data-translate="tools.neighborhood">Neighborhood & Schools</h3>
+                    <p data-translate="tools.neighborhoodDesc">Explore Flushing neighborhoods, school ratings, and local amenities to find your perfect location.</p>
+                    <button class="btn btn-secondary" onclick="openNeighborhoodModal()" data-translate="tools.learnMore">Learn More</button>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📚</div>
+                    <h3 data-translate="tools.resources">Real Estate Resources</h3>
+                    <p data-translate="tools.resourcesDesc">Access helpful guides, market reports, and educational resources for buyers and sellers.</p>
+                    <button class="btn btn-secondary" onclick="openResourcesModal()" data-translate="tools.viewResources">View Resources</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mortgage Calculator Modal -->
+    <div id="mortgageCalculatorModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeMortgageCalculator()">&times;</span>
+            <h2 data-translate="tools.calcTitle">Mortgage Calculator</h2>
+            <div class="calculator-form">
+                <div class="calc-input-group">
+                    <label data-translate="tools.calcHomePrice">Home Price ($)</label>
+                    <input type="number" id="homePrice" placeholder="500,000" value="500000">
+                </div>
+                <div class="calc-input-group">
+                    <label data-translate="tools.calcDownPayment">Down Payment ($)</label>
+                    <input type="number" id="downPayment" placeholder="100,000" value="100000">
+                </div>
+                <div class="calc-input-group">
+                    <label data-translate="tools.calcInterestRate">Interest Rate (%)</label>
+                    <input type="number" id="interestRate" placeholder="6.5" step="0.1" value="6.5">
+                </div>
+                <div class="calc-input-group">
+                    <label data-translate="tools.calcLoanTerm">Loan Term (years)</label>
+                    <select id="loanTerm">
+                        <option value="15" data-translate="tools.calcYears15">15 years</option>
+                        <option value="30" selected data-translate="tools.calcYears30">30 years</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="calculateMortgage()" data-translate="tools.calcButton">Calculate</button>
+                <div id="mortgageResult" class="calc-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Neighborhood & Schools Modal -->
+    <div id="neighborhoodModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close-modal" onclick="closeNeighborhoodModal()">&times;</span>
+            <h2 data-translate="neighborhood.title">Neighborhood & Schools Information</h2>
+            <div class="neighborhood-content">
+                <div class="neighborhood-section">
+                    <h3 data-translate="neighborhood.flushingTitle">About Flushing, Queens</h3>
+                    <p data-translate="neighborhood.flushingDesc">Flushing is a vibrant, diverse neighborhood in Queens, New York, known for its rich cultural heritage, excellent schools, and convenient access to Manhattan. Located in Queens Community District 7, Flushing offers a mix of residential and commercial properties with strong community values.</p>
+                </div>
+                
+                <div class="neighborhood-section">
+                    <h3 data-translate="neighborhood.schoolsTitle">School Districts & Ratings</h3>
+                    <p data-translate="neighborhood.schoolsIntro">Flushing is served by New York City Department of Education (NYC DOE) School District 25. The area features excellent public and private schools.</p>
+                    
+                    <div class="school-links">
+                        <h4 data-translate="neighborhood.schoolResources">School Resources:</h4>
+                        <ul class="resource-list">
+                            <li><a href="https://www.schools.nyc.gov/" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.nycSchools">NYC Department of Education</a> - Official NYC schools website</li>
+                            <li><a href="https://www.greatschools.org/new-york/flushing/" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.greatSchools">GreatSchools.org</a> - School ratings and reviews</li>
+                            <li><a href="https://www.schools.nyc.gov/enrollment/enroll-grade-by-grade" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.enrollment">NYC School Enrollment</a> - Enrollment information</li>
+                            <li><a href="https://www.schools.nyc.gov/school-life/transportation" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.transportation">School Transportation</a> - Bus and transportation info</li>
+                        </ul>
+                    </div>
+
+                    <div class="school-district-info">
+                        <h4 data-translate="neighborhood.district25">School District 25 Highlights:</h4>
+                        <ul class="resource-list">
+                            <li data-translate="neighborhood.district25a">Serves Flushing, Whitestone, College Point, and parts of Bayside</li>
+                            <li data-translate="neighborhood.district25b">Multiple elementary, middle, and high schools</li>
+                            <li data-translate="neighborhood.district25c">Strong academic programs and extracurricular activities</li>
+                            <li data-translate="neighborhood.district25d">Diverse student population with multilingual support</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="neighborhood-section">
+                    <h3 data-translate="neighborhood.amenitiesTitle">Local Amenities</h3>
+                    <div class="amenities-grid">
+                        <div class="amenity-item">
+                            <strong data-translate="neighborhood.transit">Public Transportation:</strong>
+                            <ul class="resource-list">
+                                <li data-translate="neighborhood.transit1">7 Train (Flushing-Main St station)</li>
+                                <li data-translate="neighborhood.transit2">Multiple bus lines (Q12, Q13, Q15, Q16, Q17, Q20, Q25, Q26, Q27, Q28, Q44, Q48, Q58, Q65, Q66)</li>
+                                <li data-translate="neighborhood.transit3">Long Island Rail Road (LIRR) - Flushing station</li>
+                            </ul>
+                        </div>
+                        <div class="amenity-item">
+                            <strong data-translate="neighborhood.parks">Parks & Recreation:</strong>
+                            <ul class="resource-list">
+                                <li data-translate="neighborhood.parks1">Flushing Meadows Corona Park - 897 acres</li>
+                                <li data-translate="neighborhood.parks2">Kissena Park - 234 acres</li>
+                                <li data-translate="neighborhood.parks3">Queens Botanical Garden</li>
+                                <li data-translate="neighborhood.parks4">Multiple playgrounds and sports facilities</li>
+                            </ul>
+                        </div>
+                        <div class="amenity-item">
+                            <strong data-translate="neighborhood.shopping">Shopping & Dining:</strong>
+                            <ul class="resource-list">
+                                <li data-translate="neighborhood.shopping1">Flushing Mall and Main Street shopping district</li>
+                                <li data-translate="neighborhood.shopping2">Diverse restaurants (Chinese, Korean, Japanese, American)</li>
+                                <li data-translate="neighborhood.shopping3">Queens Crossing shopping center</li>
+                                <li data-translate="neighborhood.shopping4">Local markets and specialty stores</li>
+                            </ul>
+                        </div>
+                        <div class="amenity-item">
+                            <strong data-translate="neighborhood.healthcare">Healthcare:</strong>
+                            <ul class="resource-list">
+                                <li data-translate="neighborhood.healthcare1">NewYork-Presbyterian Queens Hospital</li>
+                                <li data-translate="neighborhood.healthcare2">Flushing Hospital Medical Center</li>
+                                <li data-translate="neighborhood.healthcare3">Multiple clinics and medical offices</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="neighborhood-section">
+                    <h3 data-translate="neighborhood.communityTitle">Community Resources</h3>
+                    <ul class="resource-list">
+                        <li><a href="https://www.queenslibrary.org/" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.library">Queens Public Library - Flushing Branch</a></li>
+                        <li><a href="https://www.nyc.gov/site/queenscb7/index.page" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.communityBoard">Queens Community Board 7</a></li>
+                        <li><a href="https://www1.nyc.gov/site/queenscb7/index.page" target="_blank" rel="noopener noreferrer" data-translate="neighborhood.cityServices">NYC City Services</a></li>
+                    </ul>
+                </div>
+
+                <div class="neighborhood-section">
+                    <h3 data-translate="neighborhood.contactTitle">Need More Information?</h3>
+                    <p data-translate="neighborhood.contactDesc">Contact Midas Realty for detailed neighborhood information, school district maps, and property-specific school assignments.</p>
+                    <a href="index.html#contact" class="btn btn-primary" onclick="closeNeighborhoodModal()" data-translate="neighborhood.contactUs">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real Estate Resources Modal -->
+    <div id="resourcesModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close-modal" onclick="closeResourcesModal()">&times;</span>
+            <h2 data-translate="resources.title">Real Estate Resources</h2>
+            <div class="resources-content">
+                <div class="resources-section">
+                    <h3 data-translate="resources.buyerTitle">For Buyers</h3>
+                    <div class="resource-category">
+                        <h4 data-translate="resources.buyerGuides">Buyer Guides:</h4>
+                        <ul class="resource-list">
+                            <li><a href="https://www.hud.gov/buying" target="_blank" rel="noopener noreferrer" data-translate="resources.hudBuying">HUD - Buying a Home Guide</a></li>
+                            <li><a href="https://www.consumerfinance.gov/owning-a-home/" target="_blank" rel="noopener noreferrer" data-translate="resources.cfpbOwning">CFPB - Owning a Home</a></li>
+                            <li><a href="https://www.nytimes.com/guides/realestate/home-buying-checklist" target="_blank" rel="noopener noreferrer" data-translate="resources.nytimesBuying">NY Times - Home Buying Checklist</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-category">
+                        <h4 data-translate="resources.financing">Financing Resources:</h4>
+                        <ul class="resource-list">
+                            <li><a href="https://www.hud.gov/buying/loans" target="_blank" rel="noopener noreferrer" data-translate="resources.hudLoans">HUD - Mortgage Information</a></li>
+                            <li><a href="https://www.consumerfinance.gov/owning-a-home/mortgage/" target="_blank" rel="noopener noreferrer" data-translate="resources.cfpbMortgage">CFPB - Mortgage Guide</a></li>
+                            <li><a href="https://www.fha.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.fhaLoans">FHA Loan Information</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resources-section">
+                    <h3 data-translate="resources.sellerTitle">For Sellers</h3>
+                    <div class="resource-category">
+                        <h4 data-translate="resources.sellerGuides">Seller Guides:</h4>
+                        <ul class="resource-list">
+                            <li><a href="https://www.hud.gov/selling" target="_blank" rel="noopener noreferrer" data-translate="resources.hudSelling">HUD - Selling Your Home</a></li>
+                            <li><a href="https://www.consumerfinance.gov/owning-a-home/selling/" target="_blank" rel="noopener noreferrer" data-translate="resources.cfpbSelling">CFPB - Selling Your Home</a></li>
+                            <li><a href="https://www.irs.gov/taxtopics/tc701" target="_blank" rel="noopener noreferrer" data-translate="resources.irsSelling">IRS - Tax Information for Home Sellers</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-category">
+                        <h4 data-translate="resources.homeValue">Home Valuation:</h4>
+                        <ul class="resource-list">
+                            <li><a href="https://www.zillow.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.zillow">Zillow - Home Values</a></li>
+                            <li><a href="https://www.redfin.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.redfin">Redfin - Market Estimates</a></li>
+                            <li><a href="https://www.realtor.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.realtor">Realtor.com - Property Values</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resources-section">
+                    <h3 data-translate="resources.marketTitle">Market Information</h3>
+                    <div class="resource-category">
+                        <h4 data-translate="resources.marketReports">Market Reports & Data:</h4>
+                        <ul class="resource-list">
+                            <li><a href="https://www.elliman.com/new-york/research" target="_blank" rel="noopener noreferrer" data-translate="resources.douglasElliman">Douglas Elliman Market Reports</a></li>
+                            <li><a href="https://www.corcoran.com/market-reports" target="_blank" rel="noopener noreferrer" data-translate="resources.corcoran">Corcoran Market Reports</a></li>
+                            <li><a href="https://www.nytimes.com/section/realestate" target="_blank" rel="noopener noreferrer" data-translate="resources.nytimesRealEstate">NY Times Real Estate</a></li>
+                            <li><a href="https://www.crainsnewyork.com/real-estate" target="_blank" rel="noopener noreferrer" data-translate="resources.crains">Crain's New York Real Estate</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-category">
+                        <h4 data-translate="resources.mls">Multiple Listing Services:</h4>
+                        <ul class="resource-list">
+                            <li><a href="https://www.onekeymls.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.onekey">OneKey MLS</a></li>
+                            <li><a href="https://www.realtor.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.realtorMls">Realtor.com MLS</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resources-section">
+                    <h3 data-translate="resources.educationTitle">Educational Resources</h3>
+                    <div class="resource-category">
+                        <h4 data-translate="resources.realEstateEducation">Real Estate Education:</h4>
+                        <ul class="resource-list">
+                            <li><a href="https://www.nar.realtor/" target="_blank" rel="noopener noreferrer" data-translate="resources.nar">National Association of Realtors (NAR)</a></li>
+                            <li><a href="https://www.nysar.com/" target="_blank" rel="noopener noreferrer" data-translate="resources.nysar">New York State Association of Realtors</a></li>
+                            <li><a href="https://www.realtor.com/advice/" target="_blank" rel="noopener noreferrer" data-translate="resources.realtorAdvice">Realtor.com Advice & Tips</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-category">
+                        <h4 data-translate="resources.legalResources">Legal & Regulatory:</h4>
+                        <ul class="resource-list">
+                            <li><a href="https://www.dos.ny.gov/licensing/" target="_blank" rel="noopener noreferrer" data-translate="resources.nysDos">NYS Department of State - Licensing</a></li>
+                            <li><a href="https://www.hud.gov/" target="_blank" rel="noopener noreferrer" data-translate="resources.hud">U.S. Department of Housing & Urban Development</a></li>
+                            <li><a href="https://www.dhr.ny.gov/" target="_blank" rel="noopener noreferrer" data-translate="resources.nysDhr">NYS Division of Human Rights</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resources-section">
+                    <h3 data-translate="resources.toolsTitle">Helpful Tools</h3>
+                    <div class="resource-category">
+                        <h4 data-translate="resources.calculators">Calculators & Tools:</h4>
+                        <ul class="resource-list">
+                            <li><a href="https://www.bankrate.com/calculators/mortgages/mortgage-calculator.aspx" target="_blank" rel="noopener noreferrer" data-translate="resources.bankrateMortgage">Bankrate Mortgage Calculator</a></li>
+                            <li><a href="https://www.zillow.com/mortgage-calculator/" target="_blank" rel="noopener noreferrer" data-translate="resources.zillowMortgage">Zillow Mortgage Calculator</a></li>
+                            <li><a href="https://www.realtor.com/mortgage/tools/mortgage-calculator" target="_blank" rel="noopener noreferrer" data-translate="resources.realtorMortgage">Realtor.com Mortgage Calculator</a></li>
+                            <li><a href="https://www.nerdwallet.com/mortgages/mortgage-calculator" target="_blank" rel="noopener noreferrer" data-translate="resources.nerdwalletMortgage">NerdWallet Mortgage Calculator</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resources-section">
+                    <h3 data-translate="resources.localTitle">Local Queens Resources</h3>
+                    <ul class="resource-list">
+                        <li><a href="https://www1.nyc.gov/site/queenscb7/index.page" target="_blank" rel="noopener noreferrer" data-translate="resources.queensCB7">Queens Community Board 7</a></li>
+                        <li><a href="https://www.queensbp.org/" target="_blank" rel="noopener noreferrer" data-translate="resources.queensBP">Queens Borough President</a></li>
+                        <li><a href="https://www1.nyc.gov/site/buildings/index.page" target="_blank" rel="noopener noreferrer" data-translate="resources.nycBuildings">NYC Department of Buildings</a></li>
+                        <li><a href="https://www1.nyc.gov/site/finance/index.page" target="_blank" rel="noopener noreferrer" data-translate="resources.nycFinance">NYC Department of Finance - Property Records</a></li>
+                    </ul>
+                </div>
+
+                <div class="resources-section">
+                    <h3 data-translate="resources.contactTitle">Need Personalized Assistance?</h3>
+                    <p data-translate="resources.contactDesc">Contact Midas Realty for personalized guidance, market insights, and expert advice tailored to your specific needs.</p>
+                    <a href="index.html#contact" class="btn btn-primary" onclick="closeResourcesModal()" data-translate="resources.contactUs">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Midas Realty</h3>
+                    <p class="footer-motto" data-translate="about.companyMotto">"Helping the Community Grow Together"</p>
+                    <p data-translate="footer.description">Your trusted partner in real estate excellence. We're committed to helping you find your perfect property.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="footer.quickLinks">Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#home" data-translate="nav.home">Home</a></li>
+                        <li><a href="index.html#properties" data-translate="nav.properties">Properties</a></li>
+                        <li><a href="about.html" data-translate="nav.about">About</a></li>
+                        <li><a href="services.html" data-translate="nav.services">Services</a></li>
+                        <li><a href="index.html#contact" data-translate="nav.contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="footer.services">Services</h4>
+                    <ul>
+                        <li><a href="services.html" data-translate="footer.propertySales">Property Sales</a></li>
+                        <li><a href="services.html" data-translate="footer.rentals">Rentals</a></li>
+                        <li><a href="services.html" data-translate="footer.investment">Investment</a></li>
+                        <li><a href="services.html" data-translate="footer.propertyManagement">Property Management</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter">Twitter</a>
+                        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                        <a href="#" aria-label="Instagram">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <div class="equal-housing">
+                    <img src="https://www.hud.gov/sites/documents/EHO-LOGO.PNG" alt="Equal Housing Opportunity" class="eho-logo" onerror="this.style.display='none'">
+                    <p data-translate="footer.equalHousing">Equal Housing Opportunity. All real estate advertised herein is subject to the Federal Fair Housing Act, which makes it illegal to advertise any preference, limitation, or discrimination because of race, color, religion, sex, handicap, familial status, or national origin, or intention to make any such preference, limitation, or discrimination.</p>
+                </div>
+                <div class="legal-links">
+                    <a href="privacy-policy.html" data-translate="footer.privacyPolicy">Privacy Policy</a>
+                    <span>|</span>
+                    <a href="terms-of-service.html" data-translate="footer.termsOfService">Terms of Service</a>
+                    <span>|</span>
+                    <a href="nys-legal-notices.html" data-translate="footer.nysNotices">NYS Legal Notices</a>
+                    <span>|</span>
+                    <a href="index.html#contact" data-translate="footer.disclaimer">Disclaimer</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Midas Realty. All rights reserved.</p>
+                <p class="license-info" data-translate="footer.licenseInfo">Licensed Real Estate Broker: Tina Kim | License #: Available upon request</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="language.js"></script>
+</body>
+</html>
