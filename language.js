@@ -249,6 +249,41 @@ function translateContact(t) {
     }
 }
 
+// Translate quick links section
+function translateQuickLinks(t) {
+    if (!t.quickLinks) return;
+    
+    // Translate quick link titles
+    const quickLinkTitles = document.querySelectorAll('.quick-link-card h3[data-translate]');
+    quickLinkTitles.forEach(title => {
+        const key = title.getAttribute('data-translate');
+        if (key === 'quickLinks.services' && t.quickLinks.services) {
+            title.textContent = t.quickLinks.services;
+        } else if (key === 'quickLinks.about' && t.quickLinks.about) {
+            title.textContent = t.quickLinks.about;
+        }
+    });
+    
+    // Translate quick link descriptions
+    const quickLinkDescs = document.querySelectorAll('.quick-link-card p[data-translate]');
+    quickLinkDescs.forEach(desc => {
+        const key = desc.getAttribute('data-translate');
+        if (key === 'quickLinks.servicesDesc' && t.quickLinks.servicesDesc) {
+            desc.textContent = t.quickLinks.servicesDesc;
+        } else if (key === 'quickLinks.aboutDesc' && t.quickLinks.aboutDesc) {
+            desc.textContent = t.quickLinks.aboutDesc;
+        }
+    });
+    
+    // Translate "Learn More" arrows
+    const learnMoreArrows = document.querySelectorAll('.quick-link-arrow[data-translate="quickLinks.learnMore"]');
+    learnMoreArrows.forEach(arrow => {
+        if (t.quickLinks.learnMore) {
+            arrow.textContent = t.quickLinks.learnMore;
+        }
+    });
+}
+
 // Translate footer
 function translateFooter(t) {
     const footerSections = document.querySelectorAll('.footer-section h4');
