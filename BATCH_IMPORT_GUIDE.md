@@ -46,7 +46,7 @@ Street Address,City,State,Zip,Price,Bedrooms,Bathrooms,Square Feet,Property Type
 ### Step 3: Upload in Admin Panel
 
 1. Go to Admin Panel → Click "Batch Import" button
-2. Select your CSV or JSON file
+2. Select your CSV file
 3. Review the preview (shows how many properties will be imported)
 4. Click "Import All Properties"
 5. Wait for import to complete
@@ -145,27 +145,28 @@ Street Address,City,State,Zip,Price,Bedrooms,Bathrooms,Square Feet,Property Type
 456 Oak Avenue,Flushing,NY,11355,$1200000,5,4,3200,Condo,For Sale,"Spacious condo with great views",MLS789012,https://example.com/image3.jpg
 ```
 
-## Example JSON Template
+## Common OneKey MLS Field Names
 
-```json
-[
-  {
-    "Street Address": "123 Main Street",
-    "City": "Flushing",
-    "State": "NY",
-    "Zip": "11355",
-    "Price": "$850000",
-    "Bedrooms": 4,
-    "Bathrooms": 3,
-    "Square Feet": "2500",
-    "Property Type": "House",
-    "Status": "For Sale",
-    "Description": "Beautiful 4-bedroom home in Flushing",
-    "MLS Number": "MLS123456",
-    "Images": [
-      "https://example.com/image1.jpg",
-      "https://example.com/image2.jpg"
-    ]
-  }
-]
-```
+The system recognizes these common field names from OneKey MLS exports:
+
+- `List Number`, `MLS Number`, `Listing ID`
+- `Property Address`, `Street Address`, `Address`
+- `City`, `Property City`
+- `State`, `Property State`
+- `Zip Code`, `Postal Code`
+- `List Price`, `Price`, `Asking Price`
+- `Bedrooms Total`, `Total Bedrooms`, `Bedrooms`
+- `Bathrooms Total`, `Total Bathrooms`, `Bathrooms`
+- `Living Area`, `Square Feet`, `Sqft`
+- `Property Type`, `Type`, `Property Sub Type`
+- `Status`, `Listing Status`, `Sale Status`
+- `Public Remarks`, `Remarks`, `Description`
+- `Photo Count`, `Photos`, `Image URLs`
+
+## Tips for Excel Files
+
+1. **Save as CSV UTF-8** to preserve special characters
+2. **Remove empty rows** before saving
+3. **Check column headers** match expected field names
+4. **Image columns**: If images are in separate columns (Photo1, Photo2, etc.), you may need to combine them into one "Images" column
+5. **Date formats**: Year Built should be just the year (e.g., `1995` not `01/01/1995`)
