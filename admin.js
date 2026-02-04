@@ -684,6 +684,422 @@ function resetForm() {
     updatePropertyTypeOptions();
 }
 
+// Batch Import Functions
+let batchImportData = [];
+
+// Handle batch file selection
+function handleBatchFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const content = e.target.result;
+        const extension = file.name.split('.').pop().toLowerCase();
+        
+        try {
+            if (extension === 'csv') {
+                parseCSV(content);
+            } else if (extension === 'json') {
+                parseJSON(content);
+            } else {
+                alert('Unsupported file format. Please upload a CSV or JSON file.');
+                return;
+            }
+        } catch (error) {
+            alert('Error parsing file: ' + error.message);
+            console.error('Parse error:', error);
+        }
+    };
+    
+    reader.readAsText(file);
+}
+
+// Parse CSV file
+function parseCSV(csvText) {
+    const lines = csvText.split('\n').filter(line => line.trim());
+    if (lines.length < 2) {
+        alert('CSV file must have at least a header row and one data row.');
+        return;
+    }
+    
+    // Parse header
+    const headers = parseCSVLine(lines[0]);
+    
+    // Parse data rows
+    batchImportData = [];
+    for (let i = 1; i < lines.length; i++) {
+        const values = parseCSVLine(lines[i]);
+        if (values.length === 0) continue;
+        
+        const property = mapCSVRowToProperty(headers, values);
+        if (property) {
+            batchImportData.push(property);
+        }
+    }
+    
+    showBatchPreview();
+}
+
+// Parse CSV line (handles quoted values)
+function parseCSVLine(line) {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const nextChar = line[i + 1];
+        
+        if (char === '"') {
+            if (inQuotes && nextChar === '"') {
+                current += '"';
+                i++; // Skip next quote
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (char === ',' && !inQuotes) {
+            result.push(current.trim());
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+    result.push(current.trim());
+    
+    return result;
+}
+
+// Parse JSON file
+function parseJSON(jsonText) {
+    const data = JSON.parse(jsonText);
+    
+    // Handle array of properties
+    if (Array.isArray(data)) {
+        batchImportData = data.map(item => mapJSONToProperty(item)).filter(p => p !== null);
+    } else if (data.properties || data.listings) {
+        // Handle object with properties/listings array
+        const propertiesArray = data.properties || data.listings;
+        batchImportData = propertiesArray.map(item => mapJSONToProperty(item)).filter(p => p !== null);
+    } else {
+        // Single property object
+        const property = mapJSONToProperty(data);
+        batchImportData = property ? [property] : [];
+    }
+    
+    showBatchPreview();
+}
+
+// Map CSV row to property object
+function mapCSVRowToProperty(headers, values) {
+    const row = {};
+    headers.forEach((header, index) => {
+        row[header.toLowerCase().trim()] = values[index] || '';
+    });
+    
+    return mapMLSDataToProperty(row);
+}
+
+// Map JSON object to property
+function mapJSONToProperty(data) {
+    return mapMLSDataToProperty(data);
+}
+
+// Map MLS data (CSV or JSON) to our property format
+function mapMLSDataToProperty(mlsData) {
+    // Common MLS field mappings
+    const fieldMap = {
+        // Address fields
+        'street': ['street', 'streetaddress', 'address', 'street address', 'propertyaddress', 'property address'],
+        'city': ['city', 'propertycity', 'property city'],
+        'state': ['state', 'propertystate', 'property state', 'st'],
+        'zip': ['zip', 'zipcode', 'zip code', 'postalcode', 'postal code'],
+        
+        // Basic property info
+        'price': ['price', 'listprice', 'list price', 'saleprice', 'sale price', 'askingprice', 'asking price'],
+        'bedrooms': ['bedrooms', 'beds', 'bedrooms_total', 'totalbedrooms', 'total bedrooms'],
+        'bathrooms': ['bathrooms', 'baths', 'bathrooms_total', 'totalbathrooms', 'total bathrooms'],
+        'sqft': ['sqft', 'squarefeet', 'square feet', 'squarefootage', 'square footage', 'livingarea', 'living area'],
+        'propertyType': ['propertytype', 'property type', 'proptype', 'prop type', 'type'],
+        'category': ['category', 'propertycategory', 'property category'],
+        'status': ['status', 'listingstatus', 'listing status', 'salestatus', 'sale status'],
+        
+        // Additional fields
+        'yearBuilt': ['yearbuilt', 'year built', 'year', 'built'],
+        'lotSize': ['lotsize', 'lot size', 'lotsqft', 'lot sqft'],
+        'description': ['description', 'remarks', 'publicremarks', 'public remarks', 'listingremarks', 'listing remarks'],
+        'mlsNumber': ['mlsnumber', 'mls number', 'mls', 'listingid', 'listing id', 'mlsid', 'mls id'],
+        
+        // Images
+        'images': ['images', 'photos', 'photourl', 'photo url', 'photourls', 'photo urls', 'imageurls', 'image urls'],
+        'image': ['image', 'mainimage', 'main image', 'primaryphoto', 'primary photo', 'photourl', 'photo url']
+    };
+    
+    function findValue(fieldName) {
+        const possibleKeys = fieldMap[fieldName] || [fieldName];
+        for (const key of possibleKeys) {
+            // Try exact match first
+            if (mlsData[key] !== undefined && mlsData[key] !== '') {
+                return mlsData[key];
+            }
+            // Try case-insensitive match
+            const lowerKey = key.toLowerCase();
+            for (const dataKey in mlsData) {
+                if (dataKey.toLowerCase() === lowerKey) {
+                    return mlsData[dataKey];
+                }
+            }
+        }
+        return null;
+    }
+    
+    // Build address object
+    const street = findValue('street') || '';
+    const city = findValue('city') || '';
+    const state = findValue('state') || '';
+    const zip = findValue('zip') || '';
+    
+    if (!street && !city) {
+        // Try to parse full address
+        const fullAddress = findValue('address') || findValue('fulladdress') || '';
+        if (fullAddress) {
+            // Simple address parsing (can be improved)
+            const parts = fullAddress.split(',').map(p => p.trim());
+            if (parts.length >= 2) {
+                return mapMLSDataToProperty({
+                    ...mlsData,
+                    street: parts[0],
+                    city: parts[1],
+                    state: parts[2] || state,
+                    zip: parts[3] || zip
+                });
+            }
+        }
+    }
+    
+    // Get images
+    let images = [];
+    const imagesValue = findValue('images');
+    if (imagesValue) {
+        if (Array.isArray(imagesValue)) {
+            images = imagesValue;
+        } else if (typeof imagesValue === 'string') {
+            // Try to parse as JSON array or comma-separated
+            try {
+                images = JSON.parse(imagesValue);
+            } catch {
+                images = imagesValue.split(',').map(url => url.trim()).filter(url => url);
+            }
+        }
+    }
+    
+    // Fallback to single image field
+    if (images.length === 0) {
+        const singleImage = findValue('image');
+        if (singleImage) {
+            images = [singleImage];
+        }
+    }
+    
+    // Determine category
+    let category = findValue('category') || 'residential';
+    if (category) {
+        category = category.toLowerCase();
+        if (!['residential', 'commercial'].includes(category)) {
+            // Try to infer from property type
+            const propType = (findValue('propertyType') || '').toLowerCase();
+            if (propType.includes('commercial') || propType.includes('retail') || propType.includes('office') || propType.includes('warehouse')) {
+                category = 'commercial';
+            } else {
+                category = 'residential';
+            }
+        }
+    }
+    
+    // Determine status/type
+    let status = findValue('status') || 'For Sale';
+    if (status) {
+        status = status.toString();
+        if (!['For Sale', 'For Rent', 'Sold'].includes(status)) {
+            const statusLower = status.toLowerCase();
+            if (statusLower.includes('rent') || statusLower.includes('lease')) {
+                status = 'For Rent';
+            } else if (statusLower.includes('sold') || statusLower.includes('closed')) {
+                status = 'Sold';
+            } else {
+                status = 'For Sale';
+            }
+        }
+    }
+    
+    // Build property object
+    const property = {
+        id: Date.now() + Math.random(), // Generate unique ID
+        address: {
+            street: street || 'Address TBD',
+            city: city || '',
+            state: (state || '').toUpperCase().substring(0, 2) || 'NY',
+            zip: zip || ''
+        },
+        price: findValue('price') || '$0',
+        bedrooms: parseInt(findValue('bedrooms')) || null,
+        bathrooms: parseFloat(findValue('bathrooms')) || null,
+        sqft: findValue('sqft') || '',
+        kitchens: parseInt(findValue('kitchens')) || null,
+        floors: parseInt(findValue('floors')) || null,
+        yearBuilt: findValue('yearBuilt') || null,
+        heatingType: findValue('heatingType') || null,
+        centralAir: findValue('centralAir') || null,
+        gasAvailable: findValue('gasAvailable') || null,
+        lotSize: findValue('lotSize') || null,
+        basement: findValue('basement') || null,
+        condition: findValue('condition') || null,
+        parkingSpaces: findValue('parkingSpaces') || null,
+        zoning: findValue('zoning') || null,
+        buildingClass: findValue('buildingClass') || null,
+        type: status,
+        category: category,
+        propertyType: findValue('propertyType') || (category === 'commercial' ? 'Retail Space' : 'House'),
+        description: findValue('description') || '',
+        amenities: [],
+        image: images.length > 0 ? images[0] : '🏠',
+        images: images.length > 0 ? images : ['🏠'],
+        mlsNumber: findValue('mlsNumber') || undefined
+    };
+    
+    return property;
+}
+
+// Show batch preview
+function showBatchPreview() {
+    if (batchImportData.length === 0) {
+        alert('No valid properties found in the file.');
+        return;
+    }
+    
+    document.getElementById('previewCount').textContent = batchImportData.length;
+    const previewTable = document.getElementById('batchPreviewTable');
+    
+    // Create preview table
+    let tableHTML = `
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: var(--primary-color); color: white;">
+                    <th style="padding: 0.75rem; text-align: left;">Address</th>
+                    <th style="padding: 0.75rem; text-align: left;">Price</th>
+                    <th style="padding: 0.75rem; text-align: left;">Type</th>
+                    <th style="padding: 0.75rem; text-align: left;">Beds/Baths</th>
+                    <th style="padding: 0.75rem; text-align: left;">Images</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    
+    batchImportData.forEach((property, index) => {
+        const address = property.address.street || 'N/A';
+        const imageCount = property.images ? property.images.length : (property.image ? 1 : 0);
+        tableHTML += `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 0.75rem;">${address}</td>
+                <td style="padding: 0.75rem;">${property.price}</td>
+                <td style="padding: 0.75rem;">${property.propertyType}</td>
+                <td style="padding: 0.75rem;">${property.bedrooms || 0}/${property.bathrooms || 0}</td>
+                <td style="padding: 0.75rem;">${imageCount} image(s)</td>
+            </tr>
+        `;
+    });
+    
+    tableHTML += `
+            </tbody>
+        </table>
+    `;
+    
+    previewTable.innerHTML = tableHTML;
+    document.getElementById('batchPreview').style.display = 'block';
+}
+
+// Process batch import
+async function processBatchImport() {
+    if (batchImportData.length === 0) {
+        alert('No properties to import.');
+        return;
+    }
+    
+    const progressDiv = document.getElementById('batchProgress');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const resultsDiv = document.getElementById('batchResults');
+    const resultsContent = document.getElementById('batchResultsContent');
+    
+    progressDiv.style.display = 'block';
+    document.getElementById('batchPreview').style.display = 'none';
+    
+    try {
+        // Load existing properties
+        const response = await fetch(getJsonPath());
+        let existingProperties = [];
+        if (response.ok) {
+            existingProperties = await response.json();
+        }
+        
+        const results = {
+            success: 0,
+            failed: 0,
+            errors: []
+        };
+        
+        // Import each property
+        for (let i = 0; i < batchImportData.length; i++) {
+            const property = batchImportData[i];
+            
+            try {
+                // Add property to existing properties
+                existingProperties.push(property);
+                results.success++;
+            } catch (error) {
+                results.failed++;
+                results.errors.push(`Property ${i + 1} (${property.address.street || 'Unknown'}): ${error.message}`);
+            }
+            
+            // Update progress
+            const percent = Math.round(((i + 1) / batchImportData.length) * 100);
+            progressBar.style.width = percent + '%';
+            progressBar.textContent = percent + '%';
+            progressText.textContent = `Imported ${i + 1} of ${batchImportData.length} properties...`;
+        }
+        
+        // Save all properties
+        localStorage.setItem('midasProperties', JSON.stringify(existingProperties));
+        
+        // Show results
+        progressDiv.style.display = 'none';
+        resultsDiv.style.display = 'block';
+        
+        let resultsHTML = `
+            <h4 style="color: var(--success-color); margin-top: 0;">✅ Successfully imported ${results.success} properties</h4>
+        `;
+        
+        if (results.failed > 0) {
+            resultsHTML += `
+                <h4 style="color: #f44336;">❌ Failed to import ${results.failed} properties</h4>
+                <ul style="color: #666;">
+                    ${results.errors.map(err => `<li>${err}</li>`).join('')}
+                </ul>
+            `;
+        }
+        
+        resultsContent.innerHTML = resultsHTML;
+        
+        // Clear batch data
+        batchImportData = [];
+        document.getElementById('batchFile').value = '';
+        
+    } catch (error) {
+        alert('Error during batch import: ' + error.message);
+        console.error('Batch import error:', error);
+    }
+}
+
 // Cancel edit
 function cancelEdit() {
     resetForm();

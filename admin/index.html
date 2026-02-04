@@ -297,8 +297,56 @@
 
         <!-- Properties List Section -->
         <div id="properties-section" class="admin-section active">
-            <h2>Property Listings</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0;">Property Listings</h2>
+                <button onclick="showSection('batch-import')" class="btn-save" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                    📥 Batch Import
+                </button>
+            </div>
             <div id="propertiesList"></div>
+        </div>
+
+        <!-- Batch Import Section -->
+        <div id="batch-import-section" class="admin-section">
+            <h2>Batch Import Properties</h2>
+            <div class="batch-import-info" style="background: #f0f7ff; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary-color);">
+                <h3 style="margin-top: 0; color: var(--secondary-color);">Import from OneKey MLS</h3>
+                <p style="margin-bottom: 0.5rem;">Upload a CSV or JSON file from OneKey MLS to import multiple properties at once.</p>
+                <p style="margin: 0; font-size: 0.9rem; color: #666;"><strong>Supported formats:</strong> CSV (.csv) or JSON (.json)</p>
+            </div>
+
+            <div class="form-group">
+                <label>Select File (CSV or JSON)</label>
+                <input type="file" id="batchFile" accept=".csv,.json" onchange="handleBatchFileSelect(event)">
+                <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                    The file should contain property data with columns/fields matching OneKey MLS format.
+                </p>
+            </div>
+
+            <div id="batchPreview" style="display: none; margin-top: 2rem;">
+                <h3>Preview Import (<span id="previewCount">0</span> properties)</h3>
+                <div id="batchPreviewTable" style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; margin-top: 1rem;"></div>
+                <div style="margin-top: 1rem;">
+                    <button onclick="processBatchImport()" class="btn-save">✅ Import All Properties</button>
+                    <button onclick="showSection('properties')" class="btn-cancel">Cancel</button>
+                </div>
+            </div>
+
+            <div id="batchProgress" style="display: none; margin-top: 2rem;">
+                <h3>Import Progress</h3>
+                <div style="background: #f5f5f5; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                    <div id="progressBar" style="background: var(--primary-color); height: 30px; border-radius: 4px; width: 0%; transition: width 0.3s ease; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                        0%
+                    </div>
+                </div>
+                <p id="progressText" style="margin-top: 1rem; color: #666;"></p>
+            </div>
+
+            <div id="batchResults" style="display: none; margin-top: 2rem;">
+                <h3>Import Results</h3>
+                <div id="batchResultsContent" style="background: #f9f9f9; padding: 1.5rem; border-radius: 8px; margin-top: 1rem;"></div>
+                <button onclick="showSection('properties'); loadProperties();" class="btn-save" style="margin-top: 1rem;">View Properties</button>
+            </div>
         </div>
 
         <!-- Add/Edit Property Section -->
