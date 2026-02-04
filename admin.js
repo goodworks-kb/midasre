@@ -145,6 +145,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (categorySelect) {
         categorySelect.addEventListener('change', updatePropertyTypeOptions);
     }
+    
+    // Handle image URLs textarea (on blur or Enter)
+    const imageUrlsTextarea = document.getElementById('imageUrls');
+    if (imageUrlsTextarea) {
+        imageUrlsTextarea.addEventListener('blur', handleImageUrls);
+        imageUrlsTextarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                handleImageUrls();
+            }
+        });
+    }
 });
 
 // Show admin panel
