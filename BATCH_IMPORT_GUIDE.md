@@ -23,7 +23,7 @@ If you have an Excel file (.xlsx) from OneKey MLS:
 
 ### Step 1: Export from OneKey MLS
 
-Export your property listings from OneKey MLS as CSV or JSON.
+Export your property listings from OneKey MLS. This is usually an Excel file (.xlsx) or CSV file.
 
 ### Step 2: Prepare Your File
 
@@ -78,7 +78,7 @@ The system automatically maps common MLS field names to our property format:
 - `MLS Number`, `MLS`, `Listing ID`, `MLS ID`
 
 ### Images
-- `Images`, `Photos`, `Photo URLs` (comma-separated or JSON array)
+- `Images`, `Photos`, `Photo URLs` (comma-separated: `image1.jpg,image2.jpg,image3.jpg`)
 - `Image`, `Main Image`, `Primary Photo`, `Photo URL` (single image)
 
 ## Image Handling
@@ -89,13 +89,6 @@ The system automatically maps common MLS field names to our property format:
 ```csv
 Images
 image1.jpg,image2.jpg,image3.jpg
-```
-
-**JSON:** Use an array
-```json
-{
-  "Images": ["image1.jpg", "image2.jpg", "image3.jpg"]
-}
 ```
 
 ### Single Image
