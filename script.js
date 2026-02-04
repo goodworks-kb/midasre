@@ -251,9 +251,18 @@ function loadProperties(filter = 'all') {
         }
     }
     
+    // Get translations
+    const lang = window.currentLanguage || 'en';
+    const t = translations[lang] || translations.en;
+    
     propertiesGrid.innerHTML = filteredProperties.map(property => {
         const isCommercial = property.category === 'commercial';
         const propertyType = isCommercial ? property.propertyType : 'Residential';
+        
+        // Get translated type
+        const typeLabel = property.type === 'For Sale' ? t.properties.forSale : 
+                         property.type === 'For Rent' ? t.properties.forRent : property.type;
+        const categoryLabel = isCommercial ? t.properties.filters.commercial : t.properties.filters.residential;
         
         // Handle image - use main image (property.image) for card display
         let imageDisplay;
@@ -270,8 +279,8 @@ function loadProperties(filter = 'all') {
         <div class="property-card" onclick="showPropertyDetails(${property.id})" data-category="${property.category}" data-type="${property.type.toLowerCase().replace(' ', '-')}">
             <div class="property-image">
                 ${imageDisplay}
-                <span class="property-badge">${property.type}</span>
-                ${isCommercial ? `<span class="property-category-badge">Commercial</span>` : ''}
+                <span class="property-badge">${typeLabel}</span>
+                ${isCommercial ? `<span class="property-category-badge">${categoryLabel}</span>` : ''}
             </div>
             <div class="property-info">
                 <div class="property-price">${property.price}</div>
@@ -281,21 +290,21 @@ function loadProperties(filter = 'all') {
                     ${!isCommercial ? `
                     <div class="property-detail">
                         <span>🛏️</span>
-                        <span>${property.bedrooms} Beds</span>
+                        <span>${property.bedrooms} ${t.properties.beds}</span>
                     </div>
                     ` : property.bedrooms && property.bedrooms > 0 ? `
                     <div class="property-detail">
                         <span>🏢</span>
-                        <span>${property.bedrooms} Units</span>
+                        <span>${property.bedrooms} ${t.properties.units}</span>
                     </div>
                     ` : ''}
                     <div class="property-detail">
                         <span>🚿</span>
-                        <span>${property.bathrooms} ${isCommercial ? 'Restrooms' : 'Baths'}</span>
+                        <span>${property.bathrooms} ${isCommercial ? t.properties.restrooms : t.properties.baths}</span>
                     </div>
                     <div class="property-detail">
                         <span>📐</span>
-                        <span>${property.sqft} sqft</span>
+                        <span>${property.sqft} ${t.properties.sqft}</span>
                     </div>
                 </div>
             </div>
@@ -354,6 +363,10 @@ function initPropertyFilters() {
 function showPropertyDetails(id) {
     const property = properties.find(p => p.id === id);
     if (property) {
+        // Get translations
+        const lang = window.currentLanguage || 'en';
+        const t = translations[lang] || translations.en;
+        
         const isCommercial = property.category === 'commercial';
         let details = [];
         
@@ -361,61 +374,47 @@ function showPropertyDetails(id) {
         if (isCommercial) {
             details.push(property.propertyType);
             if (property.bedrooms && property.bedrooms > 0) {
-                details.push(`${property.bedrooms} Units`);
+                details.push(`${property.bedrooms} ${t.properties.units}`);
             }
-            details.push(`${property.bathrooms} Restrooms`);
+            details.push(`${property.bathrooms} ${t.properties.restrooms}`);
         } else {
-            details.push(`${property.bedrooms} Bedrooms`);
-            details.push(`${property.bathrooms} Bathrooms`);
+            details.push(`${property.bedrooms} ${t.properties.bedrooms}`);
+            details.push(`${property.bathrooms} ${t.properties.bathrooms}`);
         }
         
-        if (property.kitchens) details.push(`${property.kitchens} ${isCommercial ? 'Kitchen Areas' : 'Kitchens'}`);
-        if (property.floors) details.push(`${property.floors} ${property.floors === 1 ? 'Floor' : 'Floors'}`);
-        if (property.sqft) details.push(`${property.sqft} sqft`);
+        if (property.kitchens) details.push(`${property.kitchens} ${isCommercial ? t.properties.kitchenAreas : t.properties.kitchens}`);
+        if (property.floors) details.push(`${property.floors} ${property.floors === 1 ? t.properties.floor : t.properties.floors}`);
+        if (property.sqft) details.push(`${property.sqft} ${t.properties.sqft}`);
         
         // Property details
         let propertyDetails = [];
-        if (property.yearBuilt) propertyDetails.push(`Year Built: ${property.yearBuilt}`);
-        if (property.heatingType) propertyDetails.push(`Heating: ${property.heatingType}`);
-        if (property.centralAir) propertyDetails.push(`Central Air: ${property.centralAir}`);
-        if (property.gasAvailable) propertyDetails.push(`Gas Available: ${property.gasAvailable}`);
+        if (property.yearBuilt) propertyDetails.push(`${t.properties.yearBuilt}: ${property.yearBuilt}`);
+        if (property.heatingType) propertyDetails.push(`${t.properties.heating}: ${property.heatingType}`);
+        if (property.centralAir) propertyDetails.push(`${t.properties.centralAir}: ${property.centralAir}`);
+        if (property.gasAvailable) propertyDetails.push(`${t.properties.gasAvailable}: ${property.gasAvailable}`);
         
         // Utilities included
         if (property.utilities) {
             const includedUtilities = [];
-            if (property.utilities.water === 'Yes') includedUtilities.push('Water');
-            if (property.utilities.gas === 'Yes') includedUtilities.push('Gas');
-            if (property.utilities.electricity === 'Yes') includedUtilities.push('Electricity');
-            if (property.utilities.sewer === 'Yes') includedUtilities.push('Sewer');
-            if (property.utilities.trash === 'Yes') includedUtilities.push('Trash');
-            if (property.utilities.internet === 'Yes') includedUtilities.push('Internet/Cable');
+            if (property.utilities.water === 'Yes') includedUtilities.push(t.properties.water);
+            if (property.utilities.gas === 'Yes') includedUtilities.push(t.properties.gas);
+            if (property.utilities.electricity === 'Yes') includedUtilities.push(t.properties.electricity);
+            if (property.utilities.sewer === 'Yes') includedUtilities.push(t.properties.sewer);
+            if (property.utilities.trash === 'Yes') includedUtilities.push(t.properties.trash);
+            if (property.utilities.internet === 'Yes') includedUtilities.push(t.properties.internet);
             if (includedUtilities.length > 0) {
-                propertyDetails.push(`Utilities Included: ${includedUtilities.join(', ')}`);
+                propertyDetails.push(`${t.properties.utilitiesIncluded}: ${includedUtilities.join(', ')}`);
             }
         }
         
         if (isCommercial) {
-            if (property.parkingSpaces) propertyDetails.push(`Parking Spaces: ${property.parkingSpaces}`);
-            if (property.zoning) propertyDetails.push(`Zoning: ${property.zoning}`);
-            if (property.buildingClass) propertyDetails.push(`Building Class: ${property.buildingClass}`);
+            if (property.parkingSpaces) propertyDetails.push(`${t.properties.parkingSpaces}: ${property.parkingSpaces}`);
+            if (property.zoning) propertyDetails.push(`${t.properties.zoning}: ${property.zoning}`);
+            if (property.buildingClass) propertyDetails.push(`${t.properties.buildingClass}: ${property.buildingClass}`);
         } else {
-            if (property.lotSize) propertyDetails.push(`Lot Size: ${property.lotSize} sqft`);
-            if (property.basement) propertyDetails.push(`Basement: ${property.basement}`);
-            if (property.condition) propertyDetails.push(`Condition: ${property.condition}`);
-        }
-        
-        let message = `Property Details:\n\n${property.address}\n${property.price}\n\n${details.join(' • ')}`;
-        
-        if (propertyDetails.length > 0) {
-            message += `\n\n${propertyDetails.join('\n')}`;
-        }
-        
-        if (property.description) {
-            message += `\n\nDescription:\n${property.description}`;
-        }
-        
-        if (property.amenities && property.amenities.length > 0) {
-            message += `\n\nAmenities:\n${property.amenities.join(', ')}`;
+            if (property.lotSize) propertyDetails.push(`${t.properties.lotSize}: ${property.lotSize} ${t.properties.sqft}`);
+            if (property.basement) propertyDetails.push(`${t.properties.basement}: ${property.basement}`);
+            if (property.condition) propertyDetails.push(`${t.properties.condition}: ${property.condition}`);
         }
         
         // Show modal instead of alert
@@ -429,6 +428,10 @@ function showPropertyModal(property, details, propertyDetails, isCommercial) {
     const modalContent = document.getElementById('propertyModalContent');
     
     if (!modal || !modalContent) return;
+    
+    // Get translations
+    const lang = window.currentLanguage || 'en';
+    const t = translations[lang] || translations.en;
     
     // Get all images
     const allImages = property.images && property.images.length > 0 
@@ -459,37 +462,42 @@ function showPropertyModal(property, details, propertyDetails, isCommercial) {
         `;
     }
     
+    // Format address
+    const addressDisplay = typeof property.address === 'object' 
+        ? `${property.address.street || ''}, ${property.address.city || ''}, ${property.address.state || ''} ${property.address.zip || ''}`.trim()
+        : property.address;
+    
     modalContent.innerHTML = `
         ${imageGalleryHTML}
         <div class="property-modal-content">
-            <h2>${property.address}</h2>
+            <h2>${addressDisplay}</h2>
             <div class="property-modal-price">${property.price}</div>
             <div class="property-modal-details">${details.join(' • ')}</div>
             
             ${propertyDetails.length > 0 ? `
             <div class="property-modal-info">
-                <h3>Property Information</h3>
+                <h3>${t.properties.propertyInformation}</h3>
                 ${propertyDetails.map(d => `<div>${d}</div>`).join('')}
             </div>
             ` : ''}
             
             ${property.description ? `
             <div class="property-modal-description">
-                <h3>Description</h3>
+                <h3>${t.properties.description}</h3>
                 <p>${property.description.replace(/\n/g, '<br>')}</p>
             </div>
             ` : ''}
             
             ${property.amenities && property.amenities.length > 0 ? `
             <div class="property-modal-amenities">
-                <h3>Amenities</h3>
+                <h3>${t.properties.amenities}</h3>
                 <div class="amenities-list">${property.amenities.map(a => `<span class="amenity-tag">${a}</span>`).join('')}</div>
             </div>
             ` : ''}
             
             <div class="property-modal-contact">
-                <a href="tel:718-353-9300" class="btn-contact">📞 Call Us: 718-353-9300</a>
-                <a href="index.html#contact" class="btn-contact" onclick="closePropertyModal()">📧 Contact Us</a>
+                <a href="tel:718-353-9300" class="btn-contact">📞 ${t.properties.callUs}: 718-353-9300</a>
+                <a href="index.html#contact" class="btn-contact" onclick="closePropertyModal()">📧 ${t.properties.contactUs}</a>
             </div>
         </div>
     `;

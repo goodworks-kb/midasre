@@ -100,7 +100,12 @@ function changeLanguage(lang, save = true) {
     // Translate modals if they exist
     translateModals(t);
     
-    // Reload sold properties with new language
+    // Reload properties and sold properties with new language
+    if (typeof loadProperties === 'function') {
+        const activeFilter = document.querySelector('.filter-btn.active');
+        const filter = activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
+        loadProperties(filter);
+    }
     if (typeof loadSoldProperties === 'function') {
         loadSoldProperties();
     }
