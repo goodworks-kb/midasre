@@ -87,6 +87,7 @@ function changeLanguage(lang, save = true) {
     translateTools(t);
     translateContact(t);
     translateFooter(t);
+    translateQuickLinks(t);
     
     // Handle complex translations with HTML content (call once at the end)
     translateComplexContent(t);
