@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midas Realty - Admin Panel</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        .admin-header h1 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+        .admin-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .admin-nav button {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        .admin-nav button:hover {
+            background: var(--primary-dark);
+        }
+        .admin-nav button.active {
+            background: var(--primary-dark);
+        }
+        .admin-section {
+            display: none;
+        }
+        .admin-section.active {
+            display: block;
+        }
+        .properties-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .properties-table th,
+        .properties-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .properties-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        .properties-table tr:hover {
+            background: #f9f9f9;
+        }
+        .btn-edit, .btn-delete {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .btn-edit {
+            background: #4CAF50;
+            color: white;
+        }
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+        .btn-edit:hover {
+            background: #45a049;
+        }
+        .btn-delete:hover {
+            background: #da190b;
+        }
+        .property-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .btn-save, .btn-cancel {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-save {
+            background: var(--primary-color);
+            color: white;
+        }
+        .btn-save:hover {
+            background: var(--primary-dark);
+        }
+        .btn-cancel {
+            background: #ccc;
+            color: #333;
+        }
+        .btn-cancel:hover {
+            background: #bbb;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 10% auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .login-container h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+        .error-message {
+            color: #f44336;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .success-message {
+            color: #4CAF50;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .image-preview-item {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .image-preview-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .image-preview-item .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(244, 67, 54, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginScreen" class="login-container">
+        <h2>Midas Realty Admin</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn-save" style="width: 100%;">Login</button>
+            <div id="loginError" class="error-message" style="display: none;"></div>
+        </form>
+    </div>
+
+    <div id="adminPanel" class="admin-container" style="display: none;">
+        <div class="admin-header">
+            <h1>Midas Realty Admin Panel</h1>
+            <div>
+                <a href="/" style="margin-right: 1rem; color: var(--primary-color);">View Website</a>
+                <button onclick="logout()" class="btn-delete">Logout</button>
+            </div>
+        </div>
+
+        <div class="admin-nav">
+            <button onclick="showSection('properties')" class="active">Properties</button>
+            <button onclick="showSection('add-property')">Add New Property</button>
+        </div>
+
+        <!-- Properties List Section -->
+        <div id="properties-section" class="admin-section active">
+            <h2>Property Listings</h2>
+            <div id="propertiesList"></div>
+        </div>
+
+        <!-- Add/Edit Property Section -->
+        <div id="add-property-section" class="admin-section">
+            <h2 id="formTitle">Add New Property</h2>
+            <form id="propertyForm" class="property-form">
+                <input type="hidden" id="propertyId">
+                
+                <div class="form-group">
+                    <label>Address</label>
+                    <div class="form-row">
+                        <input type="text" id="addressStreet" placeholder="Street Address" required>
+                        <input type="text" id="addressCity" placeholder="City" required>
+                    </div>
+                    <div class="form-row" style="margin-top: 1rem;">
+                        <input type="text" id="addressState" placeholder="State" maxlength="2" required>
+                        <input type="text" id="addressZip" placeholder="ZIP Code" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="text" id="price" placeholder="$850,000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Property Type</label>
+                        <select id="propertyType" required>
+                            <option value="House">House</option>
+                            <option value="Condo">Condo</option>
+                            <option value="Townhouse">Townhouse</option>
+                            <option value="Land">Land</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Bedrooms</label>
+                        <input type="number" id="bedrooms" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Bathrooms</label>
+                        <input type="number" id="bathrooms" min="0" step="0.5" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Square Feet</label>
+                        <input type="number" id="sqft" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="status" required>
+                        <option value="For Sale">For Sale</option>
+                        <option value="For Rent">For Rent</option>
+                        <option value="Sold">Sold</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="category" required>
+                        <option value="residential">Residential</option>
+                        <option value="commercial">Commercial</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Image</label>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">
+                        Option 1: Upload image file (will be saved to /images/listings/)
+                    </p>
+                    <input type="file" id="imageFile" accept="image/*" onchange="handleImageUpload(event)">
+                    <p style="font-size: 0.9rem; color: #666; margin: 0.5rem 0;">
+                        Option 2: Enter image path or URL
+                    </p>
+                    <input type="text" id="image" placeholder="images/listings/property1.jpg or https://example.com/image.jpg or 🏡">
+                    <div id="imagePreview" class="image-preview" style="margin-top: 1rem;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>MLS Number (Optional)</label>
+                    <input type="text" id="mlsNumber">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">Save Property</button>
+                    <button type="button" class="btn-cancel" onclick="cancelEdit()">Cancel</button>
+                </div>
+                <div id="formMessage" style="margin-top: 1rem;"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../admin.js"></script>
+</body>
+</html>
