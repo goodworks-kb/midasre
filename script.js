@@ -365,7 +365,19 @@ function showPropertyDetails(id) {
             details = `${property.bedrooms} Bedrooms, ${property.bathrooms} Bathrooms`;
         }
         
-        alert(`Property Details:\n\n${property.address}\n${property.price}\n${details}\n${property.sqft} sqft\n\nContact us for more information!`);
+        let message = `Property Details:\n\n${property.address}\n${property.price}\n${details}\n${property.sqft} sqft`;
+        
+        if (property.description) {
+            message += `\n\nDescription:\n${property.description}`;
+        }
+        
+        if (property.amenities && property.amenities.length > 0) {
+            message += `\n\nAmenities:\n${property.amenities.join(', ')}`;
+        }
+        
+        message += `\n\nContact us for more information!`;
+        
+        alert(message);
     }
 }
 

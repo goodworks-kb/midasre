@@ -194,7 +194,7 @@
             height: 150px;
             object-fit: cover;
         }
-        .image-preview-item .remove-image {
+        .image-preview-item         .remove-image {
             position: absolute;
             top: 5px;
             right: 5px;
@@ -207,6 +207,27 @@
             cursor: pointer;
             font-size: 16px;
             line-height: 1;
+        }
+        .amenity-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .amenity-checkbox:hover {
+            background: #f5f5f5;
+            border-color: var(--primary-color);
+        }
+        .amenity-checkbox input[type="checkbox"] {
+            cursor: pointer;
+        }
+        .amenity-checkbox input[type="checkbox"]:checked + span {
+            color: var(--primary-color);
+            font-weight: 600;
         }
     </style>
 </head>
@@ -304,6 +325,83 @@
                     <div class="form-group">
                         <label>Square Feet</label>
                         <input type="number" id="sqft" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="description" rows="5" placeholder="Enter a detailed description of the property..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Amenities</label>
+                    <div id="amenitiesContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 0.5rem;">
+                        <!-- Residential amenities -->
+                        <label class="amenity-checkbox" data-category="residential">
+                            <input type="checkbox" value="Parking Space" data-category="residential">
+                            <span>🅿️ Parking Space</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="residential">
+                            <input type="checkbox" value="Garage" data-category="residential">
+                            <span>🚗 Garage</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="residential">
+                            <input type="checkbox" value="Swimming Pool" data-category="residential">
+                            <span>🏊 Swimming Pool</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="residential">
+                            <input type="checkbox" value="Garden/Yard" data-category="residential">
+                            <span>🌳 Garden/Yard</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="residential">
+                            <input type="checkbox" value="Balcony" data-category="residential">
+                            <span>🏡 Balcony</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="residential">
+                            <input type="checkbox" value="Fireplace" data-category="residential">
+                            <span>🔥 Fireplace</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="residential">
+                            <input type="checkbox" value="Central AC" data-category="residential">
+                            <span>❄️ Central AC</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="residential">
+                            <input type="checkbox" value="Hardwood Floors" data-category="residential">
+                            <span>🪵 Hardwood Floors</span>
+                        </label>
+                        <!-- Commercial amenities -->
+                        <label class="amenity-checkbox" data-category="commercial" style="display:none;">
+                            <input type="checkbox" value="Parking Space" data-category="commercial">
+                            <span>🅿️ Parking Space</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="commercial" style="display:none;">
+                            <input type="checkbox" value="Loading Dock" data-category="commercial">
+                            <span>🚚 Loading Dock</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="commercial" style="display:none;">
+                            <input type="checkbox" value="Elevator" data-category="commercial">
+                            <span>🛗 Elevator</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="commercial" style="display:none;">
+                            <input type="checkbox" value="Security System" data-category="commercial">
+                            <span>🔒 Security System</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="commercial" style="display:none;">
+                            <input type="checkbox" value="High Ceilings" data-category="commercial">
+                            <span>⬆️ High Ceilings</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="commercial" style="display:none;">
+                            <input type="checkbox" value="HVAC System" data-category="commercial">
+                            <span>🌡️ HVAC System</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="commercial" style="display:none;">
+                            <input type="checkbox" value="Storage Space" data-category="commercial">
+                            <span>📦 Storage Space</span>
+                        </label>
+                        <label class="amenity-checkbox" data-category="commercial" style="display:none;">
+                            <input type="checkbox" value="Restrooms" data-category="commercial">
+                            <span>🚿 Restrooms</span>
+                        </label>
                     </div>
                 </div>
 

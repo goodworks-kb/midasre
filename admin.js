@@ -78,6 +78,23 @@ function updateFieldLabels(category) {
         bathroomsLabel.textContent = 'Bathrooms';
         if (bedroomsInput) bedroomsInput.placeholder = '0';
     }
+    
+    // Update amenities visibility
+    updateAmenitiesVisibility(category);
+}
+
+// Update amenities visibility based on category
+function updateAmenitiesVisibility(category) {
+    const amenityCheckboxes = document.querySelectorAll('.amenity-checkbox');
+    amenityCheckboxes.forEach(label => {
+        const checkbox = label.querySelector('input[type="checkbox"]');
+        if (checkbox && checkbox.dataset.category === category) {
+            label.style.display = 'flex';
+        } else if (checkbox && checkbox.dataset.category !== category) {
+            label.style.display = 'none';
+            checkbox.checked = false; // Uncheck amenities from other category
+        }
+    });
 }
 
 // Wait for DOM to load before attaching event listeners
@@ -360,6 +377,8 @@ document.getElementById('propertyForm').addEventListener('submit', async (e) => 
         type: document.getElementById('status').value,
         category: document.getElementById('category').value,
         propertyType: document.getElementById('propertyType').value,
+        description: document.getElementById('description').value || '',
+        amenities: selectedAmenities,
         image: imageValue,
         mlsNumber: document.getElementById('mlsNumber').value || undefined
     };
@@ -440,6 +459,14 @@ async function editProperty(index) {
         // Update property type options and field labels first, then set the value
         updatePropertyTypeOptions(); // This will also call updateFieldLabels
         document.getElementById('propertyType').value = property.propertyType || (property.category === 'commercial' ? 'Retail Space' : 'House');
+        document.getElementById('description').value = property.description || '';
+        
+        // Set amenities
+        const amenityCheckboxes = document.querySelectorAll('#amenitiesContainer input[type="checkbox"]');
+        amenityCheckboxes.forEach(checkbox => {
+            checkbox.checked = property.amenities && property.amenities.includes(checkbox.value);
+        });
+        
         document.getElementById('image').value = property.image || '🏠';
         document.getElementById('imageFile').value = '';
         
