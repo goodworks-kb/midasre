@@ -686,30 +686,13 @@ if (document.readyState === 'loading') {
 // Save contact submission to JSON file (for admin panel access)
 async function saveContactSubmission(submission) {
     try {
-        // Load existing submissions from JSON file
-        let submissions = [];
-        try {
-            const response = await fetch('data/contact-submissions.json');
-            if (response.ok) {
-                submissions = await response.json();
-            }
-        } catch (fetchError) {
-            console.log('JSON file does not exist yet, will create new array');
-        }
+        // Note: In a static site, we can't directly write to files from the browser
+        // The admin panel will read from localStorage directly
+        // For production, you'd need a backend API endpoint to write to the JSON file
         
-        // Add new submission (avoid duplicates)
-        const exists = submissions.find(s => s.id === submission.id);
-        if (!exists) {
-            submissions.unshift(submission);
-            
-            // Note: In a static site, we can't directly write to files from the browser
-            // The admin panel will read from localStorage and merge with JSON file
-            // For production, you'd need a backend API endpoint to write to the JSON file
-            console.log('Contact submission prepared for JSON (requires backend to write):', submission);
-            
-            // Store in localStorage as backup (will be read by admin panel)
-            localStorage.setItem('midasContactSubmissions', JSON.stringify(submissions));
-        }
+        // This function is mainly for future backend integration
+        // The actual saving happens in the form submit handler above
+        console.log('Contact submission saved (localStorage only in static site):', submission);
     } catch (error) {
         console.error('Error saving to file:', error);
         // Continue anyway - localStorage is working
