@@ -1245,6 +1245,18 @@ async function loadContactSubmissions() {
         console.log('Current origin:', window.location.origin);
         console.log('Total unique submissions:', uniqueSubmissions.length);
         
+        // Check if localStorage is accessible
+        let localStorageTest = 'unknown';
+        try {
+            const testKey = '__localStorage_test__';
+            localStorage.setItem(testKey, 'test');
+            localStorage.removeItem(testKey);
+            localStorageTest = 'accessible';
+        } catch (e) {
+            localStorageTest = `blocked: ${e.message}`;
+            console.error('localStorage is blocked:', e);
+        }
+        
         // Update debug info
         if (debugInfoEl) {
             const isLocalhost = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1');
@@ -1257,14 +1269,20 @@ async function loadContactSubmissions() {
                 ? '<br><strong style="color: #10b981;">✓ Production Mode:</strong> Both main site and admin panel share localStorage on same domain.'
                 : '';
             
+            const localStorageStatus = localStorageTest === 'accessible' 
+                ? '<span style="color: #10b981;">✓ Accessible</span>'
+                : `<span style="color: #ef4444;">✗ ${localStorageTest}</span>`;
+            
             debugInfoEl.innerHTML = `
                 <strong>Current URL:</strong> ${window.location.href}<br>
                 <strong>Origin:</strong> ${window.location.origin}<br>
                 <strong>Environment:</strong> ${isProduction ? 'Production' : 'Development'}<br>
+                <strong>localStorage status:</strong> ${localStorageStatus}<br>
                 <strong>localStorage keys:</strong> ${allKeys.join(', ') || 'none'}<br>
                 <strong>From JSON file:</strong> ${submissionsFromFile.length} submission(s)<br>
                 <strong>From localStorage:</strong> ${submissionsFromStorage.length} submission(s)<br>
                 <strong>Total unique:</strong> ${uniqueSubmissions.length} submission(s)${originWarning}${productionNote}
+                ${uniqueSubmissions.length === 0 ? '<br><br><strong style="color: #f59e0b;">💡 Tip:</strong> Submit a test form on the main website, then refresh this page.' : ''}
             `;
         }
         
