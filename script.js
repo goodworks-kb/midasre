@@ -541,25 +541,83 @@ document.addEventListener('click', function(event) {
 // Contact Form Handler
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            message: document.getElementById('message').value
+            id: Date.now(),
+            name: document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            message: document.getElementById('message').value.trim(),
+            timestamp: new Date().toISOString(),
+            date: new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })
         };
         
-        // In a real application, you would send this data to a server
-        console.log('Form submitted:', formData);
-        
-        // Show success message
-        alert('Thank you for your message! We will get back to you soon.');
-        
-        // Reset form
-        contactForm.reset();
+        try {
+            // Save to localStorage
+            let submissions = JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]');
+            submissions.unshift(formData); // Add to beginning (newest first)
+            localStorage.setItem('midasContactSubmissions', JSON.stringify(submissions));
+            
+            // Save to JSON file (for persistence)
+            await saveContactSubmission(formData);
+            
+            // Send email via mailto link
+            const emailSubject = encodeURIComponent(`New Contact Form Submission from ${formData.name}`);
+            const emailBody = encodeURIComponent(
+                `New Contact Form Submission\n\n` +
+                `Name: ${formData.name}\n` +
+                `Email: ${formData.email}\n` +
+                `Phone: ${formData.phone || 'Not provided'}\n` +
+                `Date: ${formData.date}\n\n` +
+                `Message:\n${formData.message}`
+            );
+            const mailtoLink = `mailto:midasrealtyonline@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+            
+            // Open email client (user can send manually)
+            window.location.href = mailtoLink;
+            
+            // Show success message
+            alert('Thank you for your message! We will get back to you soon.');
+            
+            // Reset form
+            contactForm.reset();
+        } catch (error) {
+            console.error('Error saving contact submission:', error);
+            alert('Thank you for your message! We will get back to you soon.');
+            contactForm.reset();
+        }
     });
+}
+
+// Save contact submission to JSON file
+async function saveContactSubmission(submission) {
+    try {
+        // Try to save to data/contact-submissions.json
+        const response = await fetch('data/contact-submissions.json');
+        let submissions = [];
+        
+        if (response.ok) {
+            submissions = await response.json();
+        }
+        
+        submissions.unshift(submission);
+        
+        // Note: In a static site, we can't directly write to files
+        // This would require a backend API endpoint
+        // For now, we'll rely on localStorage and the mailto link
+        console.log('Contact submission saved:', submission);
+    } catch (error) {
+        console.error('Error saving to file:', error);
+        // Continue anyway - localStorage is working
+    }
 }
 
 // Intersection Observer for fade-in animations

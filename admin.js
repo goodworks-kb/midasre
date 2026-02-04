@@ -1155,6 +1155,111 @@ async function processBatchImport() {
     }
 }
 
+// Contact Submissions Functions
+function loadContactSubmissions() {
+    try {
+        // Load from localStorage
+        const submissions = JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]');
+        displayContactSubmissions(submissions);
+    } catch (error) {
+        console.error('Error loading contact submissions:', error);
+        document.getElementById('contactSubmissionsList').innerHTML = '<p>Error loading submissions.</p>';
+    }
+}
+
+function displayContactSubmissions(submissions) {
+    const container = document.getElementById('contactSubmissionsList');
+    
+    if (submissions.length === 0) {
+        container.innerHTML = '<p style="padding: 2rem; text-align: center; color: #64748b;">No contact submissions yet.</p>';
+        return;
+    }
+    
+    let html = `
+        <table class="properties-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Message</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    
+    submissions.forEach(submission => {
+        const messagePreview = submission.message.length > 100 
+            ? submission.message.substring(0, 100) + '...' 
+            : submission.message;
+        
+        html += `
+            <tr>
+                <td>${submission.date || new Date(submission.timestamp).toLocaleString()}</td>
+                <td><strong>${submission.name}</strong></td>
+                <td><a href="mailto:${submission.email}" style="color: #2196F3;">${submission.email}</a></td>
+                <td>${submission.phone || '<em style="color: #94a3b8;">Not provided</em>'}</td>
+                <td>
+                    <div style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;" title="${submission.message.replace(/"/g, '&quot;')}">
+                        ${messagePreview}
+                    </div>
+                </td>
+                <td>
+                    <button class="btn-edit" onclick="viewContactSubmission(${submission.id})">View</button>
+                    <button class="btn-delete" onclick="deleteContactSubmission(${submission.id})">Delete</button>
+                </td>
+            </tr>
+        `;
+    });
+    
+    html += `
+            </tbody>
+        </table>
+    `;
+    
+    container.innerHTML = html;
+}
+
+function viewContactSubmission(id) {
+    const submissions = JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]');
+    const submission = submissions.find(s => s.id === id);
+    
+    if (!submission) {
+        alert('Submission not found.');
+        return;
+    }
+    
+    const details = `
+Name: ${submission.name}
+Email: ${submission.email}
+Phone: ${submission.phone || 'Not provided'}
+Date: ${submission.date || new Date(submission.timestamp).toLocaleString()}
+
+Message:
+${submission.message}
+    `;
+    
+    alert(details);
+}
+
+function deleteContactSubmission(id) {
+    if (!confirm('Are you sure you want to delete this contact submission?')) {
+        return;
+    }
+    
+    try {
+        const submissions = JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]');
+        const filtered = submissions.filter(s => s.id !== id);
+        localStorage.setItem('midasContactSubmissions', JSON.stringify(filtered));
+        loadContactSubmissions();
+    } catch (error) {
+        console.error('Error deleting submission:', error);
+        alert('Error deleting submission.');
+    }
+}
+
 // Cancel edit
 function cancelEdit() {
     resetForm();
