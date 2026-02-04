@@ -1174,7 +1174,7 @@ async function processBatchImport() {
 }
 
 // Contact Submissions Functions
-function loadContactSubmissions() {
+async function loadContactSubmissions() {
     try {
         // Update debug info
         const debugInfoEl = document.getElementById('debugInfo');
@@ -1186,48 +1186,77 @@ function loadContactSubmissions() {
         const allKeys = Object.keys(localStorage);
         console.log('All localStorage keys:', allKeys);
         
-        // Load from localStorage
+        // Try to load from JSON file first (shared storage)
+        let submissionsFromFile = [];
+        try {
+            const fileResponse = await fetch('../data/contact-submissions.json');
+            if (fileResponse.ok) {
+                submissionsFromFile = await fileResponse.json();
+                console.log('Loaded submissions from JSON file:', submissionsFromFile.length);
+            }
+        } catch (fileError) {
+            console.log('Could not load from JSON file (may not exist yet):', fileError);
+        }
+        
+        // Load from localStorage (current origin)
         const stored = localStorage.getItem('midasContactSubmissions');
-        console.log('Loading contact submissions from localStorage. Raw data:', stored);
+        let submissionsFromStorage = [];
+        
+        if (stored && stored !== 'null' && stored !== 'undefined') {
+            try {
+                submissionsFromStorage = JSON.parse(stored);
+                console.log('Loaded submissions from localStorage:', submissionsFromStorage.length);
+            } catch (parseError) {
+                console.error('Error parsing localStorage data:', parseError);
+            }
+        }
+        
+        // Merge submissions from both sources, removing duplicates by ID
+        const allSubmissions = [...submissionsFromFile, ...submissionsFromStorage];
+        const uniqueSubmissions = [];
+        const seenIds = new Set();
+        
+        for (const submission of allSubmissions) {
+            if (submission && submission.id && !seenIds.has(submission.id)) {
+                seenIds.add(submission.id);
+                uniqueSubmissions.push(submission);
+            }
+        }
+        
+        // Sort by timestamp (newest first)
+        uniqueSubmissions.sort((a, b) => {
+            const timeA = new Date(a.timestamp || a.date || 0).getTime();
+            const timeB = new Date(b.timestamp || b.date || 0).getTime();
+            return timeB - timeA;
+        });
+        
         console.log('Current URL:', window.location.href);
         console.log('Current origin:', window.location.origin);
+        console.log('Total unique submissions:', uniqueSubmissions.length);
         
         // Update debug info
         if (debugInfoEl) {
+            const originWarning = window.location.origin.includes('localhost') 
+                ? '<br><strong style="color: #f59e0b;">⚠️ Note:</strong> If form was submitted on <code>127.0.0.1</code>, data may be in different localStorage. Use same origin for both pages.'
+                : '';
+            
             debugInfoEl.innerHTML = `
                 <strong>Current URL:</strong> ${window.location.href}<br>
                 <strong>Origin:</strong> ${window.location.origin}<br>
                 <strong>localStorage keys:</strong> ${allKeys.join(', ') || 'none'}<br>
-                <strong>Raw data length:</strong> ${stored ? stored.length : 0} characters<br>
-                <strong>Raw data preview:</strong> ${stored ? stored.substring(0, 100) + '...' : 'null'}
+                <strong>From JSON file:</strong> ${submissionsFromFile.length} submission(s)<br>
+                <strong>From localStorage:</strong> ${submissionsFromStorage.length} submission(s)<br>
+                <strong>Total unique:</strong> ${uniqueSubmissions.length} submission(s)${originWarning}
             `;
         }
         
-        if (!stored || stored === 'null' || stored === 'undefined') {
-            console.log('No submissions found in localStorage');
-            console.log('Available localStorage keys:', allKeys);
+        if (uniqueSubmissions.length === 0) {
+            console.log('No submissions found in either localStorage or JSON file');
             displayContactSubmissions([]);
             return;
         }
         
-        const submissions = JSON.parse(stored);
-        console.log('Parsed submissions:', submissions);
-        console.log('Number of submissions:', submissions.length);
-        
-        if (!Array.isArray(submissions)) {
-            console.error('Submissions is not an array:', submissions);
-            if (debugInfoEl) {
-                debugInfoEl.innerHTML += `<br><strong style="color: #ef4444;">Error:</strong> Data is not an array: ${typeof submissions}`;
-            }
-            displayContactSubmissions([]);
-            return;
-        }
-        
-        if (debugInfoEl) {
-            debugInfoEl.innerHTML += `<br><strong style="color: #10b981;">✓ Found ${submissions.length} submission(s)</strong>`;
-        }
-        
-        displayContactSubmissions(submissions);
+        displayContactSubmissions(uniqueSubmissions);
     } catch (error) {
         console.error('Error loading contact submissions:', error);
         const container = document.getElementById('contactSubmissionsList');

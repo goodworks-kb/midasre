@@ -667,23 +667,33 @@ if (document.readyState === 'loading') {
     initContactForm();
 }
 
-// Save contact submission to JSON file
+// Save contact submission to JSON file (for admin panel access)
 async function saveContactSubmission(submission) {
     try {
-        // Try to save to data/contact-submissions.json
-        const response = await fetch('data/contact-submissions.json');
+        // Load existing submissions from JSON file
         let submissions = [];
-        
-        if (response.ok) {
-            submissions = await response.json();
+        try {
+            const response = await fetch('data/contact-submissions.json');
+            if (response.ok) {
+                submissions = await response.json();
+            }
+        } catch (fetchError) {
+            console.log('JSON file does not exist yet, will create new array');
         }
         
-        submissions.unshift(submission);
-        
-        // Note: In a static site, we can't directly write to files
-        // This would require a backend API endpoint
-        // For now, we'll rely on localStorage and the mailto link
-        console.log('Contact submission saved:', submission);
+        // Add new submission (avoid duplicates)
+        const exists = submissions.find(s => s.id === submission.id);
+        if (!exists) {
+            submissions.unshift(submission);
+            
+            // Note: In a static site, we can't directly write to files from the browser
+            // The admin panel will read from localStorage and merge with JSON file
+            // For production, you'd need a backend API endpoint to write to the JSON file
+            console.log('Contact submission prepared for JSON (requires backend to write):', submission);
+            
+            // Store in localStorage as backup (will be read by admin panel)
+            localStorage.setItem('midasContactSubmissions', JSON.stringify(submissions));
+        }
     } catch (error) {
         console.error('Error saving to file:', error);
         // Continue anyway - localStorage is working
