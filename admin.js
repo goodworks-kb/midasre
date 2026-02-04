@@ -1,6 +1,9 @@
 // Admin Panel JavaScript
 const ADMIN_PASSWORD = 'midas2024'; // Change this to a secure password
 
+// Store uploaded images
+let uploadedImages = [];
+
 // Check if user is logged in
 function checkAuth() {
     return sessionStorage.getItem('adminAuthenticated') === 'true';
@@ -293,83 +296,125 @@ async function saveProperties(properties) {
     }
 }
 
-// Handle image upload
-let uploadedImagePath = null;
-
-function handleImageUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+// Handle multiple image uploads
+function handleMultipleImageUpload(event) {
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
     
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-        alert('Please select an image file');
-        return;
-    }
-    
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-        alert('Image size must be less than 5MB');
-        return;
-    }
-    
-    // Generate unique filename
-    const timestamp = Date.now();
-    const extension = file.name.split('.').pop();
-    const filename = `property-${timestamp}.${extension}`;
-    uploadedImagePath = `images/listings/${filename}`;
-    
-    // Show preview
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const preview = document.getElementById('imagePreview');
-        preview.innerHTML = `
-            <div class="image-preview-item">
-                <img src="${e.target.result}" alt="Preview">
-                <button type="button" class="remove-image" onclick="removeImagePreview()">×</button>
-            </div>
-            <p style="grid-column: 1/-1; font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
-                Will be saved as: ${uploadedImagePath}<br>
-                <strong>Note:</strong> You'll need to manually copy this file to the /images/listings/ folder, or set up a backend to handle uploads.
-            </p>
-        `;
-        document.getElementById('image').value = uploadedImagePath;
-    };
-    reader.readAsDataURL(file);
+    files.forEach(file => {
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            alert(`Skipping ${file.name}: Not an image file`);
+            return;
+        }
+        
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert(`Skipping ${file.name}: File size must be less than 5MB`);
+            return;
+        }
+        
+        // Generate unique filename
+        const timestamp = Date.now() + Math.random();
+        const extension = file.name.split('.').pop();
+        const filename = `property-${timestamp}.${extension}`;
+        const imagePath = `images/listings/${filename}`;
+        
+        // Read and add to preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            uploadedImages.push({
+                path: imagePath,
+                url: e.target.result,
+                isMain: uploadedImages.length === 0 // First image is main
+            });
+            updateImagePreview();
+        };
+        reader.readAsDataURL(file);
+    });
 }
 
-function removeImagePreview() {
-    document.getElementById('imagePreview').innerHTML = '';
-    document.getElementById('imageFile').value = '';
-    uploadedImagePath = null;
-    document.getElementById('image').value = '';
+// Handle image URLs from textarea
+function handleImageUrls() {
+    const urlsText = document.getElementById('imageUrls').value.trim();
+    if (!urlsText) return;
+    
+    const urls = urlsText.split('\n').filter(url => url.trim());
+    urls.forEach((url, index) => {
+        if (url.trim()) {
+            uploadedImages.push({
+                path: url.trim(),
+                url: url.trim(),
+                isMain: uploadedImages.length === 0 && index === 0
+            });
+        }
+    });
+    updateImagePreview();
+    document.getElementById('imageUrls').value = '';
+}
+
+// Update image preview display
+function updateImagePreview() {
+    const preview = document.getElementById('imagePreview');
+    if (uploadedImages.length === 0) {
+        preview.innerHTML = '';
+        return;
+    }
+    
+    preview.innerHTML = uploadedImages.map((img, index) => `
+        <div class="image-preview-item ${img.isMain ? 'main-image' : ''}" data-index="${index}">
+            <img src="${img.url}" alt="Preview ${index + 1}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'150\\' height=\\'150\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'150\\' height=\\'150\\'/%3E%3Ctext fill=\\'%23999\\' font-family=\\'sans-serif\\' font-size=\\'14\\' x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\'%3EImage%3C/text%3E%3C/svg%3E';">
+            ${!img.isMain ? `<button type="button" class="set-main" onclick="setMainImage(${index})">Set Main</button>` : ''}
+            <button type="button" class="remove-image" onclick="removeImage(${index})">×</button>
+        </div>
+    `).join('');
+}
+
+// Set main image
+function setMainImage(index) {
+    uploadedImages.forEach((img, i) => {
+        img.isMain = (i === index);
+    });
+    updateImagePreview();
+}
+
+// Remove image
+function removeImage(index) {
+    uploadedImages.splice(index, 1);
+    // If we removed the main image and there are still images, make the first one main
+    if (uploadedImages.length > 0 && !uploadedImages.some(img => img.isMain)) {
+        uploadedImages[0].isMain = true;
+    }
+    updateImagePreview();
+}
+
+// Clear all images
+function clearAllImages() {
+    uploadedImages = [];
+    document.getElementById('imageFiles').value = '';
+    document.getElementById('imageUrls').value = '';
+    updateImagePreview();
 }
 
 // Add/Edit property form handler
 document.getElementById('propertyForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // Get image value (from upload or manual entry)
-    let imageValue = document.getElementById('image').value || '🏠';
+    // Handle image URLs from textarea
+    handleImageUrls();
     
-    // If image was uploaded, save it (in a real app, this would upload to server)
-    if (uploadedImagePath && document.getElementById('imageFile').files.length > 0) {
-        // For static site: save file info and provide instructions
-        const file = document.getElementById('imageFile').files[0];
-        const fileData = {
-            name: uploadedImagePath.split('/').pop(),
-            path: uploadedImagePath,
-            size: file.size,
-            type: file.type
-        };
-        
-        // Store file info in localStorage for reference
-        const uploadedFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
-        uploadedFiles.push(fileData);
-        localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
-        
-        // Show instructions
-        alert(`Image ready to upload!\n\nTo complete the upload:\n1. Copy the file to: ${uploadedImagePath}\n2. Or use the file data stored in localStorage\n\nFor now, the path "${uploadedImagePath}" has been saved.`);
+    // Get images - use uploadedImages array
+    let images = [];
+    if (uploadedImages.length > 0) {
+        images = uploadedImages.map(img => img.path);
+    } else {
+        // Fallback to emoji if no images
+        images = ['🏠'];
     }
+    
+    // Get main image (first image or marked as main)
+    const mainImage = uploadedImages.find(img => img.isMain) || uploadedImages[0];
+    const image = mainImage ? mainImage.path : (images[0] || '🏠');
     
     // Get selected amenities
     const selectedAmenities = [];
@@ -418,7 +463,8 @@ document.getElementById('propertyForm').addEventListener('submit', async (e) => 
         propertyType: document.getElementById('propertyType').value,
         description: document.getElementById('description').value || '',
         amenities: selectedAmenities,
-        image: imageValue,
+        image: image, // Main/featured image
+        images: images, // All images array
         mlsNumber: document.getElementById('mlsNumber').value || undefined
     };
     
@@ -601,6 +647,9 @@ function resetForm() {
     document.getElementById('zoning').value = '';
     document.getElementById('buildingClass').value = '';
     document.getElementById('description').value = '';
+    
+    // Clear all images
+    clearAllImages();
     
     // Uncheck all utilities
     document.getElementById('waterIncluded').checked = false;

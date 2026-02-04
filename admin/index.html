@@ -540,16 +540,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Image</label>
+                    <label>Property Images</label>
                     <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">
-                        Option 1: Upload image file (will be saved to /images/listings/)
+                        Upload multiple images (first image will be the main/featured image)
                     </p>
-                    <input type="file" id="imageFile" accept="image/*" onchange="handleImageUpload(event)">
+                    <input type="file" id="imageFiles" accept="image/*" multiple onchange="handleMultipleImageUpload(event)">
                     <p style="font-size: 0.9rem; color: #666; margin: 0.5rem 0;">
-                        Option 2: Enter image path or URL
+                        Or enter image URLs/paths (one per line, first will be main image)
                     </p>
-                    <input type="text" id="image" placeholder="images/listings/property1.jpg or https://example.com/image.jpg or 🏡">
+                    <textarea id="imageUrls" rows="3" placeholder="images/listings/property1.jpg&#10;images/listings/property2.jpg&#10;https://example.com/image.jpg"></textarea>
                     <div id="imagePreview" class="image-preview" style="margin-top: 1rem;"></div>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">
+                        💡 Tip: Drag images to reorder. First image is the main featured image shown in listings.
+                    </p>
                 </div>
 
                 <div class="form-group">

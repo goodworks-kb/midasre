@@ -255,14 +255,15 @@ function loadProperties(filter = 'all') {
         const isCommercial = property.category === 'commercial';
         const propertyType = isCommercial ? property.propertyType : 'Residential';
         
-        // Handle image - can be URL, local path, or emoji
+        // Handle image - use main image (property.image) for card display
         let imageDisplay;
-        if (property.image && (property.image.startsWith('http') || property.image.startsWith('images/'))) {
+        const mainImage = property.image || (property.images && property.images[0]) || '🏠';
+        if (mainImage && (mainImage.startsWith('http') || mainImage.startsWith('images/'))) {
             // It's a URL or local image path
-            imageDisplay = `<img src="${property.image}" alt="${property.address.street || 'Property'}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'font-size: 4rem; z-index: 1; position: relative;\\'>🏠</span>';">`;
+            imageDisplay = `<img src="${mainImage}" alt="${property.address.street || 'Property'}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'font-size: 4rem; z-index: 1; position: relative;\\'>🏠</span>';">`;
         } else {
             // It's an emoji or no image
-            imageDisplay = `<span style="font-size: 4rem; z-index: 1; position: relative;">${property.image || '🏠'}</span>`;
+            imageDisplay = `<span style="font-size: 4rem; z-index: 1; position: relative;">${mainImage}</span>`;
         }
         
         return `
@@ -417,11 +418,117 @@ function showPropertyDetails(id) {
             message += `\n\nAmenities:\n${property.amenities.join(', ')}`;
         }
         
-        message += `\n\nContact us for more information!`;
-        
-        alert(message);
+        // Show modal instead of alert
+        showPropertyModal(property, details, propertyDetails, isCommercial);
     }
 }
+
+// Show Property Details Modal with Image Gallery
+function showPropertyModal(property, details, propertyDetails, isCommercial) {
+    const modal = document.getElementById('propertyModal');
+    const modalContent = document.getElementById('propertyModalContent');
+    
+    if (!modal || !modalContent) return;
+    
+    // Get all images
+    const allImages = property.images && property.images.length > 0 
+        ? property.images 
+        : (property.image ? [property.image] : []);
+    
+    // Build image gallery HTML
+    let imageGalleryHTML = '';
+    if (allImages.length > 0) {
+        const firstImage = allImages[0].replace(/'/g, "\\'");
+        imageGalleryHTML = `
+            <div class="property-image-gallery">
+                <div class="gallery-main">
+                    <img id="galleryMainImage" src="${firstImage}" alt="Property Image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'800\\' height=\\'600\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'800\\' height=\\'600\\'/%3E%3Ctext fill=\\'%23999\\' font-family=\\'sans-serif\\' font-size=\\'24\\' x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\'%3EProperty Image%3C/text%3E%3C/svg%3E';">
+                </div>
+                ${allImages.length > 1 ? `
+                <div class="gallery-thumbnails">
+                    ${allImages.map((img, index) => {
+                        const safeImg = img.replace(/'/g, "\\'");
+                        return `<img src="${safeImg}" alt="Thumbnail ${index + 1}" 
+                             onclick="changeGalleryImage('${safeImg}')" 
+                             class="gallery-thumb ${index === 0 ? 'active' : ''}"
+                             onerror="this.style.display='none';">`;
+                    }).join('')}
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }
+    
+    modalContent.innerHTML = `
+        ${imageGalleryHTML}
+        <div class="property-modal-content">
+            <h2>${property.address}</h2>
+            <div class="property-modal-price">${property.price}</div>
+            <div class="property-modal-details">${details.join(' • ')}</div>
+            
+            ${propertyDetails.length > 0 ? `
+            <div class="property-modal-info">
+                <h3>Property Information</h3>
+                ${propertyDetails.map(d => `<div>${d}</div>`).join('')}
+            </div>
+            ` : ''}
+            
+            ${property.description ? `
+            <div class="property-modal-description">
+                <h3>Description</h3>
+                <p>${property.description.replace(/\n/g, '<br>')}</p>
+            </div>
+            ` : ''}
+            
+            ${property.amenities && property.amenities.length > 0 ? `
+            <div class="property-modal-amenities">
+                <h3>Amenities</h3>
+                <div class="amenities-list">${property.amenities.map(a => `<span class="amenity-tag">${a}</span>`).join('')}</div>
+            </div>
+            ` : ''}
+            
+            <div class="property-modal-contact">
+                <a href="tel:718-353-9300" class="btn-contact">📞 Call Us: 718-353-9300</a>
+                <a href="index.html#contact" class="btn-contact" onclick="closePropertyModal()">📧 Contact Us</a>
+            </div>
+        </div>
+    `;
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+// Change gallery main image
+function changeGalleryImage(imageSrc) {
+    const mainImg = document.getElementById('galleryMainImage');
+    if (mainImg) {
+        mainImg.src = imageSrc;
+        // Update active thumbnail
+        document.querySelectorAll('.gallery-thumb').forEach(thumb => {
+            thumb.classList.remove('active');
+            if (thumb.src === imageSrc || thumb.getAttribute('src') === imageSrc) {
+                thumb.classList.add('active');
+            }
+        });
+    }
+}
+
+// Close property modal
+function closePropertyModal() {
+    const modal = document.getElementById('propertyModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('propertyModal');
+    if (event.target === modal) {
+        closePropertyModal();
+    }
+});
 
 // Contact Form Handler
 const contactForm = document.getElementById('contactForm');

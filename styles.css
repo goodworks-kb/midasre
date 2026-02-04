@@ -175,12 +175,15 @@ html {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-weight: 800;
-    letter-spacing: 1.5px;
+    font-weight: 900;
+    letter-spacing: 2px;
     margin: 0;
-    line-height: 1.2;
+    line-height: 1.1;
     text-transform: uppercase;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    text-shadow: 0 2px 4px rgba(212, 175, 55, 0.15);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .logo-tagline {
@@ -1687,6 +1690,160 @@ section {
     width: 100%;
 }
 
+/* Property Image Gallery */
+.property-image-gallery {
+    margin-bottom: 2rem;
+}
+
+.gallery-main {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.gallery-main img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.5rem;
+}
+
+.gallery-thumb {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+.gallery-thumb:hover {
+    opacity: 1;
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.gallery-thumb.active {
+    opacity: 1;
+    border-color: var(--primary-color);
+    border-width: 3px;
+}
+
+.property-modal-content {
+    padding: 0;
+}
+
+.property-modal-content h2 {
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
+}
+
+.property-modal-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.property-modal-details {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.property-modal-info,
+.property-modal-description,
+.property-modal-amenities {
+    margin-bottom: 1.5rem;
+}
+
+.property-modal-info h3,
+.property-modal-description h3,
+.property-modal-amenities h3 {
+    color: var(--secondary-color);
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+}
+
+.property-modal-info div {
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+}
+
+.property-modal-description p {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.amenities-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.amenity-tag {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.property-modal-contact {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--primary-color);
+}
+
+.btn-contact {
+    flex: 1;
+    padding: 1rem 2rem;
+    background: var(--primary-color);
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-contact:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-gold);
+}
+
+@media (max-width: 768px) {
+    .property-modal-contact {
+        flex-direction: column;
+    }
+    
+    .gallery-thumbnails {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+    
+    .gallery-thumb {
+        height: 60px;
+    }
+}
+
 /* Mortgage Calculator Modal */
 .modal {
     display: none;
@@ -2047,6 +2204,18 @@ section {
     line-height: 1.8;
 }
 
+.contact-item p a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.contact-item p a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
 .contact-form {
     display: flex;
     flex-direction: column;
@@ -2327,7 +2496,8 @@ html {
 
     .logo h1 {
         font-size: 1.25rem;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
+        font-weight: 900;
     }
 
     .logo-tagline {
@@ -2849,7 +3019,8 @@ html {
     
     .logo h1 {
         font-size: 1.1rem;
-        letter-spacing: 0.8px;
+        letter-spacing: 1.2px;
+        font-weight: 900;
     }
     
     .logo-icon {
