@@ -1166,18 +1166,31 @@ async function processBatchImport() {
 function loadContactSubmissions() {
     try {
         // Load from localStorage
-        const submissions = JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]');
+        const stored = localStorage.getItem('midasContactSubmissions');
+        console.log('Loading contact submissions from localStorage:', stored);
+        
+        const submissions = stored ? JSON.parse(stored) : [];
+        console.log('Parsed submissions:', submissions);
+        
         displayContactSubmissions(submissions);
     } catch (error) {
         console.error('Error loading contact submissions:', error);
-        document.getElementById('contactSubmissionsList').innerHTML = '<p>Error loading submissions.</p>';
+        const container = document.getElementById('contactSubmissionsList');
+        if (container) {
+            container.innerHTML = '<p style="padding: 2rem; text-align: center; color: #ef4444;">Error loading submissions. Check console for details.</p>';
+        }
     }
 }
 
 function displayContactSubmissions(submissions) {
     const container = document.getElementById('contactSubmissionsList');
     
-    if (submissions.length === 0) {
+    if (!container) {
+        console.error('Contact submissions container not found');
+        return;
+    }
+    
+    if (!submissions || submissions.length === 0) {
         container.innerHTML = '<p style="padding: 2rem; text-align: center; color: #64748b;">No contact submissions yet.</p>';
         return;
     }
