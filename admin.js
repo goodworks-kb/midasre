@@ -178,6 +178,15 @@ function showAdminPanel() {
     if (adminPanel) {
         adminPanel.style.display = 'block';
         loadProperties();
+        
+        // Load contact submissions if on that section
+        const activeSection = document.querySelector('.admin-section.active');
+        if (activeSection && activeSection.id === 'contact-submissions-section') {
+            setTimeout(() => {
+                loadContactSubmissions();
+            }, 100);
+        }
+        
         // Initialize property type options when panel is shown
         setTimeout(() => {
             updatePropertyTypeOptions();
