@@ -499,9 +499,10 @@ document.getElementById('propertyForm').addEventListener('submit', async (e) => 
         
         const propertyId = document.getElementById('propertyId').value;
         if (propertyId) {
-            // Edit existing
+            // Edit existing - preserve the original ID
             const index = parseInt(propertyId);
-            properties[index] = { ...properties[index], ...property };
+            property.id = properties[index].id; // Preserve original ID
+            properties[index] = property; // Replace entire property object
         } else {
             // Add new
             properties.push(property);
