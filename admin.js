@@ -558,6 +558,18 @@ function resetForm() {
     document.getElementById('formMessage').innerHTML = '';
     document.getElementById('bedrooms').value = '0';
     document.getElementById('bathrooms').value = '0';
+    document.getElementById('kitchens').value = '1';
+    document.getElementById('floors').value = '1';
+    document.getElementById('yearBuilt').value = '';
+    document.getElementById('heatingType').value = '';
+    document.getElementById('centralAir').value = '';
+    document.getElementById('gasAvailable').value = '';
+    document.getElementById('lotSize').value = '';
+    document.getElementById('basement').value = '';
+    document.getElementById('condition').value = '';
+    document.getElementById('parkingSpaces').value = '';
+    document.getElementById('zoning').value = '';
+    document.getElementById('buildingClass').value = '';
     document.getElementById('description').value = '';
     
     // Uncheck all amenities
