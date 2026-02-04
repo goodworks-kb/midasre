@@ -6,6 +6,45 @@ function checkAuth() {
     return sessionStorage.getItem('adminAuthenticated') === 'true';
 }
 
+// Update property type options based on category selection
+function updatePropertyTypeOptions() {
+    const categorySelect = document.getElementById('category');
+    const propertyTypeSelect = document.getElementById('propertyType');
+    
+    if (!categorySelect || !propertyTypeSelect) return;
+    
+    const category = categorySelect.value;
+    const options = propertyTypeSelect.querySelectorAll('option');
+    
+    // Hide all options first
+    options.forEach(option => {
+        if (option.dataset.category) {
+            option.style.display = 'none';
+            option.disabled = true;
+        }
+    });
+    
+    // Show and enable options for selected category
+    options.forEach(option => {
+        if (option.dataset.category === category) {
+            option.style.display = 'block';
+            option.disabled = false;
+        }
+    });
+    
+    // Set first available option as selected if current selection is not valid
+    const currentValue = propertyTypeSelect.value;
+    const currentOption = propertyTypeSelect.querySelector(`option[value="${currentValue}"]`);
+    if (!currentOption || currentOption.disabled || currentOption.style.display === 'none') {
+        const firstAvailable = Array.from(options).find(opt => 
+            opt.dataset.category === category && opt.dataset.category
+        );
+        if (firstAvailable) {
+            propertyTypeSelect.value = firstAvailable.value;
+        }
+    }
+}
+
 // Wait for DOM to load before attaching event listeners
 document.addEventListener('DOMContentLoaded', () => {
     // Login function
@@ -30,6 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkAuth()) {
         showAdminPanel();
     }
+    
+    // Initialize property type options based on default category
+    updatePropertyTypeOptions();
 });
 
 // Show admin panel
@@ -347,7 +389,9 @@ async function editProperty(index) {
         document.getElementById('sqft').value = property.sqft;
         document.getElementById('status').value = property.type;
         document.getElementById('category').value = property.category;
-        document.getElementById('propertyType').value = property.propertyType || 'House';
+        // Update property type options first, then set the value
+        updatePropertyTypeOptions();
+        document.getElementById('propertyType').value = property.propertyType || (property.category === 'commercial' ? 'Retail Space' : 'House');
         document.getElementById('image').value = property.image || '🏠';
         document.getElementById('imageFile').value = '';
         
@@ -397,6 +441,14 @@ function resetForm() {
     document.getElementById('propertyId').value = '';
     document.getElementById('formTitle').textContent = 'Add New Property';
     document.getElementById('formMessage').innerHTML = '';
+    document.getElementById('bedrooms').value = '0';
+    document.getElementById('bathrooms').value = '0';
+    const imagePreview = document.getElementById('imagePreview');
+    if (imagePreview) imagePreview.innerHTML = '';
+    const imageFile = document.getElementById('imageFile');
+    if (imageFile) imageFile.value = '';
+    // Reset property type options to default (residential)
+    updatePropertyTypeOptions();
 }
 
 // Cancel edit
