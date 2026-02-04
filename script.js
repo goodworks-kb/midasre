@@ -564,8 +564,12 @@ function initContactForm() {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        // Generate unique ID using timestamp + random number to avoid collisions
+        // This ensures each submission is unique, even if submitted at the exact same millisecond
+        const uniqueId = Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        
         const formData = {
-            id: Date.now(),
+            id: uniqueId,
             name: document.getElementById('name').value.trim(),
             email: document.getElementById('email').value.trim(),
             phone: document.getElementById('phone').value.trim(),
@@ -582,8 +586,23 @@ function initContactForm() {
         
         try {
             // Save to localStorage
+            // IMPORTANT: Always add new submissions, never replace
+            // Each submission has a unique ID, so duplicates shouldn't happen
+            // We want to show ALL submissions, even from the same email address
             let submissions = JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]');
-            submissions.unshift(formData); // Add to beginning (newest first)
+            
+            // Check if this exact submission already exists (by ID) - shouldn't happen with unique IDs
+            const existingIndex = submissions.findIndex(s => s.id === formData.id);
+            if (existingIndex === -1) {
+                // New submission - add it to the beginning (newest first)
+                submissions.unshift(formData);
+                console.log(`✅ Added new submission (ID: ${formData.id}). Total submissions: ${submissions.length}`);
+            } else {
+                // Same ID exists - this shouldn't happen with unique IDs, but update it just in case
+                console.warn(`⚠️ Submission with same ID already exists (ID: ${formData.id}), updating existing entry`);
+                submissions[existingIndex] = formData;
+            }
+            
             localStorage.setItem('midasContactSubmissions', JSON.stringify(submissions));
             
             // Debug: Log saved submission (only in development)
