@@ -577,59 +577,46 @@ if (contactForm) {
             console.log('Contact submission saved:', formData);
             console.log('All submissions in localStorage:', JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]'));
             
-            // Save to JSON file (for persistence)
-            await saveContactSubmission(formData);
+            // Verify save was successful
+            const verifySave = JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]');
+            if (verifySave.length === 0 || verifySave[0].id !== formData.id) {
+                console.error('Failed to save submission to localStorage');
+                alert('There was an error saving your submission. Please try again.');
+                return;
+            }
             
-            // Send email automatically using EmailJS (if configured)
-            try {
-                if (typeof emailjs !== 'undefined' && window.EMAILJS_SERVICE_ID && window.EMAILJS_TEMPLATE_ID && window.EMAILJS_PUBLIC_KEY) {
-                    await emailjs.send(
-                        window.EMAILJS_SERVICE_ID,
-                        window.EMAILJS_TEMPLATE_ID,
-                        {
-                            to_email: 'midasrealtyonline@gmail.com',
-                            from_name: formData.name,
-                            from_email: formData.email,
-                            phone: formData.phone || 'Not provided',
-                            message: formData.message,
-                            date: formData.date,
-                            subject: `New Contact Form Submission from ${formData.name}`
-                        },
-                        window.EMAILJS_PUBLIC_KEY
-                    );
+            console.log('Submission saved successfully. Total submissions:', verifySave.length);
+            
+            // Save to JSON file (for persistence) - non-blocking
+            saveContactSubmission(formData).catch(err => console.error('Error saving to file:', err));
+            
+            // Send email automatically using EmailJS (if configured) - non-blocking
+            if (typeof emailjs !== 'undefined' && window.EMAILJS_SERVICE_ID && window.EMAILJS_TEMPLATE_ID && window.EMAILJS_PUBLIC_KEY) {
+                emailjs.send(
+                    window.EMAILJS_SERVICE_ID,
+                    window.EMAILJS_TEMPLATE_ID,
+                    {
+                        to_email: 'midasrealtyonline@gmail.com',
+                        from_name: formData.name,
+                        from_email: formData.email,
+                        phone: formData.phone || 'Not provided',
+                        message: formData.message,
+                        date: formData.date,
+                        subject: `New Contact Form Submission from ${formData.name}`
+                    },
+                    window.EMAILJS_PUBLIC_KEY
+                ).then(() => {
                     console.log('Email sent successfully via EmailJS');
-                } else {
-                    // Fallback to mailto if EmailJS not configured
-                    const emailSubject = encodeURIComponent(`New Contact Form Submission from ${formData.name}`);
-                    const emailBody = encodeURIComponent(
-                        `New Contact Form Submission\n\n` +
-                        `Name: ${formData.name}\n` +
-                        `Email: ${formData.email}\n` +
-                        `Phone: ${formData.phone || 'Not provided'}\n` +
-                        `Date: ${formData.date}\n\n` +
-                        `Message:\n${formData.message}`
-                    );
-                    const mailtoLink = `mailto:midasrealtyonline@gmail.com?subject=${emailSubject}&body=${emailBody}`;
-                    window.location.href = mailtoLink;
-                }
-            } catch (emailError) {
-                console.error('Email sending error:', emailError);
-                // Fallback to mailto if EmailJS fails
-                const emailSubject = encodeURIComponent(`New Contact Form Submission from ${formData.name}`);
-                const emailBody = encodeURIComponent(
-                    `New Contact Form Submission\n\n` +
-                    `Name: ${formData.name}\n` +
-                    `Email: ${formData.email}\n` +
-                    `Phone: ${formData.phone || 'Not provided'}\n` +
-                    `Date: ${formData.date}\n\n` +
-                    `Message:\n${formData.message}`
-                );
-                const mailtoLink = `mailto:midasrealtyonline@gmail.com?subject=${emailSubject}&body=${emailBody}`;
-                window.location.href = mailtoLink;
+                }).catch((emailError) => {
+                    console.error('EmailJS error:', emailError);
+                    // Don't show error to user, submission is saved
+                });
+            } else {
+                console.log('EmailJS not configured. Submission saved to admin panel.');
             }
             
             // Show success message
-            alert('Thank you for your message! We will get back to you soon.');
+            alert('Thank you for your message! We will get back to you soon.\n\nYour submission has been saved and will be visible in the admin panel.');
             
             // Reset form
             contactForm.reset();

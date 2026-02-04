@@ -1176,17 +1176,30 @@ function loadContactSubmissions() {
     try {
         // Load from localStorage
         const stored = localStorage.getItem('midasContactSubmissions');
-        console.log('Loading contact submissions from localStorage:', stored);
+        console.log('Loading contact submissions from localStorage. Raw data:', stored);
         
-        const submissions = stored ? JSON.parse(stored) : [];
+        if (!stored || stored === 'null' || stored === 'undefined') {
+            console.log('No submissions found in localStorage');
+            displayContactSubmissions([]);
+            return;
+        }
+        
+        const submissions = JSON.parse(stored);
         console.log('Parsed submissions:', submissions);
+        console.log('Number of submissions:', submissions.length);
+        
+        if (!Array.isArray(submissions)) {
+            console.error('Submissions is not an array:', submissions);
+            displayContactSubmissions([]);
+            return;
+        }
         
         displayContactSubmissions(submissions);
     } catch (error) {
         console.error('Error loading contact submissions:', error);
         const container = document.getElementById('contactSubmissionsList');
         if (container) {
-            container.innerHTML = '<p style="padding: 2rem; text-align: center; color: #ef4444;">Error loading submissions. Check console for details.</p>';
+            container.innerHTML = `<p style="padding: 2rem; text-align: center; color: #ef4444;">Error loading submissions: ${error.message}<br>Check browser console for details.</p>`;
         }
     }
 }
