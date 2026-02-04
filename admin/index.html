@@ -909,6 +909,11 @@
                 <strong>Debug Info:</strong><br>
                 <span id="debugInfo">Click Refresh to see debug info</span>
             </div>
+            <div style="margin-top: 1rem; padding: 1rem; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107; font-size: 0.85rem; color: #856404;">
+                <strong>⚠️ Important:</strong> Make sure both the main website and admin panel use the <strong>same origin</strong> (both <code>localhost</code> or both <code>127.0.0.1</code>). 
+                If you submitted the form on <code>127.0.0.1:3000</code> but admin panel is on <code>localhost:3000</code>, 
+                they won't share localStorage. Use the same URL for both pages.
+            </div>
         </div>
     </div>
 
