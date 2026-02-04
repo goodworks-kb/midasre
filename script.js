@@ -546,9 +546,22 @@ document.addEventListener('click', function(event) {
 // See EMAILJS_SETUP.md for detailed instructions
 
 // Contact Form Handler
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
+function initContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm) {
+        console.warn('Contact form not found. Retrying in 100ms...');
+        setTimeout(initContactForm, 100);
+        return;
+    }
+    
+    console.log('✅ Contact form found and initialized');
+    
+    // Remove existing listeners to prevent duplicates
+    const newForm = contactForm.cloneNode(true);
+    contactForm.parentNode.replaceChild(newForm, contactForm);
+    
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const formData = {
