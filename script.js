@@ -569,20 +569,53 @@ if (contactForm) {
             // Save to JSON file (for persistence)
             await saveContactSubmission(formData);
             
-            // Send email via mailto link
-            const emailSubject = encodeURIComponent(`New Contact Form Submission from ${formData.name}`);
-            const emailBody = encodeURIComponent(
-                `New Contact Form Submission\n\n` +
-                `Name: ${formData.name}\n` +
-                `Email: ${formData.email}\n` +
-                `Phone: ${formData.phone || 'Not provided'}\n` +
-                `Date: ${formData.date}\n\n` +
-                `Message:\n${formData.message}`
-            );
-            const mailtoLink = `mailto:midasrealtyonline@gmail.com?subject=${emailSubject}&body=${emailBody}`;
-            
-            // Open email client (user can send manually)
-            window.location.href = mailtoLink;
+            // Send email automatically using EmailJS (if configured)
+            try {
+                if (typeof emailjs !== 'undefined' && window.EMAILJS_SERVICE_ID && window.EMAILJS_TEMPLATE_ID && window.EMAILJS_PUBLIC_KEY) {
+                    await emailjs.send(
+                        window.EMAILJS_SERVICE_ID,
+                        window.EMAILJS_TEMPLATE_ID,
+                        {
+                            to_email: 'midasrealtyonline@gmail.com',
+                            from_name: formData.name,
+                            from_email: formData.email,
+                            phone: formData.phone || 'Not provided',
+                            message: formData.message,
+                            date: formData.date,
+                            subject: `New Contact Form Submission from ${formData.name}`
+                        },
+                        window.EMAILJS_PUBLIC_KEY
+                    );
+                    console.log('Email sent successfully via EmailJS');
+                } else {
+                    // Fallback to mailto if EmailJS not configured
+                    const emailSubject = encodeURIComponent(`New Contact Form Submission from ${formData.name}`);
+                    const emailBody = encodeURIComponent(
+                        `New Contact Form Submission\n\n` +
+                        `Name: ${formData.name}\n` +
+                        `Email: ${formData.email}\n` +
+                        `Phone: ${formData.phone || 'Not provided'}\n` +
+                        `Date: ${formData.date}\n\n` +
+                        `Message:\n${formData.message}`
+                    );
+                    const mailtoLink = `mailto:midasrealtyonline@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+                    window.location.href = mailtoLink;
+                }
+            } catch (emailError) {
+                console.error('Email sending error:', emailError);
+                // Fallback to mailto if EmailJS fails
+                const emailSubject = encodeURIComponent(`New Contact Form Submission from ${formData.name}`);
+                const emailBody = encodeURIComponent(
+                    `New Contact Form Submission\n\n` +
+                    `Name: ${formData.name}\n` +
+                    `Email: ${formData.email}\n` +
+                    `Phone: ${formData.phone || 'Not provided'}\n` +
+                    `Date: ${formData.date}\n\n` +
+                    `Message:\n${formData.message}`
+                );
+                const mailtoLink = `mailto:midasrealtyonline@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+                window.location.href = mailtoLink;
+            }
             
             // Show success message
             alert('Thank you for your message! We will get back to you soon.');
