@@ -354,18 +354,46 @@ function showPropertyDetails(id) {
     const property = properties.find(p => p.id === id);
     if (property) {
         const isCommercial = property.category === 'commercial';
-        let details;
+        let details = [];
+        
+        // Basic details
         if (isCommercial) {
-            details = `${property.propertyType}`;
+            details.push(property.propertyType);
             if (property.bedrooms && property.bedrooms > 0) {
-                details += `\n${property.bedrooms} Units`;
+                details.push(`${property.bedrooms} Units`);
             }
-            details += `\n${property.bathrooms} Restrooms`;
+            details.push(`${property.bathrooms} Restrooms`);
         } else {
-            details = `${property.bedrooms} Bedrooms, ${property.bathrooms} Bathrooms`;
+            details.push(`${property.bedrooms} Bedrooms`);
+            details.push(`${property.bathrooms} Bathrooms`);
         }
         
-        let message = `Property Details:\n\n${property.address}\n${property.price}\n${details}\n${property.sqft} sqft`;
+        if (property.kitchens) details.push(`${property.kitchens} ${isCommercial ? 'Kitchen Areas' : 'Kitchens'}`);
+        if (property.floors) details.push(`${property.floors} ${property.floors === 1 ? 'Floor' : 'Floors'}`);
+        if (property.sqft) details.push(`${property.sqft} sqft`);
+        
+        // Property details
+        let propertyDetails = [];
+        if (property.yearBuilt) propertyDetails.push(`Year Built: ${property.yearBuilt}`);
+        if (property.heatingType) propertyDetails.push(`Heating: ${property.heatingType}`);
+        if (property.centralAir) propertyDetails.push(`Central Air: ${property.centralAir}`);
+        if (property.gasAvailable) propertyDetails.push(`Gas Available: ${property.gasAvailable}`);
+        
+        if (isCommercial) {
+            if (property.parkingSpaces) propertyDetails.push(`Parking Spaces: ${property.parkingSpaces}`);
+            if (property.zoning) propertyDetails.push(`Zoning: ${property.zoning}`);
+            if (property.buildingClass) propertyDetails.push(`Building Class: ${property.buildingClass}`);
+        } else {
+            if (property.lotSize) propertyDetails.push(`Lot Size: ${property.lotSize} sqft`);
+            if (property.basement) propertyDetails.push(`Basement: ${property.basement}`);
+            if (property.condition) propertyDetails.push(`Condition: ${property.condition}`);
+        }
+        
+        let message = `Property Details:\n\n${property.address}\n${property.price}\n\n${details.join(' • ')}`;
+        
+        if (propertyDetails.length > 0) {
+            message += `\n\n${propertyDetails.join('\n')}`;
+        }
         
         if (property.description) {
             message += `\n\nDescription:\n${property.description}`;

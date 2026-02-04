@@ -328,6 +328,103 @@
                     </div>
                 </div>
 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label id="kitchensLabel">Kitchens</label>
+                        <input type="number" id="kitchens" min="0" value="1" placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Floors/Stories</label>
+                        <input type="number" id="floors" min="1" value="1" placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Year Built</label>
+                        <input type="number" id="yearBuilt" min="1800" max="2030" placeholder="e.g., 1995">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Heating Type</label>
+                        <select id="heatingType">
+                            <option value="">Select...</option>
+                            <option value="Gas">Gas</option>
+                            <option value="Electric">Electric</option>
+                            <option value="Oil">Oil</option>
+                            <option value="Heat Pump">Heat Pump</option>
+                            <option value="Solar">Solar</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Central Air</label>
+                        <select id="centralAir">
+                            <option value="">Select...</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            <option value="Window Units">Window Units</option>
+                            <option value="Wall Units">Wall Units</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Gas Available</label>
+                        <select id="gasAvailable">
+                            <option value="">Select...</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="residentialExtras" class="form-row">
+                    <div class="form-group">
+                        <label>Lot Size (sqft)</label>
+                        <input type="number" id="lotSize" min="0" placeholder="e.g., 5000">
+                    </div>
+                    <div class="form-group">
+                        <label>Basement</label>
+                        <select id="basement">
+                            <option value="">Select...</option>
+                            <option value="Full">Full</option>
+                            <option value="Partial">Partial</option>
+                            <option value="None">None</option>
+                            <option value="Finished">Finished</option>
+                            <option value="Unfinished">Unfinished</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Property Condition</label>
+                        <select id="condition">
+                            <option value="">Select...</option>
+                            <option value="Excellent">Excellent</option>
+                            <option value="Very Good">Very Good</option>
+                            <option value="Good">Good</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Needs Renovation">Needs Renovation</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="commercialExtras" class="form-row" style="display:none;">
+                    <div class="form-group">
+                        <label>Parking Spaces</label>
+                        <input type="number" id="parkingSpaces" min="0" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Zoning</label>
+                        <input type="text" id="zoning" placeholder="e.g., C1, M1, Mixed-Use">
+                    </div>
+                    <div class="form-group">
+                        <label>Building Class</label>
+                        <select id="buildingClass">
+                            <option value="">Select...</option>
+                            <option value="Class A">Class A</option>
+                            <option value="Class B">Class B</option>
+                            <option value="Class C">Class C</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Description</label>
                     <textarea id="description" rows="5" placeholder="Enter a detailed description of the property..."></textarea>

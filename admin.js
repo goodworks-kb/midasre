@@ -66,17 +66,26 @@ function updateFieldLabels(category) {
     const bedroomsLabel = document.getElementById('bedroomsLabel');
     const bathroomsLabel = document.getElementById('bathroomsLabel');
     const bedroomsInput = document.getElementById('bedrooms');
+    const kitchensLabel = document.getElementById('kitchensLabel');
+    const residentialExtras = document.getElementById('residentialExtras');
+    const commercialExtras = document.getElementById('commercialExtras');
     
     if (!bedroomsLabel || !bathroomsLabel) return; // Elements not available yet
     
     if (category === 'commercial') {
         bedroomsLabel.textContent = 'Units/Suites';
         bathroomsLabel.textContent = 'Restrooms';
+        if (kitchensLabel) kitchensLabel.textContent = 'Kitchen Areas';
         if (bedroomsInput) bedroomsInput.placeholder = '0 (e.g., number of units/suites)';
+        if (residentialExtras) residentialExtras.style.display = 'none';
+        if (commercialExtras) commercialExtras.style.display = 'grid';
     } else {
         bedroomsLabel.textContent = 'Bedrooms';
         bathroomsLabel.textContent = 'Bathrooms';
+        if (kitchensLabel) kitchensLabel.textContent = 'Kitchens';
         if (bedroomsInput) bedroomsInput.placeholder = '0';
+        if (residentialExtras) residentialExtras.style.display = 'grid';
+        if (commercialExtras) commercialExtras.style.display = 'none';
     }
     
     // Update amenities visibility
@@ -461,6 +470,18 @@ async function editProperty(index) {
         document.getElementById('bedrooms').value = property.bedrooms || 0;
         document.getElementById('bathrooms').value = property.bathrooms || 0;
         document.getElementById('sqft').value = property.sqft;
+        document.getElementById('kitchens').value = property.kitchens || 1;
+        document.getElementById('floors').value = property.floors || 1;
+        document.getElementById('yearBuilt').value = property.yearBuilt || '';
+        document.getElementById('heatingType').value = property.heatingType || '';
+        document.getElementById('centralAir').value = property.centralAir || '';
+        document.getElementById('gasAvailable').value = property.gasAvailable || '';
+        document.getElementById('lotSize').value = property.lotSize || '';
+        document.getElementById('basement').value = property.basement || '';
+        document.getElementById('condition').value = property.condition || '';
+        document.getElementById('parkingSpaces').value = property.parkingSpaces || '';
+        document.getElementById('zoning').value = property.zoning || '';
+        document.getElementById('buildingClass').value = property.buildingClass || '';
         document.getElementById('status').value = property.type;
         document.getElementById('category').value = property.category;
         // Update property type options and field labels first, then set the value
