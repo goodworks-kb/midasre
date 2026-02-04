@@ -178,6 +178,8 @@ function showAdminPanel() {
     if (adminPanel) {
         adminPanel.style.display = 'block';
         loadProperties();
+        // Also load contact submissions so they're ready when user navigates to that section
+        loadContactSubmissions();
         
         // Load contact submissions if on that section
         const activeSection = document.querySelector('.admin-section.active');
