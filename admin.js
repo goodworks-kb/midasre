@@ -6,6 +6,27 @@ function checkAuth() {
     return sessionStorage.getItem('adminAuthenticated') === 'true';
 }
 
+// Property type options for each category
+const PROPERTY_TYPES = {
+    residential: [
+        { value: 'House', label: 'House' },
+        { value: 'Condo', label: 'Condo' },
+        { value: 'Townhouse', label: 'Townhouse' },
+        { value: 'Apartment', label: 'Apartment' },
+        { value: 'Land', label: 'Land' }
+    ],
+    commercial: [
+        { value: 'Retail Space', label: 'Retail Space' },
+        { value: 'Office Building', label: 'Office Building' },
+        { value: 'Mixed-Use Building', label: 'Mixed-Use Building' },
+        { value: 'Warehouse', label: 'Warehouse' },
+        { value: 'Industrial', label: 'Industrial' },
+        { value: 'Restaurant Space', label: 'Restaurant Space' },
+        { value: 'Medical Office', label: 'Medical Office' },
+        { value: 'Retail Store', label: 'Retail Store' }
+    ]
+};
+
 // Update property type options based on category selection
 function updatePropertyTypeOptions() {
     const categorySelect = document.getElementById('category');
@@ -14,34 +35,26 @@ function updatePropertyTypeOptions() {
     if (!categorySelect || !propertyTypeSelect) return;
     
     const category = categorySelect.value;
-    const options = propertyTypeSelect.querySelectorAll('option');
-    
-    // Hide all options first
-    options.forEach(option => {
-        if (option.dataset.category) {
-            option.style.display = 'none';
-            option.disabled = true;
-        }
-    });
-    
-    // Show and enable options for selected category
-    options.forEach(option => {
-        if (option.dataset.category === category) {
-            option.style.display = 'block';
-            option.disabled = false;
-        }
-    });
-    
-    // Set first available option as selected if current selection is not valid
     const currentValue = propertyTypeSelect.value;
-    const currentOption = propertyTypeSelect.querySelector(`option[value="${currentValue}"]`);
-    if (!currentOption || currentOption.disabled || currentOption.style.display === 'none') {
-        const firstAvailable = Array.from(options).find(opt => 
-            opt.dataset.category === category && opt.dataset.category
-        );
-        if (firstAvailable) {
-            propertyTypeSelect.value = firstAvailable.value;
-        }
+    const types = PROPERTY_TYPES[category] || PROPERTY_TYPES.residential;
+    
+    // Clear existing options
+    propertyTypeSelect.innerHTML = '';
+    
+    // Add options for selected category
+    types.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type.value;
+        option.textContent = type.label;
+        propertyTypeSelect.appendChild(option);
+    });
+    
+    // Try to preserve current selection if it exists in new category, otherwise select first
+    const hasCurrentValue = types.some(t => t.value === currentValue);
+    if (hasCurrentValue) {
+        propertyTypeSelect.value = currentValue;
+    } else if (types.length > 0) {
+        propertyTypeSelect.value = types[0].value;
     }
 }
 
@@ -71,7 +84,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Initialize property type options based on default category
-    updatePropertyTypeOptions();
+    // Wait a bit to ensure form elements are available
+    setTimeout(() => {
+        updatePropertyTypeOptions();
+    }, 100);
+    
+    // Also attach change listener to category dropdown
+    const categorySelect = document.getElementById('category');
+    if (categorySelect) {
+        categorySelect.addEventListener('change', updatePropertyTypeOptions);
+    }
 });
 
 // Show admin panel
@@ -94,6 +116,10 @@ function showAdminPanel() {
     if (adminPanel) {
         adminPanel.style.display = 'block';
         loadProperties();
+        // Initialize property type options when panel is shown
+        setTimeout(() => {
+            updatePropertyTypeOptions();
+        }, 100);
     }
 }
 
