@@ -1254,6 +1254,16 @@ async function loadContactSubmissions() {
         }
         
         console.log(`Merged ${allSubmissions.length} total submissions into ${uniqueSubmissions.length} unique submissions (deduplicated by ID only)`);
+        console.log('Unique submission IDs:', uniqueSubmissions.map(s => s.id));
+        console.log('Unique emails:', [...new Set(uniqueSubmissions.map(s => s.email))]);
+        
+        // Check if we're accidentally filtering by email
+        const emails = uniqueSubmissions.map(s => s.email);
+        const emailCounts = {};
+        emails.forEach(email => {
+            emailCounts[email] = (emailCounts[email] || 0) + 1;
+        });
+        console.log('Submissions per email:', emailCounts);
         
         // Sort by timestamp (newest first)
         uniqueSubmissions.sort((a, b) => {
