@@ -362,6 +362,13 @@ document.getElementById('propertyForm').addEventListener('submit', async (e) => 
         alert(`Image ready to upload!\n\nTo complete the upload:\n1. Copy the file to: ${uploadedImagePath}\n2. Or use the file data stored in localStorage\n\nFor now, the path "${uploadedImagePath}" has been saved.`);
     }
     
+    // Get selected amenities
+    const selectedAmenities = [];
+    const amenityCheckboxes = document.querySelectorAll('#amenitiesContainer input[type="checkbox"]:checked');
+    amenityCheckboxes.forEach(checkbox => {
+        selectedAmenities.push(checkbox.value);
+    });
+    
     const property = {
         id: Date.now(),
         address: {
@@ -518,6 +525,14 @@ function resetForm() {
     document.getElementById('formMessage').innerHTML = '';
     document.getElementById('bedrooms').value = '0';
     document.getElementById('bathrooms').value = '0';
+    document.getElementById('description').value = '';
+    
+    // Uncheck all amenities
+    const amenityCheckboxes = document.querySelectorAll('#amenitiesContainer input[type="checkbox"]');
+    amenityCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
     const imagePreview = document.getElementById('imagePreview');
     if (imagePreview) imagePreview.innerHTML = '';
     const imageFile = document.getElementById('imageFile');
