@@ -202,16 +202,21 @@ function showSection(section) {
     document.querySelectorAll('.admin-nav button').forEach(btn => {
         btn.classList.remove('active');
     });
-    event.target.classList.add('active');
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
     
     // Show/hide sections
     document.querySelectorAll('.admin-section').forEach(sec => {
         sec.classList.remove('active');
     });
-    document.getElementById(section + '-section').classList.add('active');
+    const targetSection = document.getElementById(section + '-section');
+    if (targetSection) {
+        targetSection.classList.add('active');
+    }
     
-    // Reset form if switching to add property
-    if (section === 'add-property') {
+    // Reset form only if switching to add property AND not editing (no propertyId set)
+    if (section === 'add-property' && !document.getElementById('propertyId').value) {
         resetForm();
     }
 }
@@ -541,15 +546,39 @@ async function editProperty(index) {
         const properties = await response.json();
         const property = properties[index];
         
+        // Clear uploadedImages array first
+        uploadedImages = [];
+        
+        // Load all images from property into uploadedImages array
+        if (property.images && Array.isArray(property.images) && property.images.length > 0) {
+            property.images.forEach((imgPath, imgIndex) => {
+                // Determine if this is the main image
+                const isMain = imgPath === property.image || (imgIndex === 0 && !property.image);
+                uploadedImages.push({
+                    path: imgPath,
+                    url: imgPath, // Use path as URL for preview
+                    isMain: isMain
+                });
+            });
+        } else if (property.image && property.image !== '🏠') {
+            // Fallback: if only single image exists
+            uploadedImages.push({
+                path: property.image,
+                url: property.image,
+                isMain: true
+            });
+        }
+        
+        // Populate form fields
         document.getElementById('propertyId').value = index;
-        document.getElementById('addressStreet').value = property.address.street;
-        document.getElementById('addressCity').value = property.address.city;
-        document.getElementById('addressState').value = property.address.state;
-        document.getElementById('addressZip').value = property.address.zip;
-        document.getElementById('price').value = property.price;
+        document.getElementById('addressStreet').value = property.address.street || '';
+        document.getElementById('addressCity').value = property.address.city || '';
+        document.getElementById('addressState').value = property.address.state || '';
+        document.getElementById('addressZip').value = property.address.zip || '';
+        document.getElementById('price').value = property.price || '';
         document.getElementById('bedrooms').value = property.bedrooms || 0;
         document.getElementById('bathrooms').value = property.bathrooms || 0;
-        document.getElementById('sqft').value = property.sqft;
+        document.getElementById('sqft').value = property.sqft || '';
         document.getElementById('kitchens').value = property.kitchens || 1;
         document.getElementById('floors').value = property.floors || 1;
         document.getElementById('yearBuilt').value = property.yearBuilt || '';
@@ -581,8 +610,9 @@ async function editProperty(index) {
             document.getElementById('internetIncluded').checked = false;
         }
         
-        document.getElementById('status').value = property.type;
-        document.getElementById('category').value = property.category;
+        document.getElementById('status').value = property.type || 'For Sale';
+        document.getElementById('category').value = property.category || 'residential';
+        
         // Update property type options and field labels first, then set the value
         updatePropertyTypeOptions(); // This will also call updateFieldLabels
         document.getElementById('propertyType').value = property.propertyType || (property.category === 'commercial' ? 'Retail Space' : 'House');
@@ -594,27 +624,33 @@ async function editProperty(index) {
             checkbox.checked = property.amenities && property.amenities.includes(checkbox.value);
         });
         
-        document.getElementById('image').value = property.image || '🏠';
-        document.getElementById('imageFile').value = '';
+        // Clear image input fields
+        document.getElementById('imageFiles').value = '';
+        document.getElementById('imageUrls').value = '';
         
-        // Show image preview if it's a URL or path
-        if (property.image && (property.image.startsWith('http') || property.image.startsWith('images/'))) {
-            const preview = document.getElementById('imagePreview');
-            preview.innerHTML = `
-                <div class="image-preview-item">
-                    <img src="${property.image}" alt="Current image" onerror="this.parentElement.innerHTML='<p style=\\'color:red;\\'>Image not found</p>'">
-                </div>
-            `;
-        } else {
-            document.getElementById('imagePreview').innerHTML = '';
-        }
+        // Update image preview with all images
+        updateImagePreview();
+        
         document.getElementById('mlsNumber').value = property.mlsNumber || '';
         
         document.getElementById('formTitle').textContent = 'Edit Property';
-        showSection('add-property');
-        document.querySelector('.admin-nav button:last-child').click();
+        
+        // Show add-property section without resetting form
+        document.querySelectorAll('.admin-section').forEach(sec => {
+            sec.classList.remove('active');
+        });
+        document.getElementById('add-property-section').classList.add('active');
+        
+        // Update nav buttons
+        document.querySelectorAll('.admin-nav button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        const addPropertyBtn = document.querySelector('.admin-nav button:last-child');
+        if (addPropertyBtn) addPropertyBtn.classList.add('active');
+        
     } catch (error) {
         console.error('Error loading property:', error);
+        alert('Error loading property. Please try again.');
     }
 }
 
