@@ -650,13 +650,21 @@ function initContactForm() {
             alert('Thank you for your message! We will get back to you soon.');
             
             // Reset form
-            contactForm.reset();
+            form.reset();
         } catch (error) {
             console.error('Error saving contact submission:', error);
-            alert('Thank you for your message! We will get back to you soon.');
-            contactForm.reset();
+            console.error('Error details:', error.stack);
+            alert('There was an error submitting your form. Please try again.\n\nError: ' + error.message);
+            if (form) form.reset();
         }
     });
+}
+
+// Initialize contact form when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContactForm);
+} else {
+    initContactForm();
 }
 
 // Save contact submission to JSON file
