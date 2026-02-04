@@ -573,6 +573,10 @@ if (contactForm) {
             submissions.unshift(formData); // Add to beginning (newest first)
             localStorage.setItem('midasContactSubmissions', JSON.stringify(submissions));
             
+            // Debug: Log saved submission
+            console.log('Contact submission saved:', formData);
+            console.log('All submissions in localStorage:', JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]'));
+            
             // Save to JSON file (for persistence)
             await saveContactSubmission(formData);
             
