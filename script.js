@@ -616,7 +616,7 @@ if (contactForm) {
             }
             
             // Show success message
-            alert('Thank you for your message! We will get back to you soon.\n\nYour submission has been saved and will be visible in the admin panel.');
+            alert('Thank you for your message! We will get back to you soon.');
             
             // Reset form
             contactForm.reset();
