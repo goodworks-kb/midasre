@@ -605,6 +605,10 @@ function initContactForm() {
             
             localStorage.setItem('midasContactSubmissions', JSON.stringify(submissions));
             
+            // Always log in production too for debugging
+            console.log(`✅ Saved to localStorage. Total submissions now: ${submissions.length}`);
+            console.log(`Submission IDs:`, submissions.map(s => s.id).slice(0, 5));
+            
             // Debug: Log saved submission (only in development)
             const isDevelopment = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1');
             if (isDevelopment) {
