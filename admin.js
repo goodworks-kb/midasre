@@ -378,6 +378,16 @@ document.getElementById('propertyForm').addEventListener('submit', async (e) => 
         selectedAmenities.push(checkbox.value);
     });
     
+    // Get utilities included
+    const utilities = {
+        water: document.getElementById('waterIncluded').checked ? 'Yes' : 'No',
+        gas: document.getElementById('gasIncluded').checked ? 'Yes' : 'No',
+        electricity: document.getElementById('electricityIncluded').checked ? 'Yes' : 'No',
+        sewer: document.getElementById('sewerIncluded').checked ? 'Yes' : 'No',
+        trash: document.getElementById('trashIncluded').checked ? 'Yes' : 'No',
+        internet: document.getElementById('internetIncluded').checked ? 'Yes' : 'No'
+    };
+    
     const property = {
         id: Date.now(),
         address: {
@@ -402,6 +412,7 @@ document.getElementById('propertyForm').addEventListener('submit', async (e) => 
         parkingSpaces: document.getElementById('parkingSpaces').value || null,
         zoning: document.getElementById('zoning').value || null,
         buildingClass: document.getElementById('buildingClass').value || null,
+        utilities: utilities,
         type: document.getElementById('status').value,
         category: document.getElementById('category').value,
         propertyType: document.getElementById('propertyType').value,
@@ -571,6 +582,14 @@ function resetForm() {
     document.getElementById('zoning').value = '';
     document.getElementById('buildingClass').value = '';
     document.getElementById('description').value = '';
+    
+    // Uncheck all utilities
+    document.getElementById('waterIncluded').checked = false;
+    document.getElementById('gasIncluded').checked = false;
+    document.getElementById('electricityIncluded').checked = false;
+    document.getElementById('sewerIncluded').checked = false;
+    document.getElementById('trashIncluded').checked = false;
+    document.getElementById('internetIncluded').checked = false;
     
     // Uncheck all amenities
     const amenityCheckboxes = document.querySelectorAll('#amenitiesContainer input[type="checkbox"]');

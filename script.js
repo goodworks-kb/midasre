@@ -379,6 +379,20 @@ function showPropertyDetails(id) {
         if (property.centralAir) propertyDetails.push(`Central Air: ${property.centralAir}`);
         if (property.gasAvailable) propertyDetails.push(`Gas Available: ${property.gasAvailable}`);
         
+        // Utilities included
+        if (property.utilities) {
+            const includedUtilities = [];
+            if (property.utilities.water === 'Yes') includedUtilities.push('Water');
+            if (property.utilities.gas === 'Yes') includedUtilities.push('Gas');
+            if (property.utilities.electricity === 'Yes') includedUtilities.push('Electricity');
+            if (property.utilities.sewer === 'Yes') includedUtilities.push('Sewer');
+            if (property.utilities.trash === 'Yes') includedUtilities.push('Trash');
+            if (property.utilities.internet === 'Yes') includedUtilities.push('Internet/Cable');
+            if (includedUtilities.length > 0) {
+                propertyDetails.push(`Utilities Included: ${includedUtilities.join(', ')}`);
+            }
+        }
+        
         if (isCommercial) {
             if (property.parkingSpaces) propertyDetails.push(`Parking Spaces: ${property.parkingSpaces}`);
             if (property.zoning) propertyDetails.push(`Zoning: ${property.zoning}`);
