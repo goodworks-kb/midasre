@@ -1,0 +1,56 @@
+[
+  {
+    "Street Address": "123 Main Street",
+    "City": "Flushing",
+    "State": "NY",
+    "Zip": "11355",
+    "Price": "$850000",
+    "Bedrooms": 4,
+    "Bathrooms": 3,
+    "Square Feet": "2500",
+    "Property Type": "House",
+    "Status": "For Sale",
+    "Description": "Beautiful 4-bedroom home in Flushing with modern amenities",
+    "MLS Number": "MLS123456",
+    "Images": [
+      "images/listings/property1.jpg",
+      "images/listings/property1-2.jpg"
+    ]
+  },
+  {
+    "Street Address": "456 Oak Avenue",
+    "City": "Flushing",
+    "State": "NY",
+    "Zip": "11355",
+    "Price": "$1200000",
+    "Bedrooms": 5,
+    "Bathrooms": 4,
+    "Square Feet": "3200",
+    "Property Type": "Condo",
+    "Status": "For Sale",
+    "Description": "Spacious condo with great views and updated kitchen",
+    "MLS Number": "MLS789012",
+    "Images": [
+      "images/listings/property2.jpg"
+    ]
+  },
+  {
+    "Street Address": "200 Northern Blvd",
+    "City": "Flushing",
+    "State": "NY",
+    "Zip": "11355",
+    "Price": "$8500",
+    "Bedrooms": 0,
+    "Bathrooms": 2,
+    "Square Feet": "3500",
+    "Property Type": "Retail Space",
+    "Category": "commercial",
+    "Status": "For Rent",
+    "Description": "Prime retail space in high-traffic area",
+    "MLS Number": "MLS567890",
+    "Images": [
+      "images/listings/commercial1.jpg",
+      "images/listings/commercial1-2.jpg"
+    ]
+  }
+]

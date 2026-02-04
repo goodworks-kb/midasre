@@ -1,0 +1,6 @@
+Street Address,City,State,Zip,Price,Bedrooms,Bathrooms,Square Feet,Property Type,Status,Description,MLS Number,Images
+123 Main Street,Flushing,NY,11355,$850000,4,3,2500,House,For Sale,"Beautiful 4-bedroom home in Flushing with modern amenities",MLS123456,images/listings/property1.jpg,images/listings/property1-2.jpg
+456 Oak Avenue,Flushing,NY,11355,$1200000,5,4,3200,Condo,For Sale,"Spacious condo with great views and updated kitchen",MLS789012,images/listings/property2.jpg
+789 Pine Road,Flushing,NY,11355,$650000,3,2,2100,Townhouse,For Sale,"Charming townhouse in quiet neighborhood",MLS345678,images/listings/property3.jpg
+321 Elm Drive,Flushing,NY,11355,$450000,2,1,1200,Apartment,For Rent,"Cozy apartment perfect for first-time renters",MLS901234,images/listings/property4.jpg
+200 Northern Blvd,Flushing,NY,11355,$8500,0,2,3500,Retail Space,For Rent,"Prime retail space in high-traffic area",MLS567890,images/listings/commercial1.jpg,images/listings/commercial1-2.jpg
