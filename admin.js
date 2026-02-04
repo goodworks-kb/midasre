@@ -1217,9 +1217,16 @@ async function loadContactSubmissions() {
             try {
                 submissionsFromStorage = JSON.parse(stored);
                 console.log('Loaded submissions from localStorage:', submissionsFromStorage.length);
+                if (submissionsFromStorage.length > 0) {
+                    console.log('Sample submission IDs:', submissionsFromStorage.slice(0, 5).map(s => s.id));
+                    console.log('Sample emails:', submissionsFromStorage.slice(0, 5).map(s => s.email));
+                    console.log('All submissions:', submissionsFromStorage);
+                }
             } catch (parseError) {
                 console.error('Error parsing localStorage data:', parseError);
             }
+        } else {
+            console.log('No submissions found in localStorage (stored value:', stored, ')');
         }
         
         // Merge submissions from both sources, removing duplicates by ID only
