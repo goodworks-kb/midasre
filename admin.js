@@ -1176,12 +1176,36 @@ async function processBatchImport() {
 // Contact Submissions Functions
 function loadContactSubmissions() {
     try {
+        // Update debug info
+        const debugInfoEl = document.getElementById('debugInfo');
+        if (debugInfoEl) {
+            debugInfoEl.innerHTML = 'Loading...';
+        }
+        
+        // Check all localStorage keys
+        const allKeys = Object.keys(localStorage);
+        console.log('All localStorage keys:', allKeys);
+        
         // Load from localStorage
         const stored = localStorage.getItem('midasContactSubmissions');
         console.log('Loading contact submissions from localStorage. Raw data:', stored);
+        console.log('Current URL:', window.location.href);
+        console.log('Current origin:', window.location.origin);
+        
+        // Update debug info
+        if (debugInfoEl) {
+            debugInfoEl.innerHTML = `
+                <strong>Current URL:</strong> ${window.location.href}<br>
+                <strong>Origin:</strong> ${window.location.origin}<br>
+                <strong>localStorage keys:</strong> ${allKeys.join(', ') || 'none'}<br>
+                <strong>Raw data length:</strong> ${stored ? stored.length : 0} characters<br>
+                <strong>Raw data preview:</strong> ${stored ? stored.substring(0, 100) + '...' : 'null'}
+            `;
+        }
         
         if (!stored || stored === 'null' || stored === 'undefined') {
             console.log('No submissions found in localStorage');
+            console.log('Available localStorage keys:', allKeys);
             displayContactSubmissions([]);
             return;
         }
@@ -1192,16 +1216,29 @@ function loadContactSubmissions() {
         
         if (!Array.isArray(submissions)) {
             console.error('Submissions is not an array:', submissions);
+            if (debugInfoEl) {
+                debugInfoEl.innerHTML += `<br><strong style="color: #ef4444;">Error:</strong> Data is not an array: ${typeof submissions}`;
+            }
             displayContactSubmissions([]);
             return;
+        }
+        
+        if (debugInfoEl) {
+            debugInfoEl.innerHTML += `<br><strong style="color: #10b981;">✓ Found ${submissions.length} submission(s)</strong>`;
         }
         
         displayContactSubmissions(submissions);
     } catch (error) {
         console.error('Error loading contact submissions:', error);
         const container = document.getElementById('contactSubmissionsList');
+        const debugInfoEl = document.getElementById('debugInfo');
+        
         if (container) {
             container.innerHTML = `<p style="padding: 2rem; text-align: center; color: #ef4444;">Error loading submissions: ${error.message}<br>Check browser console for details.</p>`;
+        }
+        
+        if (debugInfoEl) {
+            debugInfoEl.innerHTML += `<br><strong style="color: #ef4444;">Error:</strong> ${error.message}`;
         }
     }
 }

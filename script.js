@@ -574,18 +574,36 @@ if (contactForm) {
             localStorage.setItem('midasContactSubmissions', JSON.stringify(submissions));
             
             // Debug: Log saved submission
+            console.log('=== CONTACT FORM SUBMISSION DEBUG ===');
             console.log('Contact submission saved:', formData);
-            console.log('All submissions in localStorage:', JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]'));
+            console.log('Current URL:', window.location.href);
+            console.log('Current origin:', window.location.origin);
+            console.log('All localStorage keys:', Object.keys(localStorage));
+            
+            const allSubmissions = JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]');
+            console.log('All submissions in localStorage:', allSubmissions);
+            console.log('Total submissions count:', allSubmissions.length);
             
             // Verify save was successful
             const verifySave = JSON.parse(localStorage.getItem('midasContactSubmissions') || '[]');
-            if (verifySave.length === 0 || verifySave[0].id !== formData.id) {
-                console.error('Failed to save submission to localStorage');
+            if (verifySave.length === 0) {
+                console.error('❌ Failed to save submission - localStorage is empty');
                 alert('There was an error saving your submission. Please try again.');
                 return;
             }
             
-            console.log('Submission saved successfully. Total submissions:', verifySave.length);
+            const foundSubmission = verifySave.find(s => s.id === formData.id);
+            if (!foundSubmission) {
+                console.error('❌ Failed to save submission - ID not found in localStorage');
+                console.log('Looking for ID:', formData.id);
+                console.log('Found IDs:', verifySave.map(s => s.id));
+                alert('There was an error saving your submission. Please try again.');
+                return;
+            }
+            
+            console.log('✅ Submission saved successfully. Total submissions:', verifySave.length);
+            console.log('Saved submission ID:', formData.id);
+            console.log('=== END DEBUG ===');
             
             // Save to JSON file (for persistence) - non-blocking
             saveContactSubmission(formData).catch(err => console.error('Error saving to file:', err));
