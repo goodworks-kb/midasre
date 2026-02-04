@@ -6,18 +6,29 @@ function checkAuth() {
     return sessionStorage.getItem('adminAuthenticated') === 'true';
 }
 
-// Login function
-document.getElementById('loginForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const password = document.getElementById('password').value;
-    const errorDiv = document.getElementById('loginError');
+// Wait for DOM to load before attaching event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Login function
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            if (password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminAuthenticated', 'true');
+                showAdminPanel();
+            } else {
+                errorDiv.textContent = 'Invalid password';
+                errorDiv.style.display = 'block';
+            }
+        });
+    }
     
-    if (password === ADMIN_PASSWORD) {
-        sessionStorage.setItem('adminAuthenticated', 'true');
+    // Check authentication on page load
+    if (checkAuth()) {
         showAdminPanel();
-    } else {
-        errorDiv.textContent = 'Invalid password';
-        errorDiv.style.display = 'block';
     }
 });
 
@@ -34,9 +45,14 @@ function showAdminPanel() {
         return;
     }
     
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'block';
-    loadProperties();
+    const loginScreen = document.getElementById('loginScreen');
+    const adminPanel = document.getElementById('adminPanel');
+    
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (adminPanel) {
+        adminPanel.style.display = 'block';
+        loadProperties();
+    }
 }
 
 // Logout
@@ -390,9 +406,4 @@ function cancelEdit() {
     document.querySelector('.admin-nav button:first-child').click();
 }
 
-// Check authentication on page load
-if (checkAuth()) {
-    showAdminPanel();
-} else {
-    document.getElementById('loginScreen').style.display = 'block';
-}
+// Initialization is handled in DOMContentLoaded above
