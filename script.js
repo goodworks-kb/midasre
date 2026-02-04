@@ -19,14 +19,18 @@ navLinks.forEach(link => {
 });
 
 // Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+document.querySelectorAll('a[href*="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
-        // Only prevent default for same-page anchors
-        if (href.startsWith('#') && !href.includes('index.html')) {
-            e.preventDefault();
-            const target = document.querySelector(href);
-            if (target) {
+        // Extract hash from href (handles both "#section" and "index.html#section")
+        const hashMatch = href.match(/#(.+)$/);
+        if (hashMatch) {
+            const hash = '#' + hashMatch[1];
+            const target = document.querySelector(hash);
+            
+            // If we're on the same page (index.html) and target exists, prevent default and scroll
+            if (target && (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/'))) {
+                e.preventDefault();
                 const navbarHeight = 70;
                 const offsetTop = target.offsetTop - navbarHeight;
                 
@@ -38,6 +42,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                     }
                 }
                 
+                // Update URL without reloading
+                window.history.pushState(null, '', hash);
+                
                 window.scrollTo({
                     top: Math.max(0, offsetTop),
                     behavior: 'smooth'
@@ -45,6 +52,24 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             }
         }
     });
+});
+
+// Handle hash on page load
+window.addEventListener('load', () => {
+    const hash = window.location.hash;
+    if (hash) {
+        const target = document.querySelector(hash);
+        if (target) {
+            setTimeout(() => {
+                const navbarHeight = 70;
+                const offsetTop = target.offsetTop - navbarHeight;
+                window.scrollTo({
+                    top: Math.max(0, offsetTop),
+                    behavior: 'smooth'
+                });
+            }, 100);
+        }
+    }
 });
 
 // Navbar background on scroll
@@ -63,8 +88,38 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
-// Sample Properties Data
-const properties = [
+// Properties Data - Loaded from JSON file or localStorage
+let properties = [];
+
+// Load properties from JSON file or localStorage
+async function loadPropertiesData() {
+    try {
+        // Try to load from JSON file first
+        const response = await fetch('data/properties.json');
+        if (response.ok) {
+            const data = await response.json();
+            if (data && data.length > 0) {
+                properties = data;
+                return;
+            }
+        }
+    } catch (error) {
+        console.log('Could not load from JSON file, trying localStorage...');
+    }
+    
+    // Fallback to localStorage (set by admin panel)
+    const stored = localStorage.getItem('midasProperties');
+    if (stored) {
+        try {
+            properties = JSON.parse(stored);
+            if (properties.length > 0) return;
+        } catch (e) {
+            console.error('Error parsing stored properties:', e);
+        }
+    }
+    
+    // Final fallback to hardcoded data
+    properties = [
     {
         id: 1,
         price: '$850,000',
@@ -167,7 +222,11 @@ const properties = [
         image: '🏭',
         propertyType: 'Mixed-Use Building'
     }
-];
+    ];
+}
+
+// Initialize properties on page load
+loadPropertiesData();
 
 // Load Properties
 function loadProperties(filter = 'all') {
@@ -175,17 +234,20 @@ function loadProperties(filter = 'all') {
     
     if (!propertiesGrid) return;
     
-    let filteredProperties = properties;
+    // Use static properties data
+    let propertiesToUse = properties;
+    
+    let filteredProperties = propertiesToUse;
     
     if (filter !== 'all') {
         if (filter === 'residential') {
-            filteredProperties = properties.filter(p => p.category === 'residential');
+            filteredProperties = propertiesToUse.filter(p => p.category === 'residential');
         } else if (filter === 'commercial') {
-            filteredProperties = properties.filter(p => p.category === 'commercial');
+            filteredProperties = propertiesToUse.filter(p => p.category === 'commercial');
         } else if (filter === 'sale') {
-            filteredProperties = properties.filter(p => p.type === 'For Sale');
+            filteredProperties = propertiesToUse.filter(p => p.type === 'For Sale');
         } else if (filter === 'rent') {
-            filteredProperties = properties.filter(p => p.type === 'For Rent');
+            filteredProperties = propertiesToUse.filter(p => p.type === 'For Rent');
         }
     }
     
@@ -193,10 +255,20 @@ function loadProperties(filter = 'all') {
         const isCommercial = property.category === 'commercial';
         const propertyType = isCommercial ? property.propertyType : 'Residential';
         
+        // Handle image - can be URL, local path, or emoji
+        let imageDisplay;
+        if (property.image && (property.image.startsWith('http') || property.image.startsWith('images/'))) {
+            // It's a URL or local image path
+            imageDisplay = `<img src="${property.image}" alt="${property.address.street || 'Property'}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'font-size: 4rem; z-index: 1; position: relative;\\'>🏠</span>';">`;
+        } else {
+            // It's an emoji or no image
+            imageDisplay = `<span style="font-size: 4rem; z-index: 1; position: relative;">${property.image || '🏠'}</span>`;
+        }
+        
         return `
         <div class="property-card" onclick="showPropertyDetails(${property.id})" data-category="${property.category}" data-type="${property.type.toLowerCase().replace(' ', '-')}">
             <div class="property-image">
-                <span style="font-size: 4rem; z-index: 1; position: relative;">${property.image}</span>
+                ${imageDisplay}
                 <span class="property-badge">${property.type}</span>
                 ${isCommercial ? `<span class="property-category-badge">Commercial</span>` : ''}
             </div>
@@ -210,10 +282,15 @@ function loadProperties(filter = 'all') {
                         <span>🛏️</span>
                         <span>${property.bedrooms} Beds</span>
                     </div>
+                    ` : property.bedrooms && property.bedrooms > 0 ? `
+                    <div class="property-detail">
+                        <span>🏢</span>
+                        <span>${property.bedrooms} Units</span>
+                    </div>
                     ` : ''}
                     <div class="property-detail">
                         <span>🚿</span>
-                        <span>${property.bathrooms} Baths</span>
+                        <span>${property.bathrooms} ${isCommercial ? 'Restrooms' : 'Baths'}</span>
                     </div>
                     <div class="property-detail">
                         <span>📐</span>
@@ -277,9 +354,16 @@ function showPropertyDetails(id) {
     const property = properties.find(p => p.id === id);
     if (property) {
         const isCommercial = property.category === 'commercial';
-        const details = isCommercial 
-            ? `${property.propertyType}\n${property.bathrooms} Bathrooms`
-            : `${property.bedrooms} Bedrooms, ${property.bathrooms} Bathrooms`;
+        let details;
+        if (isCommercial) {
+            details = `${property.propertyType}`;
+            if (property.bedrooms && property.bedrooms > 0) {
+                details += `\n${property.bedrooms} Units`;
+            }
+            details += `\n${property.bathrooms} Restrooms`;
+        } else {
+            details = `${property.bedrooms} Bedrooms, ${property.bathrooms} Bathrooms`;
+        }
         
         alert(`Property Details:\n\n${property.address}\n${property.price}\n${details}\n${property.sqft} sqft\n\nContact us for more information!`);
     }
@@ -407,13 +491,16 @@ function loadSoldProperties() {
     const soldGrid = document.getElementById('soldPropertiesGrid');
     if (!soldGrid) return;
     
+    // Use static sold properties data
+    let soldPropertiesToUse = soldProperties;
+    
     const lang = window.currentLanguage || 'en';
     const t = translations[lang] || translations.en;
     const soldLabel = t.sold.sold || 'Sold';
     const residentialLabel = t.properties.filters?.residential || 'Residential';
     const commercialLabel = t.properties.filters?.commercial || 'Commercial';
     
-    soldGrid.innerHTML = soldProperties.map(property => {
+    soldGrid.innerHTML = soldPropertiesToUse.map(property => {
         const typeLabel = property.type === 'Residential' ? residentialLabel : commercialLabel;
         return `
         <div class="sold-property-card">

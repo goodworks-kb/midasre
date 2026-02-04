@@ -56,6 +56,28 @@ function updatePropertyTypeOptions() {
     } else if (types.length > 0) {
         propertyTypeSelect.value = types[0].value;
     }
+    
+    // Update field labels based on category
+    updateFieldLabels(category);
+}
+
+// Update field labels based on category
+function updateFieldLabels(category) {
+    const bedroomsLabel = document.getElementById('bedroomsLabel');
+    const bathroomsLabel = document.getElementById('bathroomsLabel');
+    const bedroomsInput = document.getElementById('bedrooms');
+    
+    if (!bedroomsLabel || !bathroomsLabel) return; // Elements not available yet
+    
+    if (category === 'commercial') {
+        bedroomsLabel.textContent = 'Units/Suites';
+        bathroomsLabel.textContent = 'Restrooms';
+        if (bedroomsInput) bedroomsInput.placeholder = '0 (e.g., number of units/suites)';
+    } else {
+        bedroomsLabel.textContent = 'Bedrooms';
+        bathroomsLabel.textContent = 'Bathrooms';
+        if (bedroomsInput) bedroomsInput.placeholder = '0';
+    }
 }
 
 // Wait for DOM to load before attaching event listeners
@@ -415,8 +437,8 @@ async function editProperty(index) {
         document.getElementById('sqft').value = property.sqft;
         document.getElementById('status').value = property.type;
         document.getElementById('category').value = property.category;
-        // Update property type options first, then set the value
-        updatePropertyTypeOptions();
+        // Update property type options and field labels first, then set the value
+        updatePropertyTypeOptions(); // This will also call updateFieldLabels
         document.getElementById('propertyType').value = property.propertyType || (property.category === 'commercial' ? 'Retail Space' : 'House');
         document.getElementById('image').value = property.image || '🏠';
         document.getElementById('imageFile').value = '';
