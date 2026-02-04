@@ -505,6 +505,25 @@ async function editProperty(index) {
         document.getElementById('parkingSpaces').value = property.parkingSpaces || '';
         document.getElementById('zoning').value = property.zoning || '';
         document.getElementById('buildingClass').value = property.buildingClass || '';
+        
+        // Set utilities
+        if (property.utilities) {
+            document.getElementById('waterIncluded').checked = property.utilities.water === 'Yes';
+            document.getElementById('gasIncluded').checked = property.utilities.gas === 'Yes';
+            document.getElementById('electricityIncluded').checked = property.utilities.electricity === 'Yes';
+            document.getElementById('sewerIncluded').checked = property.utilities.sewer === 'Yes';
+            document.getElementById('trashIncluded').checked = property.utilities.trash === 'Yes';
+            document.getElementById('internetIncluded').checked = property.utilities.internet === 'Yes';
+        } else {
+            // Reset utilities if not set
+            document.getElementById('waterIncluded').checked = false;
+            document.getElementById('gasIncluded').checked = false;
+            document.getElementById('electricityIncluded').checked = false;
+            document.getElementById('sewerIncluded').checked = false;
+            document.getElementById('trashIncluded').checked = false;
+            document.getElementById('internetIncluded').checked = false;
+        }
+        
         document.getElementById('status').value = property.type;
         document.getElementById('category').value = property.category;
         // Update property type options and field labels first, then set the value
