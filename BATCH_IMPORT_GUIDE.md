@@ -2,12 +2,22 @@
 
 ## Overview
 
-The batch import feature allows you to upload multiple properties at once from a CSV or JSON file exported from OneKey MLS.
+The batch import feature allows you to upload multiple properties at once from a CSV file exported from OneKey MLS.
 
 ## Supported File Formats
 
 - **CSV (.csv)** - Comma-separated values
-- **JSON (.json)** - JavaScript Object Notation
+- **Excel files** - Must be saved as CSV first (File → Save As → CSV UTF-8)
+
+## Converting Excel to CSV
+
+If you have an Excel file (.xlsx) from OneKey MLS:
+
+1. Open the Excel file
+2. Go to **File → Save As**
+3. Choose **CSV (Comma delimited) (*.csv)** or **CSV UTF-8 (Comma delimited) (*.csv)**
+4. Save the file
+5. Upload the CSV file in the admin panel
 
 ## How to Use
 
@@ -27,32 +37,11 @@ Street Address,City,State,Zip,Price,Bedrooms,Bathrooms,Square Feet,Property Type
 456 Oak Ave,Flushing,NY,11355,$1200000,5,4,3200,Condo,For Sale,Spacious condo...,MLS456,image3.jpg
 ```
 
-#### JSON Format
-
-Your JSON file can be:
-- An array of property objects
-- An object with a `properties` or `listings` array
-- A single property object
-
-```json
-[
-  {
-    "Street Address": "123 Main St",
-    "City": "Flushing",
-    "State": "NY",
-    "Zip": "11355",
-    "Price": "$850000",
-    "Bedrooms": 4,
-    "Bathrooms": 3,
-    "Square Feet": "2500",
-    "Property Type": "House",
-    "Status": "For Sale",
-    "Description": "Beautiful home...",
-    "MLS Number": "MLS123",
-    "Images": ["image1.jpg", "image2.jpg"]
-  }
-]
-```
+**Important Notes:**
+- Use commas to separate columns
+- If a field contains commas, wrap it in quotes: `"123 Main St, Apt 4B"`
+- Images should be comma-separated: `image1.jpg,image2.jpg,image3.jpg`
+- Make sure the file is saved as UTF-8 encoding if it contains special characters
 
 ### Step 3: Upload in Admin Panel
 
@@ -137,9 +126,11 @@ The system automatically:
 - Ensure at least address fields are present
 
 **"Error parsing file"**
-- For CSV: Check for proper comma separation and quoted values
-- For JSON: Validate JSON syntax (use a JSON validator)
-- Ensure file encoding is UTF-8
+- Check for proper comma separation
+- Ensure quoted values use double quotes: `"Value with, comma"`
+- Verify file encoding is UTF-8 (especially if you have special characters)
+- Make sure there are no extra commas at the end of rows
+- Check that the header row matches the data rows (same number of columns)
 
 **Images not showing**
 - Verify image URLs are correct and accessible

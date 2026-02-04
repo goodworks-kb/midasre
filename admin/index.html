@@ -311,15 +311,20 @@
             <h2>Batch Import Properties</h2>
             <div class="batch-import-info" style="background: #f0f7ff; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid var(--primary-color);">
                 <h3 style="margin-top: 0; color: var(--secondary-color);">Import from OneKey MLS</h3>
-                <p style="margin-bottom: 0.5rem;">Upload a CSV or JSON file from OneKey MLS to import multiple properties at once.</p>
-                <p style="margin: 0; font-size: 0.9rem; color: #666;"><strong>Supported formats:</strong> CSV (.csv) or JSON (.json)</p>
+                <p style="margin-bottom: 0.5rem;">Upload a CSV file from OneKey MLS to import multiple properties at once.</p>
+                <p style="margin: 0.5rem 0; font-size: 0.9rem; color: #666;"><strong>Supported formats:</strong> CSV (.csv) or Excel files saved as CSV</p>
+                <p style="margin: 0; font-size: 0.85rem; color: #666;"><strong>Note:</strong> If you have an Excel file (.xlsx), please save it as CSV first (File → Save As → CSV)</p>
             </div>
 
             <div class="form-group">
-                <label>Select File (CSV or JSON)</label>
-                <input type="file" id="batchFile" accept=".csv,.json" onchange="handleBatchFileSelect(event)">
+                <label>Select CSV File</label>
+                <input type="file" id="batchFile" accept=".csv,.txt" onchange="handleBatchFileSelect(event)">
                 <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
-                    The file should contain property data with columns/fields matching OneKey MLS format.
+                    The CSV file should have a header row with column names, followed by property data rows.
+                </p>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 0.25rem;">
+                    <strong>Required columns:</strong> Address (or Street, City, State, Zip), Price<br>
+                    <strong>Optional columns:</strong> Bedrooms, Bathrooms, Square Feet, Property Type, Status, Description, MLS Number, Images
                 </p>
             </div>
 

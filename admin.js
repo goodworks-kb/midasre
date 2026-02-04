@@ -692,27 +692,34 @@ function handleBatchFileSelect(event) {
     const file = event.target.files[0];
     if (!file) return;
     
+    const extension = file.name.split('.').pop().toLowerCase();
+    
+    // Check if it's a CSV file
+    if (extension !== 'csv' && extension !== 'txt') {
+        alert('Please upload a CSV file. If you have an Excel file, please save it as CSV first (File → Save As → CSV).');
+        event.target.value = '';
+        return;
+    }
+    
     const reader = new FileReader();
     reader.onload = (e) => {
         const content = e.target.result;
-        const extension = file.name.split('.').pop().toLowerCase();
         
         try {
-            if (extension === 'csv') {
-                parseCSV(content);
-            } else if (extension === 'json') {
-                parseJSON(content);
-            } else {
-                alert('Unsupported file format. Please upload a CSV or JSON file.');
-                return;
-            }
+            parseCSV(content);
         } catch (error) {
-            alert('Error parsing file: ' + error.message);
+            alert('Error parsing CSV file: ' + error.message + '\n\nPlease check that:\n1. The file is a valid CSV\n2. It has a header row\n3. Data rows are properly formatted');
             console.error('Parse error:', error);
+            event.target.value = '';
         }
     };
     
-    reader.readAsText(file);
+    reader.onerror = () => {
+        alert('Error reading file. Please try again.');
+        event.target.value = '';
+    };
+    
+    reader.readAsText(file, 'UTF-8');
 }
 
 // Parse CSV file
@@ -741,7 +748,7 @@ function parseCSV(csvText) {
     showBatchPreview();
 }
 
-// Parse CSV line (handles quoted values)
+// Parse CSV line (handles quoted values and Excel-style formatting)
 function parseCSVLine(line) {
     const result = [];
     let current = '';
@@ -753,21 +760,32 @@ function parseCSVLine(line) {
         
         if (char === '"') {
             if (inQuotes && nextChar === '"') {
+                // Escaped quote (double quote)
                 current += '"';
                 i++; // Skip next quote
             } else {
+                // Toggle quote state
                 inQuotes = !inQuotes;
             }
         } else if (char === ',' && !inQuotes) {
+            // Field separator
             result.push(current.trim());
             current = '';
         } else {
             current += char;
         }
     }
+    
+    // Add the last field
     result.push(current.trim());
     
-    return result;
+    // Clean up quoted fields (remove surrounding quotes if present)
+    return result.map(field => {
+        if (field.startsWith('"') && field.endsWith('"')) {
+            return field.slice(1, -1).replace(/""/g, '"');
+        }
+        return field;
+    });
 }
 
 // Parse JSON file
