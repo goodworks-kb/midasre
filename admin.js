@@ -1222,17 +1222,31 @@ async function loadContactSubmissions() {
             }
         }
         
-        // Merge submissions from both sources, removing duplicates by ID
+        // Merge submissions from both sources, removing duplicates by ID only
+        // IMPORTANT: We deduplicate by ID (timestamp), NOT by email address
+        // Each submission should have a unique ID, so all submissions are kept
         const allSubmissions = [...submissionsFromFile, ...submissionsFromStorage];
         const uniqueSubmissions = [];
         const seenIds = new Set();
         
         for (const submission of allSubmissions) {
-            if (submission && submission.id && !seenIds.has(submission.id)) {
-                seenIds.add(submission.id);
-                uniqueSubmissions.push(submission);
+            // Only skip if we've seen this exact ID before (shouldn't happen with Date.now())
+            // But we keep ALL submissions, even from the same email address
+            if (submission && submission.id) {
+                if (!seenIds.has(submission.id)) {
+                    seenIds.add(submission.id);
+                    uniqueSubmissions.push(submission);
+                } else {
+                    // Log if we find duplicate IDs (shouldn't happen)
+                    console.warn('Duplicate submission ID found:', submission.id, 'This should not happen with Date.now()');
+                }
+            } else {
+                // Log submissions without IDs (shouldn't happen)
+                console.warn('Submission without ID found:', submission);
             }
         }
+        
+        console.log(`Merged ${allSubmissions.length} total submissions into ${uniqueSubmissions.length} unique submissions (deduplicated by ID only)`);
         
         // Sort by timestamp (newest first)
         uniqueSubmissions.sort((a, b) => {
