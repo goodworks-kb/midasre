@@ -538,6 +538,13 @@ document.addEventListener('click', function(event) {
     }
 });
 
+// EmailJS Configuration
+// To enable automated email sending, create an emailjs-config.js file with:
+// window.EMAILJS_SERVICE_ID = 'your_service_id';
+// window.EMAILJS_TEMPLATE_ID = 'your_template_id';
+// window.EMAILJS_PUBLIC_KEY = 'your_public_key';
+// See EMAILJS_SETUP.md for detailed instructions
+
 // Contact Form Handler
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
