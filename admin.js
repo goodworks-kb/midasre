@@ -219,6 +219,13 @@ function showSection(section) {
     if (section === 'add-property' && !document.getElementById('propertyId').value) {
         resetForm();
     }
+    
+    // Load data when switching sections
+    if (section === 'properties') {
+        loadProperties();
+    } else if (section === 'contact-submissions') {
+        loadContactSubmissions();
+    }
 }
 
 // Get correct path for JSON file based on current location
