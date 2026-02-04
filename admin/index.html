@@ -909,11 +909,27 @@
                 <strong>Debug Info:</strong><br>
                 <span id="debugInfo">Click Refresh to see debug info</span>
             </div>
-            <div style="margin-top: 1rem; padding: 1rem; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107; font-size: 0.85rem; color: #856404;">
+            <div id="originWarning" style="margin-top: 1rem; padding: 1rem; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107; font-size: 0.85rem; color: #856404; display: none;">
                 <strong>⚠️ Important:</strong> Make sure both the main website and admin panel use the <strong>same origin</strong> (both <code>localhost</code> or both <code>127.0.0.1</code>). 
                 If you submitted the form on <code>127.0.0.1:3000</code> but admin panel is on <code>localhost:3000</code>, 
                 they won't share localStorage. Use the same URL for both pages.
             </div>
+            <div id="productionNote" style="margin-top: 1rem; padding: 1rem; background: #d1fae5; border-radius: 8px; border-left: 4px solid #10b981; font-size: 0.85rem; color: #065f46; display: none;">
+                <strong>✓ Production Mode:</strong> On the live website (<code>midasre.gooworkskb.com</code>), both the main site and admin panel share the same domain, so localStorage works automatically. 
+                Submissions will appear here immediately after form submission.
+            </div>
+            <script>
+                // Show appropriate warning/note based on environment
+                const isLocalhost = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1');
+                const originWarning = document.getElementById('originWarning');
+                const productionNote = document.getElementById('productionNote');
+                
+                if (isLocalhost && window.location.origin.includes('localhost')) {
+                    originWarning.style.display = 'block';
+                } else if (!isLocalhost) {
+                    productionNote.style.display = 'block';
+                }
+            </script>
         </div>
     </div>
 

@@ -1187,12 +1187,23 @@ async function loadContactSubmissions() {
         console.log('All localStorage keys:', allKeys);
         
         // Try to load from JSON file first (shared storage)
+        // Works for both localhost and production (same origin)
         let submissionsFromFile = [];
         try {
-            const fileResponse = await fetch('../data/contact-submissions.json');
-            if (fileResponse.ok) {
-                submissionsFromFile = await fileResponse.json();
-                console.log('Loaded submissions from JSON file:', submissionsFromFile.length);
+            // Try both relative paths (works for admin/index.html)
+            const paths = ['../data/contact-submissions.json', 'data/contact-submissions.json'];
+            for (const path of paths) {
+                try {
+                    const fileResponse = await fetch(path);
+                    if (fileResponse.ok) {
+                        submissionsFromFile = await fileResponse.json();
+                        console.log(`Loaded ${submissionsFromFile.length} submission(s) from JSON file (${path})`);
+                        break; // Success, stop trying other paths
+                    }
+                } catch (pathError) {
+                    // Try next path
+                    continue;
+                }
             }
         } catch (fileError) {
             console.log('Could not load from JSON file (may not exist yet):', fileError);
@@ -1236,17 +1247,24 @@ async function loadContactSubmissions() {
         
         // Update debug info
         if (debugInfoEl) {
-            const originWarning = window.location.origin.includes('localhost') 
+            const isLocalhost = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1');
+            const originWarning = isLocalhost && window.location.origin.includes('localhost')
                 ? '<br><strong style="color: #f59e0b;">⚠️ Note:</strong> If form was submitted on <code>127.0.0.1</code>, data may be in different localStorage. Use same origin for both pages.'
+                : '';
+            
+            const isProduction = !isLocalhost;
+            const productionNote = isProduction 
+                ? '<br><strong style="color: #10b981;">✓ Production Mode:</strong> Both main site and admin panel share localStorage on same domain.'
                 : '';
             
             debugInfoEl.innerHTML = `
                 <strong>Current URL:</strong> ${window.location.href}<br>
                 <strong>Origin:</strong> ${window.location.origin}<br>
+                <strong>Environment:</strong> ${isProduction ? 'Production' : 'Development'}<br>
                 <strong>localStorage keys:</strong> ${allKeys.join(', ') || 'none'}<br>
                 <strong>From JSON file:</strong> ${submissionsFromFile.length} submission(s)<br>
                 <strong>From localStorage:</strong> ${submissionsFromStorage.length} submission(s)<br>
-                <strong>Total unique:</strong> ${uniqueSubmissions.length} submission(s)${originWarning}
+                <strong>Total unique:</strong> ${uniqueSubmissions.length} submission(s)${originWarning}${productionNote}
             `;
         }
         
