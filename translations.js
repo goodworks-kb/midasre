@@ -521,6 +521,13 @@ const translations = {
             sellingDesc: '부동산의 최대 가치 얻기',
             getValuation: '무료 평가 받기'
         },
+        quickLinks: {
+            services: '서비스',
+            servicesDesc: '구매자, 판매자, 주거용 및 상업용 부동산을 위한 포괄적인 부동산 서비스 탐색',
+            about: '회사 소개',
+            aboutDesc: 'Midas Realty와 Tina Kim의 수십 년간의 부동산 경험에 대해 알아보세요',
+            learnMore: '자세히 알아보기'
+        },
         whyChooseUs: {
             title: '왜 Midas Realty를 선택해야 할까요?',
             subtitle: '수십 년의 전문성, 개인화된 서비스, 지역사회에 대한 헌신이 만드는 차이를 경험하세요',
